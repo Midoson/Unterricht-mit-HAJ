@@ -14,6 +14,7 @@
     <li>... kann erkannt werden an ...</li>
     <li>... zeigt/äußert sind in/durch ...</li></ul>
 </details>
+---
 <details>
     <summary><b>Aufgabe 1: Worterklärungen</b></summary>
 <ul>
@@ -21,10 +22,12 @@
    <ul><li><u>ethnisch:</u> die Kultur- und Lebensgemeinschaft einer Volksgruppe betreffend</li></ul>
     <ul><li><u>hierarschisiert:</u> in einer Hierarchie (Rangordnung) anordnen, abstufen</li></ul>    
 </details>
+---
 <details>
     <summary><b>Aufgabe 1: Definition in einfacher Sprache</b></summary>
 Rassismus bedeutet, dass Menschen als Teil einer bestimmten Gruppe angesehen werden, basierend auf Aspekten wie Aussehen, Kultur, Religion oder Herkunft. Diese Gruppen werden als fest und unveränderlich angesehen, und den Menschen in ihnen werden bestimmte Eigenschaften zugeschrieben, die sie angeblich alle teilen. Rassismus bewertet Menschen und sortiert sie in eine Rangordnung ein, wobei einige Gruppen als besser und andere als schlechter angesehen werden.
 </details>
+---
 <details>
     <summary><b>Aufgabe 2: Anregungen</b></summary>
 <ul>
@@ -34,3 +37,4 @@ Rassismus bedeutet, dass Menschen als Teil einer bestimmten Gruppe angesehen wer
     <ul><li>In einer Diskussion über akademische Leistungen in der Schule vergleicht ein Lehrer die mathematischen Leistungen von Schülern asiatischer Herkunft mit denen von Mitschülern anderer Ethnien. Beschreibe, inwiefern hier Gruppen "hierarchisiert" werden.</li>
     </ul>
 </details>
+
