@@ -15,7 +15,9 @@
     <li>... kann erkannt werden an ...</li>
     <li>... zeigt/äußert sind in/durch ...</li></ul>
 </details>
+
 ---
+
 <details>
     <summary><b>Aufgabe 1: Worterklärungen</b></summary>
 <ul>
@@ -25,12 +27,16 @@
     <ul><li><u>biologistisch (von Biologismus):</u> eine philosophische und weltanschauliche Position, die menschliche Verhaltensweisen und gesellschaftliche Zusammenhänge vordringlich durch biologische Gesetzmäßigkeiten zu erklären versucht</li></ul>
     <ul><li><u>legitimieren:</u> für legitim erklären, als rechtmäßig anerkennen</li></ul>    
 </details>
+
 ---
+
 <details>
     <summary><b>Aufgabe 1: Definition in einfacher Sprache</b></summary>Rassismus ist die Überzeugung, dass Menschen aufgrund ihrer Rasse, Hautfarbe oder Herkunft besser oder schlechter als andere sind. Diese Idee wird oft mit falschen wissenschaftlichen Argumenten verteidigt.
     Rassismus hat viel mit Macht zu tun: Er wird benutzt, um Macht zu behalten und zu rechtfertigen. In diesem Zuge werden bestimmte Menschen schlecht behandelt, ausgegrenzt oder sogar getötet.
 </details>
+
 ---
+
 <details>
     <summary><b>Aufgabe 2: Anregungen</b></summary>
 <ul>
