@@ -1,5 +1,5 @@
 ---
-{"dg-publish":true,"permalink":"/homepage/funktionen-als-eindeutige-zuordnungen/","tags":["gardenEntry"]}
+{"dg-publish":true,"permalink":"/homepage/funktionen-als-eindeutige-zuordnungen/"}
 ---
 
 # Funktionen als eindeutige Zuordnungen
