@@ -1,0 +1,167 @@
+/* Abschnitt mit vorbereitende Hausaufgabe hervorheben */
+.vorbereitend{
+  background-color: #F6DEC6;
+  font-weight: bold;
+  padding: 6px 10px;
+  border-radius: 6px;
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+}
+
+/* Inhalt unterhalb auch formatieren */
+.vorbereitend-content {
+  padding: 0.1em 1em;
+  background-color: #fbebda;
+  border-left: 4px solid #eda35a;
+  border-radius: 0 6px 6px 0;
+  margin-bottom: 1em;
+}
+
+
+/* Abschnitt mit Einstieg hervorheben */
+.einstieg{
+  background-color: #d2ddee;
+  font-weight: bold;
+  padding: 6px 10px;
+  border-radius: 6px;
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+}
+
+/* Inhalt unterhalb auch formatieren */
+.einstieg-content {
+  padding: 0.1em 1em;
+  background-color: #DFE5EB;
+  border-left: 4px solid #89a6d2;
+  border-radius: 0 6px 6px 0;
+  margin-bottom: 1em;
+}
+
+/* Abschnitt mit Gelenkstelle hervorheben */
+.gelenk{
+  background-color: #D7E5C8;
+  font-weight: bold;
+  padding: 6px 10px;
+  border-radius: 6px;
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+}
+
+/* Inhalt unterhalb auch formatieren */
+.gelenk-content {
+  padding: 0.1em 1em;
+  background-color: #E2E8D1;
+  border-left: 4px solid #A5C581;
+  border-radius: 0 6px 6px 0;
+  margin-bottom: 1em;
+}
+
+/* Abschnitt mit Erarbeitung hervorheben */
+.erarbeitung{
+  background-color: #f5cdcc;
+  font-weight: bold;
+  padding: 6px 10px;
+  border-radius: 6px;
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+}
+
+/* Inhalt unterhalb auch formatieren */
+.erarbeitung-content {
+  padding: 0.1em 1em;
+  background-color: #F7D8DA;
+  border-left: 4px solid #E77373;
+  border-radius: 0 6px 6px 0;
+  margin-bottom: 1em;
+}
+
+
+/* Abschnitt mit Sicherung hervorheben */
+.sicherung{
+  background-color: #fbe2b1;
+  font-weight: bold;
+  padding: 6px 10px;
+  border-radius: 6px;
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+}
+
+/* Inhalt unterhalb auch formatieren */
+.sicherung-content {
+  padding: 0.1em 1em;
+  background-color: #F7E6C8;
+  border-left: 4px solid #F6C151;
+  border-radius: 0 6px 6px 0;
+  margin-bottom: 1em;
+}
+
+/* Abschnitt mit Vertiefung hervorheben */
+.vertiefung{
+  background-color: #e2cbd8;
+  font-weight: bold;
+  padding: 6px 10px;
+  border-radius: 6px;
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+}
+
+
+/* Inhalt unterhalb auch formatieren */
+.vertiefung-content {
+  padding: 0.1em 1em;
+  background-color: #F0E5EB;
+  border-left: 4px solid #BC8AA6;
+  border-radius: 0 6px 6px 0;
+  margin-bottom: 1em;
+}
+
+
+/* Abschnitt mit Puffer hervorheben */
+.puffer{
+  background-color: #cae2e3;
+  font-weight: bold;
+  padding: 6px 10px;
+  border-radius: 6px;
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+}
+
+/* Inhalt unterhalb auch formatieren */
+.puffer-content {
+  padding: 0.1em 1em;
+  background-color: #E3E9EF;
+  border-left: 4px solid #86C1C1;
+  border-radius: 0 6px 6px 0;
+  margin-bottom: 1em;
+}
+
+
+/* Abschnitt mit Hausaufgabe hervorheben */
+.hausaufgabe{
+  background-color: #f7d7b6;
+  font-weight: bold;
+  padding: 6px 10px;
+  border-radius: 6px;
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+}
+
+
+/* Inhalt unterhalb auch formatieren */
+.hausaufgaben-content {
+  padding: 0.1em 1em;
+  background-color: #F6DEC6;
+  border-left: 4px solid #eda35a;
+  border-radius: 0 6px 6px 0;
+  margin-bottom: 1em;
+}
+
+
+/* Navigationsleiste */
+.navigation{
+  background-color: #E9D8E1;
+  padding: 3px 10px;
+  border-radius: 6px;
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+}
