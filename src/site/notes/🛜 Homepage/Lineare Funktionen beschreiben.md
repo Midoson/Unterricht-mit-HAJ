@@ -7,9 +7,9 @@
 **Lineare Funktionen** sind besondere [[🛜 Homepage/Funktionen als eindeutige Zuordnungen\|Funktionen]], die wiederum besondere Zuordnungen sind. Weil sie Funktionen sind, können auch lineare Funktionen auf verschiedene Arten dargestellt werden:
 - [[🛜 Homepage/Lineare Funktionen beschreiben#Lineare Funktionen als Wortbeschreibung\|als Wortbeschreibung]]
 - als Pfeildiagramm
-- [[🛜 Homepage/Lineare Funktionen beschreiben#Lineare Funktionen als Graph\|Lineare Funktionen beschreiben#Lineare Funktionen als Graph]]
-- [[🛜 Homepage/Lineare Funktionen beschreiben#Lineare Funktionen in einer Tabelle\|Lineare Funktionen beschreiben#Lineare Funktionen in einer Tabelle]]
-- [[🛜 Homepage/Lineare Funktionen beschreiben#Lineare Funktionen als Terme\|Lineare Funktionen beschreiben#Lineare Funktionen als Terme]]
+- [[🛜 Homepage/Lineare Funktionen beschreiben#Lineare Funktionen als Graph\|als Graph]]
+- [[🛜 Homepage/Lineare Funktionen beschreiben#Lineare Funktionen in einer Tabelle\|in einer Tabelle]]
+- [[🛜 Homepage/Lineare Funktionen beschreiben#Lineare Funktionen als Terme\|als Term]]
 
 ## Lineare Funktionen als Wortbeschreibung
 Wie alle Funktionen können auch lineare Funktionen mit Worten beschreiben werden. Das zeigen schon ganz einfache Alltagsbeispiele.
