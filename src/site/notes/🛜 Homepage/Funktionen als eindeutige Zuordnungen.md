@@ -29,7 +29,7 @@ Funktionen lassen sich auf verschiedene Arten beschreiben:
 - [[🛜 Homepage/Funktionen als eindeutige Zuordnungen#2. Funktionen als Pfeildiagramme\|als Pfeildiagramme]]
 - [[🛜 Homepage/Funktionen als eindeutige Zuordnungen#3. Funktionen als Wertetabellen\|als Wertetabellen]]
 - [[🛜 Homepage/Funktionen als eindeutige Zuordnungen#4. Funktionen als Graphen\|als Graphen]]
-
+ 
 ### 1. Funktionen in Worten
 >[!information]+ Beispiel
 > Jede Nummer auf der Klassenliste ist genau einem Namen zugeordnet..  
