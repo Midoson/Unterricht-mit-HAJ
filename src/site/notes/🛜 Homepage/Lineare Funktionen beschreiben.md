@@ -61,6 +61,13 @@ Terme sind Rechenausdrücke. Ein Term heißt <u>linear</u>, wenn die Variable nu
 >- $y=x^2$ → ❌ Keine lineare Funktion, denn die Variable $x$ wird mit $x$ multipliziert
 >- $y=12+\frac{1}{x}$ → ❌ Keine lineare Funktion, denn es wird durch $x$ geteilt
 
+## Steigung im Koordinatensystem ablesen
+Die Steigung $m$ gibt an, wie stark der Graph einer linearen Funktion ansteigt oder abfällt. Sie beschreibt, wie sich der y-Wert verändert, wenn der x-Wert um 1 zunimmt.
 
-
+So liest du die Steigung ab:
+1. Wähle zwei Punkte auf dem Graphen (am besten solche mit ganzzahligen Koordinaten).
+2. Gehe waagerecht vom ersten Punkt zum zweiten → Änderung in x-Richtung ablesen.
+3. Gehe senkrecht vom ersten Punkt zum zweiten → Änderung in y-Richtung ablesen.
+4. Berechne die Steigung mit:
+ 
 

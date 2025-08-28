@@ -14,4 +14,6 @@
 [[🛜 Homepage/Lineare Funktionen beschreiben\|Lineare Funktionen beschreiben]] ([Link](https://unterricht-mit-haj.netlify.app/homepage/lineare-funktionen-beschreiben))
 [[🛜 Homepage/Definitions- und Wertemenge\|Definitions- und Wertemenge]] ([Link](https://unterricht-mit-haj.netlify.app/homepage/definitions-wund-wertemenge))
 
+[[Tipp Basketballwurf\|Tipp Basketballwurf]] ([Link](https://unterricht-mit-haj.netlify.app/homepage/tipp-basketballwurf))
+
 

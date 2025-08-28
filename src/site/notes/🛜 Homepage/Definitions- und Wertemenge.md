@@ -7,7 +7,7 @@ Jede Funktion ordnet <u>jeden Wert aus einer Startmenge</u> genau einem Wert a
 In der Mathematik gibt es für diese Menge besondere Bezeichnungen:
 
 - <u>Definitionsmenge</u>: die Menge aller möglichen Eingabewerte $x$
-- <u>Wertemenge</u>: die Menge aller möglichen **Ausgabewerte** $y$ bzw. $f(x)$
+- <u>Wertemenge</u>: die Menge aller möglichen Ausgabewerte $y$ bzw. $f(x)$
 
 ## Definitionsmenge
 Die <u>Definitionsmenge</u> $D$ gibt an, welche Werte für $x$ erlaubt sind. Nicht jede Zahl ist immer möglich — manchmal schließen Rechenregeln oder Sachzusammenhänge bestimmte Werte aus.
