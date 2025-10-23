@@ -2,7 +2,7 @@
 {"dg-publish":true,"permalink":"/homepage/serviceseite-fuer-medienexperten/"}
 ---
 
-# Serviceseite für Medienexperte
+# Serviceseite für Medienexperten
 
 <details>
     <summary><b>Leitfragen für die Analyse</b></summary>
