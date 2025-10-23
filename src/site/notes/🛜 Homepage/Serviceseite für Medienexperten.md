@@ -2,7 +2,7 @@
 {"dg-publish":true,"permalink":"/homepage/serviceseite-fuer-medienexperten/"}
 ---
 
-# Serviceseite für Sprachwissenschaftler
+# Serviceseite für Medienexperte
 
 <details>
     <summary><b>Leitfragen für die Analyse</b></summary>
