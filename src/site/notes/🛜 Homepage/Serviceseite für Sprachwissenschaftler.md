@@ -13,5 +13,5 @@
     <li>Was verrät die Sprache über Mollwitz’ Denkweise und Persönlichkeit?</li></ul>
 </details>
 
----
+<hr style="border-color: light grey;">
 

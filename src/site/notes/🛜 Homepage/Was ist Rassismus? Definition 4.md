@@ -15,7 +15,7 @@
     <li>... zeigt/äußert sind in/durch ...</li></ul>
 </details>
 
----
+<hr style="border-color: light grey;">
 
 <details>
     <summary><b>Aufgabe 1: Worterklärungen</b></summary>
@@ -29,14 +29,14 @@
     <ul><li><u>adressieren:</u> etwas an jemanden richten</li></ul>    
 </details>
 
----
+<hr style="border-color: light grey;">
 
 <details>
     <summary><b>Aufgabe 1: Definition in einfacher Sprache</b></summary>Rassismus ist ein System, das auf Ideen und Verhaltensweisen basiert, die Machtverhältnisse, Ausgrenzungen und Privilegien rechtfertigt und weiterführt, die im Laufe der Geschichte entstanden sind. Es sieht Menschen nicht als Einzelpersonen, sondern als Mitglieder von Gruppen, die sie als natürlich ansehen und ihre Eigenschaften als unveränderlich betrachten.
     Rassismus kommt nicht nur von einzelnen Menschen, die absichtlich böse handeln. Es wird durch Geschichte, Gesellschaft und Kultur weitergegeben und beeinflusst die Art und Weise, wie unsere Gesellschaft, ihre Struktur und Institutionen funktionieren. Daher ist Rassismus ein Problem, das die gesamte Gesellschaft betrifft und als solches behandelt werden muss.
 </details>
 
----
+<hr style="border-color: light grey;">
 
 <details>
     <summary><b>Aufgabe 2: Anregungen</b></summary>

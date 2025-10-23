@@ -15,7 +15,7 @@
     <li>... zeigt/äußert sind in/durch ...</li></ul>
 </details>
 
----
+<hr style="border-color: light grey;">
 
 <details>
     <summary><b>Aufgabe 1: Worterklärungen</b></summary>
@@ -25,14 +25,14 @@
     <ul><li><u>hierarschisiert:</u> in einer Hierarchie (Rangordnung) anordnen, abstufen</li></ul>    
 </details>
 
----
+<hr style="border-color: light grey;">
 
 <details>
     <summary><b>Aufgabe 1: Definition in einfacher Sprache</b></summary>
     Rassismus bedeutet, dass Menschen als Teil einer bestimmten Gruppe angesehen werden, basierend auf Aspekten wie Aussehen, Kultur, Religion oder Herkunft. Diese Gruppen werden als fest und unveränderlich angesehen, und den Menschen in ihnen werden bestimmte Eigenschaften zugeschrieben, die sie angeblich alle teilen. Rassismus bewertet Menschen und sortiert sie in eine Rangordnung ein, wobei einige Gruppen als besser und andere als schlechter angesehen werden.
 </details>
 
----
+<hr style="border-color: light grey;">
 
 <details>
     <summary><b>Aufgabe 2: Anregungen</b></summary>

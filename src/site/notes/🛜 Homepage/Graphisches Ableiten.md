@@ -12,7 +12,7 @@
 <p> </p>
 <!-- /wp:paragraph --></details>
 
----
+<hr style="border-color: light grey;">
 
 <details class="wp-block-details"><summary>Schritt 1 - Graph der Funktion f betrachten</summary><!-- wp:media-text {"mediaPosition":"right","mediaId":107,"mediaLink":"https://unterrichtmithaj.wordpress.com/?attachment_id=107","mediaType":"image","mediaWidth":24,"verticalAlignment":"center"} -->
 <div class="wp-block-media-text has-media-on-the-right is-stacked-on-mobile is-vertically-aligned-center" style="grid-template-columns:auto 24%"><div class="wp-block-media-text__content"><!-- wp:paragraph {"placeholder":"Inhalt …"} -->
@@ -20,7 +20,7 @@
 <!-- /wp:paragraph --></div><figure class="wp-block-media-text__media"><img src="https://unterrichtmithaj.wordpress.com/wp-content/uploads/2025/03/1.jpeg?w=763" alt="" class="wp-image-107 size-full" /></figure></div>
 <!-- /wp:media-text --></details>
 
----
+<hr style="border-color: light grey;">
 
 <details class="wp-block-details"><summary>Schritt 2 - Extrempunkte markieren</summary><!-- wp:media-text {"mediaPosition":"right","mediaId":113,"mediaLink":"https://unterrichtmithaj.wordpress.com/?attachment_id=113","mediaType":"image","mediaWidth":24} -->
 <div class="wp-block-media-text has-media-on-the-right is-stacked-on-mobile" style="grid-template-columns:auto 24%"><div class="wp-block-media-text__content"><!-- wp:paragraph {"placeholder":"Inhalt …"} -->
@@ -28,7 +28,7 @@
 <!-- /wp:paragraph --></div><figure class="wp-block-media-text__media"><img src="https://unterrichtmithaj.wordpress.com/wp-content/uploads/2025/03/2-1.jpeg?w=762" alt="" class="wp-image-113 size-full" /></figure></div>
 <!-- /wp:media-text --></details>
 
----
+<hr style="border-color: light grey;">
 
 <details class="wp-block-details"><summary>Schritt 3 - Extremstellen markieren</summary><!-- wp:media-text {"mediaPosition":"right","mediaId":115,"mediaLink":"https://unterrichtmithaj.wordpress.com/?attachment_id=115","mediaType":"image","mediaWidth":24} -->
 <div class="wp-block-media-text has-media-on-the-right is-stacked-on-mobile" style="grid-template-columns:auto 24%"><div class="wp-block-media-text__content"><!-- wp:paragraph {"placeholder":"Inhalt …"} -->
@@ -38,7 +38,7 @@ Die Extremstellen des Graphen der <strong><mark style="background-color:rgba(0, 
 <!-- /wp:media-text -->
 </details>
 
----
+<hr style="border-color: light grey;">
 
 <details class="wp-block-details"><summary>Schritt 4 - Monotonie betrachten</summary><!-- wp:media-text {"mediaPosition":"right","mediaId":119,"mediaLink":"https://unterrichtmithaj.wordpress.com/?attachment_id=119","mediaType":"image","mediaWidth":24} -->
 <div class="wp-block-media-text has-media-on-the-right is-stacked-on-mobile" style="grid-template-columns:auto 24%"><div class="wp-block-media-text__content"><!-- wp:paragraph {"placeholder":"Inhalt …"} -->
@@ -48,7 +48,7 @@ In den Intervallen, in denen der Graph der <strong><mark style="background-color
 <!-- /wp:paragraph --></div><figure class="wp-block-media-text__media"><img src="https://unterrichtmithaj.wordpress.com/wp-content/uploads/2025/03/5.jpeg?w=766" alt="" class="wp-image-119 size-full" /></figure></div>
 <!-- /wp:media-text --></details>
 
----
+<hr style="border-color: light grey;">
 
 <details class="wp-block-details"><summary>Schritt 5 - Zeichne den Graphen der Ableitungsfunktion f'</summary><!-- wp:media-text {"mediaPosition":"right","mediaId":122,"mediaLink":"https://unterrichtmithaj.wordpress.com/?attachment_id=122","mediaType":"image","mediaWidth":24} -->
 <div class="wp-block-media-text has-media-on-the-right is-stacked-on-mobile" style="grid-template-columns:auto 24%"><div class="wp-block-media-text__content"><!-- wp:paragraph {"placeholder":"Inhalt …"} -->

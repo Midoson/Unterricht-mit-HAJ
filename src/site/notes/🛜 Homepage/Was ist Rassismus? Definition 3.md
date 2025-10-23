@@ -15,7 +15,7 @@
     <li>... zeigt/äußert sind in/durch ...</li></ul>
 </details>
 
----
+<hr style="border-color: light grey;">
 
 <details>
     <summary><b>Aufgabe 1: Worterklärungen</b></summary>
@@ -27,7 +27,7 @@
     <ul><li><u>Legitimation:</u> Berechtigung</li></ul>    
 </details>
 
----
+<hr style="border-color: light grey;">
 
 <details>
     <summary><b>Aufgabe 1: Definition in einfacher Sprache</b></summary>Rassismus zeigt sich in der Idee, dass Menschen aufgrund ihrer biologischen Merkmale in verschiedene Gruppen oder "Rassen" eingeteilt werden können. Diese Idee geht davon aus, dass Unterschiede in Verhalten, Kultur und sozialer Stellung auf diese biologischen Merkmale zurückzuführen sind und nicht verändert werden können.
@@ -35,7 +35,7 @@
     Aber Rassismus ist mehr als nur persönliche Vorurteile. Es ist ein System, das dazu dient, gesellschaftliche Hierarchien zu rechtfertigen und bestimmte Gruppen zu benachteiligen.
 </details>
 
----
+<hr style="border-color: light grey;">
 
 <details>
     <summary><b>Aufgabe 2: Anregungen</b></summary>

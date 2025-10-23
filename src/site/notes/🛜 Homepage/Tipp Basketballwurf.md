@@ -29,7 +29,7 @@ Eine passende Wertetabelle kann folgendermaßen aussehen: <br><br>
 </details>
 <br>
 
----
+<hr style="border-color: light grey;">
 
 <br>
 <details>
@@ -38,7 +38,7 @@ Eine passende Wertetabelle kann folgendermaßen aussehen: <br><br>
 </details>
 <br>
 
----
+<hr style="border-color: light grey;">
 
 <br>
 <details>

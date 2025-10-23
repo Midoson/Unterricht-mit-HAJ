@@ -13,5 +13,5 @@
     <li>Welche Beweggründe kann es für Mollwitz’ Mediennutzung geben?</li></ul>
 </details>
 
----
+<hr style="border-color: light grey;">
 

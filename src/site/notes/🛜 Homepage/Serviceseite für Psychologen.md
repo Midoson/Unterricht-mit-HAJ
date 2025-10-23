@@ -14,5 +14,7 @@
     <li>Wie zeigt sich sein Selbstbild oder sein Bedürfnis nach Kontrolle, Nähe, Anerkennung?</li></ul>
 </details>
 
----
+<hr style="border-color: light grey;">
+
+
 
