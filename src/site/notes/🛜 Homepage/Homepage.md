@@ -12,7 +12,7 @@
 
 [[🛜 Homepage/Funktionen als eindeutige Zuordnungen\|Funktionen als eindeutige Zuordnungen]] ([Link](https://unterricht-mit-haj.netlify.app/homepage/funktionen-als-eindeutige-zuordnungen))
 [[🛜 Homepage/Lineare Funktionen beschreiben\|Lineare Funktionen beschreiben]] ([Link](https://unterricht-mit-haj.netlify.app/homepage/lineare-funktionen-beschreiben))
-[[Definitions- und Wertemenge\|Definitions- und Wertemenge]] ([Link](https://unterricht-mit-haj.netlify.app/homepage/definitions-und-wertemenge/))
+[[🛜 Homepage/Definitions- und Wertemenge\|Definitions- und Wertemenge]] ([Link](https://unterricht-mit-haj.netlify.app/homepage/definitions-und-wertemenge/))
 
 [[🛜 Homepage/Tipp Basketballwurf\|Tipp Basketballwurf]] ([Link](https://unterricht-mit-haj.netlify.app/tipp-basketballwurf/))
 
