@@ -32,7 +32,7 @@
 >- In den Intervallen, in denen der Graph der <font color="#6425d0">Funktion f</font> streng monoton fällt, sind die Funktionswerte der <font color="#ff0000">Funktion f'</font> negativ. Der Graph der <font color="#ff0000">Funktion f'</font> verläuft demnach unterhalb der x-Achse.<br>
 >![Graphisches Ableiten 4.jpeg.webp\|400](/img/user/Homepage/Anh%C3%A4nge/Graphisches%20Ableiten%204.jpeg.webp)
 
->[!info|center]- Schritt 4 - Monotonie betrachten
+>[!info|center]- Schritt 5 - Graph der Ableitungsfunktion zeichnen
 >Zeichne entsprechend deinen vorherigen Feststellungen den Graphen der <font color="#ff0000">Funktion f'</font>. Die <font color="#ff0000">Ableitung f'</font> beschreibt die Steigung der <font color="#6425d0">Funktion f</font>. Der <font color="#ff0000">Graph von f'</font> zeigt also, wie steil der <font color="#6425d0">Graph von f</font> an jeder Stelle ist.
 >- Wenn die Steigung des <font color="#6425d0">Graphen von f</font> groß ist, dann sind die Funktionswerte der  <font color="#ff0000">Funktion f'</font> groß - sie liegen also weit von der x-Achse entfernt.
 >- Wenn die Steigung des <font color="#6425d0">Graphen von f</font> klein ist, dann sind die Funktionswerte der  <font color="#ff0000">Funktion f'</font> klein - sie liegen also nah bei der x-Achse entfernt.<br>
