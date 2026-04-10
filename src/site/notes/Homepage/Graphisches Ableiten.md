@@ -27,7 +27,7 @@
 >![Graphisches Ableiten 3.jpeg.webp\|400](/img/user/Homepage/Anh%C3%A4nge/Graphisches%20Ableiten%203.jpeg.webp)
 
 >[!info|center]- Schritt 4 - Monotonie betrachten
->Lege die Intervalle fest, in denen der Graphen der <font color="#6425d0">Funktion f</font> <mark style="background:rgba(240, 167, 216, 0.55); color: black;">streng monoton steigend</mark> bzw. <mark style="background:rgba(57, 189, 40, 0.55); color: black;">streng monoton fallend</mark> ist.
+>Lege die Intervalle fest, in denen der Graphen der <font color="#6425d0">Funktion f</font> <mark style="background:rgba(238, 232, 249, 0.55); color: black;">streng monoton steigend</mark> bzw. <mark style="background:rgba(232, 238, 232, 0.55); color: black;">streng monoton fallend</mark> ist.
 >- In den Intervallen, in denen der Graph der <font color="#6425d0">Funktion f</font> streng monoton steigt, sind die Funktionswerte der <font color="#ff0000">Funktion f'</font> positiv. Der Graph der <font color="#ff0000">Funktion f'</font> verläuft demnach oberhalb der x-Achse.
 >- In den Intervallen, in denen der Graph der <font color="#6425d0">Funktion f</font> streng monoton fällt, sind die Funktionswerte der <font color="#ff0000">Funktion f'</font> negativ. Der Graph der <font color="#ff0000">Funktion f'</font> verläuft demnach unterhalb der x-Achse.<br>
 >![Graphisches Ableiten 4.jpeg.webp\|400](/img/user/Homepage/Anh%C3%A4nge/Graphisches%20Ableiten%204.jpeg.webp)
