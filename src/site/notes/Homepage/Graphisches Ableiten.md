@@ -16,47 +16,24 @@
 
 >[!info|center]- Schritt 1 - Graph der Funktion f betrachten
 >Gegeben ist der Graph der <font color="#6425d0">Funktion f</font>. <br>
->![Graphisches Ableiten 1.jpeg.webp\|300](/img/user/Homepage/Anh%C3%A4nge/Graphisches%20Ableiten%201.jpeg.webp)
+>![Graphisches Ableiten 1.jpeg.webp\|400](/img/user/Homepage/Anh%C3%A4nge/Graphisches%20Ableiten%201.jpeg.webp)
 
+>[!info|center]- Schritt 2 - Extrempunkte markieren
+>Markiere die Extrempunkte des Graphen der <font color="#6425d0">Funktion f</font>. Diese liegen auf dem Graphen.<br>
+>![Graphisches Ableiten 2.jpeg.webp\|400](/img/user/Homepage/Anh%C3%A4nge/Graphisches%20Ableiten%202.jpeg.webp)
 
-<hr style="border-color: light grey;">
+>[!info|center]- Schritt 3 - Extremstellen markieren
+>Markiere die Extremstellen des Graphen der <font color="#6425d0">Funktion f</font> auf der x-Achse. Die Extremstellen des Graphen der <font color="#6425d0">Funktion f</font> sind die Nullstellen des Graphen der <font color="#ff0000">Funktion f'</font><br>
+>![Graphisches Ableiten 3.jpeg.webp\|400](/img/user/Homepage/Anh%C3%A4nge/Graphisches%20Ableiten%203.jpeg.webp)
 
-<details class="wp-block-details"><summary>Schritt 2 - Extrempunkte markieren</summary><!-- wp:media-text {"mediaPosition":"right","mediaId":113,"mediaLink":"https://unterrichtmithaj.wordpress.com/?attachment_id=113","mediaType":"image","mediaWidth":24} -->
-<div class="wp-block-media-text has-media-on-the-right is-stacked-on-mobile" style="grid-template-columns:auto 24%"><div class="wp-block-media-text__content"><!-- wp:paragraph {"placeholder":"Inhalt …"} -->
-<p>Markiere die Extrempunkte des Graphen der <strong><mark style="background-color:rgba(0, 0, 0, 0);color:#0000cc" class="has-inline-color">Funktion f</mark></strong>. Diese liegen auf dem Graphen.</p>
-<!-- /wp:paragraph --></div><figure class="wp-block-media-text__media"><img src="https://unterrichtmithaj.wordpress.com/wp-content/uploads/2025/03/2-1.jpeg?w=762" alt="" class="wp-image-113 size-full" /></figure></div>
-<!-- /wp:media-text --></details>
+>[!info|center]- Schritt 4 - Monotonie betrachten
+>Lege die Intervalle fest, in denen der Graphen der <font color="#6425d0">Funktion f</font> <mark style="background:rgba(240, 167, 216, 0.55)">streng monoton steigend</mark> bzw. <mark style="background:rgba(57, 189, 40, 0.55)">streng monoton fallend</mark> ist.
+>- In den Intervallen, in denen der der Graph der <font color="#6425d0">Funktion f</font> streng monoton steigt, sind die Funktionswerte der <font color="#ff0000">Funktion f'</font> positiv. Der Graph der <font color="#ff0000">Funktion f'</font> verläuft demnach oberhalb der x-Achse.
+>- In den Intervallen, in denen der der Graph der <font color="#6425d0">Funktion f</font> streng monoton fällt, sind die Funktionswerte der <font color="#ff0000">Funktion f'</font> negativ. Der Graph der <font color="#ff0000">Funktion f'</font> verläuft demnach unterhalb der x-Achse.<br>
+>![Graphisches Ableiten 4.jpeg.webp\|400](/img/user/Homepage/Anh%C3%A4nge/Graphisches%20Ableiten%204.jpeg.webp)
 
-<hr style="border-color: light grey;">
-
-<details class="wp-block-details"><summary>Schritt 3 - Extremstellen markieren</summary><!-- wp:media-text {"mediaPosition":"right","mediaId":115,"mediaLink":"https://unterrichtmithaj.wordpress.com/?attachment_id=115","mediaType":"image","mediaWidth":24} -->
-<div class="wp-block-media-text has-media-on-the-right is-stacked-on-mobile" style="grid-template-columns:auto 24%"><div class="wp-block-media-text__content"><!-- wp:paragraph {"placeholder":"Inhalt …"} -->
-<p>Markiere die Extremstellen des Graphen der <mark style="background-color:rgba(0, 0, 0, 0);color:#0000cc" class="has-inline-color"><strong>Funktion f</strong></mark> auf der x-Achse.
-Die Extremstellen des Graphen der <strong><mark style="background-color:rgba(0, 0, 0, 0);color:#0000cc" class="has-inline-color">Funktion f</mark></strong> sind die Nullstellen des Graphen der <strong><mark style="background-color:rgba(0, 0, 0, 0);color:#cc0000" class="has-inline-color">Funktion f'</mark></strong>.</p>
-<!-- /wp:paragraph --></div><figure class="wp-block-media-text__media"><img src="https://unterrichtmithaj.wordpress.com/wp-content/uploads/2025/03/3.jpeg?w=775" alt="" class="wp-image-115 size-full" /></figure></div>
-<!-- /wp:media-text -->
-</details>
-
-<hr style="border-color: light grey;">
-
-<details class="wp-block-details"><summary>Schritt 4 - Monotonie betrachten</summary><!-- wp:media-text {"mediaPosition":"right","mediaId":119,"mediaLink":"https://unterrichtmithaj.wordpress.com/?attachment_id=119","mediaType":"image","mediaWidth":24} -->
-<div class="wp-block-media-text has-media-on-the-right is-stacked-on-mobile" style="grid-template-columns:auto 24%"><div class="wp-block-media-text__content"><!-- wp:paragraph {"placeholder":"Inhalt …"} -->
-Lege die Intervalle fest, in denen der Graph der <strong><mark style="background-color:rgba(0, 0, 0, 0);color:#0000cc" class="has-inline-color">Funktion f</mark></strong> streng monoton steigend (lila) bzw. streng monoton fallend (grün) ist.
-In den Intervallen, in denen der Graph der <strong><mark style="background-color:rgba(0, 0, 0, 0);color:#0000cc" class="has-inline-color">Funktion f</mark></strong> streng monoton steigt, sind die Funktionswerte der <strong><mark style="background-color:rgba(0, 0, 0, 0);color:#cc0000" class="has-inline-color">Funktion f'</mark></strong> positiv. Der Graph der <mark style="background-color:rgba(0, 0, 0, 0);color:#cc0000" class="has-inline-color"><strong>Funktion f' </strong></mark>verläuft demnach oberhalb der x-Achse.
-In den Intervallen, in denen der Graph der <strong><mark style="background-color:rgba(0, 0, 0, 0);color:#0000cc" class="has-inline-color">Funktion f</mark></strong> streng monoton fällt, sind die Funktionswerte der <strong><mark style="background-color:rgba(0, 0, 0, 0);color:#cc0000" class="has-inline-color">Funktion f'</mark></strong> negativ. Der Graph der <mark style="background-color:rgba(0, 0, 0, 0);color:#cc0000" class="has-inline-color"><strong>Funktion f' </strong></mark>verläuft demnach unterhalb der x-Achse.
-<!-- /wp:paragraph --></div><figure class="wp-block-media-text__media"><img src="https://unterrichtmithaj.wordpress.com/wp-content/uploads/2025/03/5.jpeg?w=766" alt="" class="wp-image-119 size-full" /></figure></div>
-<!-- /wp:media-text --></details>
-
-<hr style="border-color: light grey;">
-
-<details class="wp-block-details"><summary>Schritt 5 - Zeichne den Graphen der Ableitungsfunktion f'</summary><!-- wp:media-text {"mediaPosition":"right","mediaId":122,"mediaLink":"https://unterrichtmithaj.wordpress.com/?attachment_id=122","mediaType":"image","mediaWidth":24} -->
-<div class="wp-block-media-text has-media-on-the-right is-stacked-on-mobile" style="grid-template-columns:auto 24%"><div class="wp-block-media-text__content"><!-- wp:paragraph {"placeholder":"Inhalt …"} -->
-<p>Zeichne entsprechend deinen vorherigen Feststellungen den Graphen der Funktion f'.
-Die <strong><mark style="background-color:rgba(0, 0, 0, 0);color:#cc0000" class="has-inline-color">Ableitung f'</mark></strong> beschreibt die Steigung der <strong><mark style="background-color:rgba(0, 0, 0, 0);color:#0000cc" class="has-inline-color">Funktion f</mark></strong>. Der <strong><mark style="background-color:rgba(0, 0, 0, 0);color:#cc0000" class="has-inline-color">Graph von f'</mark></strong> zeigt dir also, wie steil der <strong><mark style="background-color:rgba(0, 0, 0, 0);color:#0000cc" class="has-inline-color">Graph von f</mark></strong> an jeder Stelle ist.
-<ul class="wp-block-list"><!-- wp:list-item -->
-<li>Wenn die Steigung bei <strong><mark style="background-color:rgba(0, 0, 0, 0);color:#cc0000" class="has-inline-color">f</mark></strong> groß ist, dann sind die Funktionswerte von<strong> <mark style="background-color:rgba(0, 0, 0, 0);color:#0000cc" class="has-inline-color">f'</mark></strong> groß - sie liegen also weit von der x-Achse entfernt.</li>
-<li>Wenn die Steigung bei <strong><mark style="background-color:rgba(0, 0, 0, 0);color:#cc0000" class="has-inline-color">f</mark></strong> klein ist, dann sind die Funktionswerte von<strong> <mark style="background-color:rgba(0, 0, 0, 0);color:#0000cc" class="has-inline-color">f'</mark></strong> klein - sie liegen also nah an der x-Achse.</li>
-<!-- /wp:list-item --></ul>
-<!-- /wp:list --></div><figure class="wp-block-media-text__media"><img src="https://unterrichtmithaj.wordpress.com/wp-content/uploads/2025/03/6.jpeg?w=762" alt="" class="wp-image-122 size-full" /></figure></div>
-<!-- /wp:media-text --></details>
-
+>[!info|center]- Schritt 4 - Monotonie betrachten
+>Zeichne entsprechend deinen vorherigen Feststellungen den Graphen der <font color="#ff0000">Funktion f'</font>. Die <font color="#ff0000">Ableitung f'</font> beschreibt die Steigung der <font color="#6425d0">Funktion f</font>. Der <font color="#ff0000">Graph von f'</font> zeigt also, wie steil der <font color="#6425d0">Graph von f</font> an jeder Stelle ist.
+>- Wenn die Steigung des <font color="#6425d0">Graphen von f</font> groß ist, dann sind die Funktionswerte der  <font color="#ff0000">Funktion f'</font> groß - sie liegen also weit von der x-Achse entfernt.
+>- Wenn die Steigung des <font color="#6425d0">Graphen von f</font> klein ist, dann sind die Funktionswerte der  <font color="#ff0000">Funktion f'</font> klein - sie liegen also nah bei der x-Achse entfernt.<br>
+>![Graphisches Ableiten 5.jpeg.webp\|400](/img/user/Homepage/Anh%C3%A4nge/Graphisches%20Ableiten%205.jpeg.webp)
