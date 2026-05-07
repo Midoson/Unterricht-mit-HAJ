@@ -1,3 +1,79 @@
+:root {
+    --bg-main: #f5f1ee;
+    --bg-card: #fffaf7;
+    --text-main: #4b3b44;
+    --accent: #b35c84;
+    --accent-soft: #f3dce5;
+    --border: #d9c7cf;
+}
+
+/* Gesamte Seite */
 body {
-    background: red !important;
+    background: var(--bg-main) !important;
+    color: var(--text-main) !important;
+    font-family: "Avenir", "Nunito", sans-serif;
+}
+
+/* Hauptinhalt */
+.content,
+main,
+article {
+    background: var(--bg-card) !important;
+    border-radius: 18px;
+}
+
+/* Überschriften */
+h1, h2, h3, h4 {
+    color: var(--accent) !important;
+    font-weight: 700;
+}
+
+/* Links */
+a {
+    color: var(--accent) !important;
+}
+
+/* Sidebar */
+.sidebar,
+nav,
+.workspace-leaf {
+    background: #efe7e3 !important;
+    border-right: 1px solid var(--border);
+}
+
+/* Karten */
+.card,
+.internal-embed,
+.callout {
+    background: #fff7fa !important;
+    border: 1px solid #ecd5df !important;
+    border-radius: 16px !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+}
+
+/* Buttons */
+button {
+    background: var(--accent-soft) !important;
+    color: var(--accent) !important;
+    border-radius: 12px;
+    border: none;
+}
+
+/* Hover */
+a:hover,
+button:hover {
+    opacity: 0.8;
+    transition: 0.2s;
+}
+
+/* Tabellen */
+table {
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+/* Codeblöcke */
+pre {
+    background: #f2e9e6 !important;
+    border-radius: 14px;
 }
