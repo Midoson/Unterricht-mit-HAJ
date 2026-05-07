@@ -1,79 +1,249 @@
 :root {
-    --bg-main: #f5f1ee;
-    --bg-card: #fffaf7;
-    --text-main: #4b3b44;
-    --accent: #b35c84;
-    --accent-soft: #f3dce5;
-    --border: #d9c7cf;
+    --bg: #f6f3f1;
+    --card: #ffffff;
+    --sidebar: #efe9e6;
+
+    --text: #43363d;
+    --text-soft: #7b6d74;
+
+    --accent: #a85c7d;
+    --accent-soft: #ead7df;
+
+    --border: #e5d9dd;
+
+    --radius: 22px;
 }
 
-/* Gesamte Seite */
+/* =========================
+   GLOBAL
+========================= */
+
 body {
-    background: var(--bg-main) !important;
-    color: var(--text-main) !important;
-    font-family: "Avenir", "Nunito", sans-serif;
+    background: var(--bg) !important;
+    color: var(--text) !important;
+
+    font-family:
+        "Avenir",
+        "Nunito",
+        "Inter",
+        sans-serif;
+
+    font-size: 18px !important;
+    line-height: 1.8;
+
+    letter-spacing: 0.01em;
 }
 
-/* Hauptinhalt */
-.content,
+/* Mehr Platz */
 main,
-article {
-    background: var(--bg-card) !important;
-    border-radius: 18px;
+.content,
+.markdown-preview-view {
+    max-width: 1200px !important;
+
+    width: 92% !important;
+
+    margin: 40px auto !important;
+
+    padding: 50px !important;
+
+    background: var(--card);
+
+    border-radius: var(--radius);
+
+    box-shadow:
+        0 10px 30px rgba(0,0,0,0.04);
 }
 
-/* Überschriften */
-h1, h2, h3, h4 {
+/* =========================
+   TYPOGRAFIE
+========================= */
+
+h1 {
+    font-size: 3rem !important;
+
+    margin-bottom: 2rem;
+
     color: var(--accent) !important;
-    font-weight: 700;
+
+    font-weight: 800;
+
+    letter-spacing: -0.03em;
 }
 
-/* Links */
+h2 {
+    font-size: 2rem !important;
+
+    margin-top: 3rem;
+
+    color: var(--accent) !important;
+
+    border-bottom: 2px solid var(--accent-soft);
+
+    padding-bottom: 0.5rem;
+}
+
+h3 {
+    font-size: 1.4rem !important;
+
+    color: var(--accent) !important;
+}
+
+p,
+li {
+    font-size: 1.1rem !important;
+}
+
+/* =========================
+   LINKS
+========================= */
+
 a {
     color: var(--accent) !important;
+
+    text-decoration: none;
+
+    transition: 0.2s ease;
 }
 
-/* Sidebar */
+a:hover {
+    opacity: 0.7;
+}
+
+/* =========================
+   SIDEBAR
+========================= */
+
 .sidebar,
 nav,
-.workspace-leaf {
-    background: #efe7e3 !important;
+.site-sidebar {
+    background: var(--sidebar) !important;
+
     border-right: 1px solid var(--border);
+
+    padding: 20px;
 }
 
-/* Karten */
-.card,
-.internal-embed,
+/* =========================
+   CALLOUTS
+========================= */
+
 .callout {
-    background: #fff7fa !important;
-    border: 1px solid #ecd5df !important;
-    border-radius: 16px !important;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    background: #fcf4f7 !important;
+
+    border: 1px solid #f0dbe3 !important;
+
+    border-radius: 18px !important;
+
+    padding: 24px !important;
+
+    margin: 30px 0;
+
+    box-shadow:
+        0 4px 14px rgba(0,0,0,0.03);
 }
 
-/* Buttons */
+/* =========================
+   TABELLEN
+========================= */
+
+table {
+    width: 100%;
+
+    border-collapse: collapse;
+
+    overflow: hidden;
+
+    border-radius: 16px;
+
+    background: white;
+}
+
+th {
+    background: var(--accent-soft);
+
+    color: var(--accent);
+
+    padding: 16px;
+}
+
+td {
+    padding: 14px;
+
+    border-top: 1px solid var(--border);
+}
+
+/* =========================
+   CODE
+========================= */
+
+pre,
+code {
+    background: #f3ece9 !important;
+
+    border-radius: 12px;
+
+    padding: 4px 8px;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
 button {
     background: var(--accent-soft) !important;
-    color: var(--accent) !important;
-    border-radius: 12px;
-    border: none;
-}
 
-/* Hover */
-a:hover,
-button:hover {
-    opacity: 0.8;
+    color: var(--accent) !important;
+
+    border: none !important;
+
+    border-radius: 14px;
+
+    padding: 10px 18px;
+
+    font-size: 1rem;
+
     transition: 0.2s;
 }
 
-/* Tabellen */
-table {
-    border-radius: 12px;
-    overflow: hidden;
+button:hover {
+    transform: translateY(-1px);
+
+    opacity: 0.85;
 }
 
-/* Codeblöcke */
-pre {
-    background: #f2e9e6 !important;
-    border-radius: 14px;
+/* =========================
+   BILDER
+========================= */
+
+img {
+    border-radius: 18px;
+
+    box-shadow:
+        0 10px 20px rgba(0,0,0,0.05);
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 900px) {
+
+    body {
+        font-size: 16px !important;
+    }
+
+    main,
+    .content,
+    .markdown-preview-view {
+
+        width: 98% !important;
+
+        padding: 24px !important;
+
+        margin: 10px auto !important;
+    }
+
+    h1 {
+        font-size: 2.2rem !important;
+    }
 }
