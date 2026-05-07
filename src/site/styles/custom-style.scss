@@ -131,23 +131,11 @@ nav,
 
     background: white !important;
 
-    border-radius: 18px !important;
-
-    border: 1px solid rgba(0,0,0,0.06) !important;
-
-    box-shadow:
-        0 4px 12px rgba(0,0,0,0.03);
-
-    padding: 18px !important;
-
-    margin: 24px 0 !important;
 }
 
 .callout[data-callout="leistung_gr"] {
-
-    background: rgba(148, 203, 103, 0.08) !important;
-
-    border-left: 5px solid rgb(148, 203, 103) !important;
+    --callout-color: 148, 203, 103;
+    --callout-icon: biceps-flexed;
 }
 
 /* =========================
