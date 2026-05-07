@@ -3,6 +3,7 @@
 ---
 
 <br>
+
 ## Lösungen - Proportional. Antiproportional.
 
 >[!leistung_gr]- 💪🏼 Lösungen grüner Arbeitsplan
