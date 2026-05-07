@@ -2,6 +2,8 @@
 {"dg-publish":true,"permalink":"/loesungen-proportional-antiproportional/","dg-note-properties":{}}
 ---
 
+
+
 ## Lösungen - Proportional. Antiproportional.
 
 >[!leistung_gr]- 💪🏼 Lösungen grüner Arbeitsplan
