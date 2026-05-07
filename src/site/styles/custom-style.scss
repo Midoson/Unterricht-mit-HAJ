@@ -138,6 +138,16 @@ nav,
     --callout-icon: biceps-flexed;
 }
 
+.callout[data-callout="leistung_gr"] {
+    --callout-color: 148, 203, 103;
+    --callout-icon: biceps-flexed;
+}
+
+.callout[data-callout="leistung_o"] {
+    --callout-color: 247, 152, 36;
+    --callout-icon: biceps-flexed;
+}
+
 /* =========================
    TABELLEN
 ========================= */
