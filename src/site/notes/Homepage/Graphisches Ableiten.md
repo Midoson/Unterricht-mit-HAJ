@@ -2,6 +2,8 @@
 {"dg-publish":true,"permalink":"/homepage/graphisches-ableiten/","tags":["Homepage"],"dg-note-properties":{"tags":["Homepage"]}}
 ---
 
+<br> 
+
 # Graphisches Ableiten
 
 <details class="wp-block-details"><summary>Kurzfassung</summary><!-- wp:table -->
