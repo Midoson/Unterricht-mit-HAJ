@@ -22,5 +22,5 @@
 
 [[Homepage/Lösungen - Proportional. Antiproportional.\|Lösungen - Proportional. Antiproportional.]] ([Link](https://unterricht-mit-haj.netlify.app/loesungen-proportional-antiproportional/))
 
-[[Homepage/Testbdbh\|Testbdbh]] ([Link](https://unterricht-mit-haj.netlify.app/testbdbh/))
+[[Homepage/Zen-Garden\|Zen-Garden]] ([Link](https://unterricht-mit-haj.netlify.app/zen-garden/))
 
