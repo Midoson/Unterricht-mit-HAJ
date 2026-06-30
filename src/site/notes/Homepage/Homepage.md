@@ -20,5 +20,7 @@
 [[Homepage/Serviceseite für Medienexperten\|Serviceseite für Medienexperten]] ([Link](https://unterricht-mit-haj.netlify.app/homepage/serviceseite-fuer-medienexperten/))
 [[Homepage/Serviceseite für Sprachwissenschaftler\|Serviceseite für Sprachwissenschaftler]] ([Link](https://unterricht-mit-haj.netlify.app/homepage/serviceseite-fuer-sprachwissenschaftler/))
 
-[[Lösungen - Proportional. Antiproportional.\|Lösungen - Proportional. Antiproportional.]] ([Link](https://unterricht-mit-haj.netlify.app/loesungen-proportional-antiproportional/))
+[[Homepage/Lösungen - Proportional. Antiproportional.\|Lösungen - Proportional. Antiproportional.]] ([Link](https://unterricht-mit-haj.netlify.app/loesungen-proportional-antiproportional/))
+
+[[Homepage/Testbdbh\|Testbdbh]] ([Link](https://unterricht-mit-haj.netlify.app/testbdbh/))
 
