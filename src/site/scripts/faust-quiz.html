@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zen Garden</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    html, body { font-family: 'DM Sans', sans-serif; margin: 0; padding: 0; overflow: hidden; cursor: default; }
+    .app-wrap { width: 100%; height: 100vh; display: flex; flex-direction: column; }
+    canvas { display: block; cursor: crosshair; }
+    .toolbar-pill { backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
+    .tool-btn { transition: box-shadow 0.2s, transform 0.15s; }
+    .tool-btn.active { box-shadow: 0 0 0 3px rgba(139,119,86,0.6); transform: scale(1.1); }
+  </style>
+</head>
+<body class="app-wrap" style="background: rgb(212, 197, 169);">
+  <main class="flex-1 relative min-h-0 overflow-hidden">
+    <canvas id="garden"></canvas>
+    <h1 class="absolute top-[8%] left-1/2 -translate-x-1/2 pointer-events-none text-center" style="color: rgb(74, 84, 66); font-weight: 400; font-style: normal; font-size: 64px;">ZEN GARDEN</h1>
+    <p class="absolute top-[20%] left-1/2 -translate-x-1/2 pointer-events-none text-center" style="color: rgb(92, 79, 58); font-weight: 400; font-style: italic; font-size: 18px;">Draw in the sand. Breathe.</p>
+    <nav class="toolbar-pill absolute left-1/2 -translate-x-1/2 flex gap-3 px-5 py-3 rounded-full" style="bottom: 15%; background: rgba(190, 178, 155, 0.7);">
+      <button class="tool-btn active w-11 h-11 rounded-full flex items-center justify-center text-lg font-medium" data-tool="thin" title="Thin rake" style="background: rgba(255,255,255,0.25); color: rgb(92,79,58); font-weight: 600; font-size: 16px;">|||</button>
+      <button class="tool-btn w-11 h-11 rounded-full flex items-center justify-center text-lg font-medium" data-tool="wide" title="Wide rake" style="background: rgba(255,255,255,0.25); color: rgb(92,79,58); font-weight: 600; font-size: 16px;">|||||</button>
+      <button class="tool-btn w-11 h-11 rounded-full flex items-center justify-center" data-tool="stone" title="Place stone" style="background: rgba(255,255,255,0.25); color: rgb(92,79,58);">
+        <svg width="20" height="16" viewBox="0 0 20 16"><ellipse cx="10" cy="8" rx="9" ry="7" fill="#4a4a4a"></ellipse><ellipse cx="8" cy="6" rx="4" ry="2.5" fill="#6a6a6a" opacity="0.4"></ellipse></svg>
+      </button>
+      <button class="tool-btn w-11 h-11 rounded-full flex items-center justify-center text-sm font-medium" data-tool="clear" title="Clear sand" style="background: rgba(255,255,255,0.25); color: rgb(92,79,58); font-weight: 600; font-size: 16px;">✕</button>
+    </nav>
+  </main>
+  <script>
+    (function(){
+      const canvas = document.getElementById('garden');
+      const ctx = canvas.getContext('2d');
+      const SAND = '#d4c5a9';
+      const RAKE_COLOR = 'rgba(176,164,138,0.35)';
+      const MAX_STONES = 10;
+
+      let tool = 'thin';
+      let drawing = false;
+      let lastX, lastY;
+      let stones = [];
+
+      function resize() {
+        const main = canvas.parentElement;
+        canvas.width = main.clientWidth;
+        canvas.height = main.clientHeight;
+        drawSand();
+        redrawStones();
+      }
+
+      function drawSand() {
+        ctx.fillStyle = SAND;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        const id = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        const d = id.data;
+        for (let i = 0; i < d.length; i += 4) {
+          const n = (Math.random() - 0.5) * 18;
+          d[i] += n; d[i+1] += n; d[i+2] += n;
+        }
+        ctx.putImageData(id, 0, 0);
+      }
+
+      function redrawStones() {
+        stones.forEach(s => drawStone(s.x, s.y));
+      }
+
+      function drawStone(x, y) {
+        ctx.save();
+        const grd = ctx.createRadialGradient(x - 4, y - 4, 2, x, y, 18);
+        grd.addColorStop(0, '#6a6a6a');
+        grd.addColorStop(1, '#3a3a3a');
+        ctx.fillStyle = grd;
+        ctx.beginPath();
+        ctx.ellipse(x, y, 18, 13, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      }
+
+      function getTines() { return tool === 'wide' ? 5 : 3; }
+      function getSpacing() { return 6; }
+
+      function pointInEllipse(px, py, ex, ey, rx, ry) {
+        const dx = px - ex;
+        const dy = py - ey;
+        return (dx * dx) / (rx * rx) + (dy * dy) / (ry * ry) <= 1;
+      }
+
+      function isBlockedByStone(x, y) {
+        for (let stone of stones) {
+          if (pointInEllipse(x, y, stone.x, stone.y, 18, 13)) return true;
+        }
+        return false;
+      }
+
+      function rake(x1, y1, x2, y2) {
+        const tines = getTines();
+        const spacing = getSpacing();
+        const dx = x2 - x1, dy = y2 - y1;
+        const len = Math.sqrt(dx*dx + dy*dy);
+        if (len < 1) return;
+        const nx = -dy / len, ny = dx / len;
+        const offset = -(tines - 1) / 2 * spacing;
+
+        ctx.strokeStyle = RAKE_COLOR;
+        ctx.lineWidth = 2;
+        ctx.lineCap = 'round';
+
+        if (isBlockedByStone(x1, y1) || isBlockedByStone(x2, y2)) return;
+
+        for (let i = 0; i < tines; i++) {
+          const o = offset + i * spacing;
+          ctx.beginPath();
+          ctx.moveTo(x1 + nx * o, y1 + ny * o);
+          ctx.lineTo(x2 + nx * o, y2 + ny * o);
+          ctx.stroke();
+        }
+      }
+
+      function getPos(e) {
+        const r = canvas.getBoundingClientRect();
+        const t = e.touches ? e.touches[0] || e.changedTouches[0] : e;
+        return [t.clientX - r.left, t.clientY - r.top];
+      }
+
+      canvas.addEventListener('pointerdown', e => {
+        if (tool === 'stone') {
+          const [x, y] = getPos(e);
+          if (stones.length >= MAX_STONES) stones.shift();
+          stones.push({x, y});
+          drawStone(x, y);
+          return;
+        }
+        if (tool === 'clear') return;
+        drawing = true;
+        [lastX, lastY] = getPos(e);
+        canvas.setPointerCapture(e.pointerId);
+      });
+
+      canvas.addEventListener('pointermove', e => {
+        if (!drawing) return;
+        const [x, y] = getPos(e);
+        rake(lastX, lastY, x, y);
+        lastX = x; lastY = y;
+      });
+
+      canvas.addEventListener('pointerup', () => { drawing = false; });
+      canvas.addEventListener('pointercancel', () => { drawing = false; });
+
+      const buttons = document.querySelectorAll('.tool-btn');
+      buttons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const t = btn.dataset.tool;
+          if (t === 'clear') {
+            stones = [];
+            drawSand();
+            return;
+          }
+          tool = t;
+          buttons.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+        });
+      });
+
+      window.addEventListener('resize', resize);
+      resize();
+    })();
+  </script>
+</body>
+</html>
