@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="de"><head><script>window["__codeletBootstrap__"]=JSON.parse('{"A":"A","B":"20260630-05-8900874"}');</script><script src="/_sdk/e4192b04afde3ce7.telemetry_sdk.js" integrity="sha512-4eZpyKBd3YJnsIPrIpaBqo7QT5UZ6+KSFXkSu1IQiB7jKM8y67ChRhZ5Yh6JfuOJCbPdISiNcS6nLKZzIMG1uQ=="></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Graphen Symmetrie Zuordnung</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet">
+  <style>
+        body { font-family: 'DM Sans', sans-serif; }
+        .drop-zone { min-height: 200px; transition: background 0.2s; }
+        .drop-zone.drag-over { outline: 3px dashed #6366f1; background: rgba(99,102,241,0.05); }
+        .graph-card { cursor: grab; transition: transform 0.2s, opacity 0.2s; }
+        .graph-card:active { cursor: grabbing; }
+        .graph-card.correct { animation: pulse-green 0.5s; }
+        .graph-card.incorrect { animation: shake 0.4s; }
+        @keyframes pulse-green { 0%,100%{ box-shadow:0 0 0 0 rgba(34,197,94,0);} 50%{ box-shadow:0 0 0 8px rgba(34,197,94,0.3);} }
+        @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-8px)} 75%{transform:translateX(8px)} }
+    </style>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js" type="text/javascript"></script>
+  <script src="/_sdk/48bf7c4c70d0d03c.data_sdk.js" type="text/javascript" integrity="sha512-e/yrQJz+prdXXt4yUvxXhl1WBGu3BRkP8X0fipGXI5gqiFClI7wI6K3TQnD7d63vx+BVhwzIvY6r8OrpX7lXJA=="></script>
+  <script src="/_sdk/5d8c692e132d2125.resizing_sdk.js" type="text/javascript" integrity="sha512-/Du3Fqe12kKsCd3BrbaNQEPtMxQi9S5hbJhnTf09AAilpqYsGa4N0rnimSX1Ui4dwNElKlen6VlI+E1n/NEfrA=="></script>
+ </head>
+ <body data-template-id="__page-root" class="min-h-screen p-4 md:p-8" style="background: linear-gradient(135deg, rgb(224, 231, 255), rgb(240, 253, 244));">
+  <header class="max-w-6xl mx-auto mb-6 text-center">
+   <h1 data-template-id="page-title" class="canva-text font-bold mb-2" style="color: rgb(30, 27, 75); font-weight: 700; font-style: normal; font-size: 32px;">Symmetrie von Funktionsgraphen</h1>
+   <p data-template-id="subtitle" class="canva-text" style="color: rgb(75, 85, 99); font-weight: 400; font-style: normal; font-size: 16px;">Ziehe die Graphen in die richtige Kategorie!</p>
+  </header>
+  <main class="max-w-6xl mx-auto"><!-- Categories -->
+   <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+    <div class="rounded-xl p-4">
+     <h2 data-template-id="cat-y-title" class="canva-text font-bold text-center mb-3" style="color: rgb(67, 56, 202); font-weight: 700; font-style: normal; font-size: 15px;">Achsensymmetrisch zur y-Achse</h2>
+     <div id="zone-y" class="drop-zone rounded-lg border-2 border-dashed border-indigo-300 p-3 flex flex-wrap gap-3 justify-center items-start" data-category="y"></div>
+    </div>
+    <div class="rounded-xl p-4">
+     <h2 data-template-id="cat-origin-title" class="canva-text font-bold text-center mb-3" style="color: rgb(5, 150, 105); font-weight: 700; font-style: normal; font-size: 15px;">Punktsymmetrisch zum Ursprung</h2>
+     <div id="zone-origin" class="drop-zone rounded-lg border-2 border-dashed border-emerald-300 p-3 flex flex-wrap gap-3 justify-center items-start" data-category="origin"></div>
+    </div>
+    <div class="rounded-xl p-4">
+     <h2 data-template-id="cat-neither-title" class="canva-text font-bold text-center mb-3" style="color: rgb(217, 119, 6); font-weight: 700; font-style: normal; font-size: 15px;">Weder noch</h2>
+     <div id="zone-neither" class="drop-zone rounded-lg border-2 border-dashed border-amber-300 p-3 flex flex-wrap gap-3 justify-center items-start" data-category="neither"></div>
+    </div>
+   </div><!-- Graph cards -->
+   <div id="card-tray" class="flex flex-wrap gap-4 justify-center p-4 rounded-xl bg-white/60 backdrop-blur">
+    <div class="graph-card w-32 h-32 rounded-lg overflow-hidden shadow-md bg-white border-2 border-transparent" draggable="true" data-answer="y" data-id="1">
+     <div class="w-full h-full flex items-center justify-center">
+      <canvas class="graph-canvas" width="120" height="120"></canvas>
+     </div>
+     <p data-template-id="graph-1-label" class="canva-text text-center text-xs py-1 font-medium" style="color: rgb(55, 65, 81); font-weight: 400; font-style: normal; font-size: 16px;">f(x) = x²</p>
+    </div>
+    <div class="graph-card w-32 h-32 rounded-lg overflow-hidden shadow-md bg-white border-2 border-transparent" draggable="true" data-answer="origin" data-id="2">
+     <div class="w-full h-full flex items-center justify-center">
+      <canvas class="graph-canvas" width="120" height="120"></canvas>
+     </div>
+     <p data-template-id="graph-2-label" class="canva-text text-center text-xs py-1 font-medium" style="color: rgb(55, 65, 81); font-weight: 400; font-style: normal; font-size: 16px;">f(x) = x³</p>
+    </div>
+    <div class="graph-card w-32 h-32 rounded-lg overflow-hidden shadow-md bg-white border-2 border-transparent" draggable="true" data-answer="neither" data-id="3">
+     <div class="w-full h-full flex items-center justify-center">
+      <canvas class="graph-canvas" width="120" height="120"></canvas>
+     </div>
+     <p data-template-id="graph-3-label" class="canva-text text-center text-xs py-1 font-medium" style="color: rgb(55, 65, 81); font-weight: 400; font-style: normal; font-size: 16px;">f(x) = 2ˣ</p>
+    </div>
+    <div class="graph-card w-32 h-32 rounded-lg overflow-hidden shadow-md bg-white border-2 border-transparent" draggable="true" data-answer="y" data-id="4">
+     <div class="w-full h-full flex items-center justify-center">
+      <canvas class="graph-canvas" width="120" height="120"></canvas>
+     </div>
+     <p data-template-id="graph-4-label" class="canva-text text-center text-xs py-1 font-medium" style="color: rgb(55, 65, 81); font-weight: 400; font-style: normal; font-size: 16px;">f(x) = cos(x)</p>
+    </div>
+    <div class="graph-card w-32 h-32 rounded-lg overflow-hidden shadow-md bg-white border-2 border-transparent" draggable="true" data-answer="origin" data-id="5">
+     <div class="w-full h-full flex items-center justify-center">
+      <canvas class="graph-canvas" width="120" height="120"></canvas>
+     </div>
+     <p data-template-id="graph-5-label" class="canva-text text-center text-xs py-1 font-medium" style="color: rgb(55, 65, 81); font-weight: 400; font-style: normal; font-size: 16px;">f(x) = sin(x)</p>
+    </div>
+    <div class="graph-card w-32 h-32 rounded-lg overflow-hidden shadow-md bg-white border-2 border-transparent" draggable="true" data-answer="neither" data-id="6">
+     <div class="w-full h-full flex items-center justify-center">
+      <canvas class="graph-canvas" width="120" height="120"></canvas>
+     </div>
+     <p data-template-id="graph-6-label" class="canva-text text-center text-xs py-1 font-medium" style="color: rgb(55, 65, 81); font-weight: 400; font-style: normal; font-size: 16px;">f(x) = x²+x</p>
+    </div>
+   </div>
+   <div class="text-center mt-6"><button data-template-id="reset-button" class="canva-button px-6 py-2 rounded-lg font-medium" onclick="resetAll()" style="background: rgb(79, 70, 229); color: rgb(255, 255, 255); font-weight: 600; font-style: normal; font-size: 16px;">Zurücksetzen</button>
+    <p id="score-display" class="mt-3 font-bold text-lg hidden"></p>
+   </div>
+  </main>
+  <script src="/_sdk/c94a279e896d0a23.editing_sdk.js" integrity="sha512-uhzUP50YzTVKO+Zk7rEhhvjMMNFy592eHXVEXciJzhLpIQxrlwzWv/DQvyYWQ+AKpYwxxCvjgWkVa5LTga2NWg=="></script>
+  <script>
+        // Function definitions for drawing graphs on canvases
+        const functions = [
+            { id: '1', fn: x => x*x, label: 'f(x) = x²' },
+            { id: '2', fn: x => x*x*x, label: 'f(x) = x³' },
+            { id: '3', fn: x => Math.pow(2, x), label: 'f(x) = 2ˣ' },
+            { id: '4', fn: x => Math.cos(x), label: 'f(x) = cos(x)' },
+            { id: '5', fn: x => Math.sin(x), label: 'f(x) = sin(x)' },
+            { id: '6', fn: x => x*x + x, label: 'f(x) = x²+x' },
+        ];
+
+        function drawGraphs() {
+            const cards = document.querySelectorAll('.graph-card');
+            cards.forEach((card, i) => {
+                const canvas = card.querySelector('.graph-canvas');
+                const ctx = canvas.getContext('2d');
+                const w = 120, h = 120, scale = 20;
+                ctx.clearRect(0, 0, w, h);
+                // axes
+                ctx.strokeStyle = '#cbd5e1';
+                ctx.lineWidth = 1;
+                ctx.beginPath(); ctx.moveTo(w/2,0); ctx.lineTo(w/2,h); ctx.moveTo(0,h/2); ctx.lineTo(w,h/2); ctx.stroke();
+                // function
+                ctx.strokeStyle = '#4f46e5';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                for (let px = 0; px < w; px++) {
+                    const x = (px - w/2) / scale;
+                    const y = functions[i].fn(x);
+                    const py = h/2 - y * scale;
+                    if (px === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+                }
+                ctx.stroke();
+            });
+        }
+
+        let score = 0, total = 6, placed = 0;
+
+        // Drag and drop
+        document.querySelectorAll('.graph-card').forEach(card => {
+            card.addEventListener('dragstart', e => {
+                e.dataTransfer.setData('text/plain', card.dataset.id + '|' + card.dataset.answer);
+                card.style.opacity = '0.5';
+            });
+            card.addEventListener('dragend', e => { card.style.opacity = '1'; });
+        });
+
+        document.querySelectorAll('.drop-zone').forEach(zone => {
+            zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag-over'); });
+            zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
+            zone.addEventListener('drop', e => {
+                e.preventDefault();
+                zone.classList.remove('drag-over');
+                const [id, answer] = e.dataTransfer.getData('text/plain').split('|');
+                const card = document.querySelector(`.graph-card[data-id="${id}"]`);
+                if (!card || card.parentElement === zone) return;
+                if (zone.dataset.category === answer) {
+                    zone.appendChild(card);
+                    card.draggable = false;
+                    card.classList.add('correct');
+                    card.style.borderColor = '#22c55e';
+                    score++; placed++;
+                } else {
+                    card.classList.add('incorrect');
+                    setTimeout(() => card.classList.remove('incorrect'), 400);
+                }
+                if (placed === total) {
+                    document.getElementById('score-display').textContent = `${score}/${total} richtig!`;
+                    document.getElementById('score-display').classList.remove('hidden');
+                }
+            });
+        });
+
+        function resetAll() {
+            const tray = document.getElementById('card-tray');
+            document.querySelectorAll('.graph-card').forEach(card => {
+                card.draggable = true;
+                card.style.borderColor = 'transparent';
+                card.classList.remove('correct','incorrect');
+                tray.appendChild(card);
+            });
+            score = 0; placed = 0;
+            document.getElementById('score-display').classList.add('hidden');
+        }
+
+        drawGraphs();
+    </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a13ca378f5dbd349',t:'MTc4MjgxNjkyNS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+</body></html>
