@@ -22,5 +22,6 @@
 
 [[Homepage/Lösungen - Proportional. Antiproportional.\|Lösungen - Proportional. Antiproportional.]] ([Link](https://unterricht-mit-haj.netlify.app/loesungen-proportional-antiproportional/))
 
-[[Homepage/Zen-Garden\|Zen-Garden]] ([Link](https://unterricht-mit-haj.netlify.app/zen-garden/))
+[[Homepage/Zen-Garden\|Zen-Garden]] ([Link](https://unterricht-mit-haj.netlify.app/homepage/zen-garden/))
+[[Homepage/Symmetrieeigenschaften mit Überprüfung\|Symmetrieeigenschaften mit Überprüfung]] ([Link](https://unterricht-mit-haj.netlify.app/homepage/Symmetrieeigenschaften-von-Graphen-mit-Überprüfung/))
 
