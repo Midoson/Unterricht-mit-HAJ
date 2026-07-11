@@ -25,5 +25,7 @@
 [[Homepage/Zen-Garden\|Zen-Garden]] ([Link](https://unterricht-mit-haj.netlify.app/homepage/zen-garden/))
 Symmetrieeigenschaften mit Überprüfung ([Link](https://unterricht-mit-haj.netlify.app/scripts/Symmetrieeigenschaften-von-Graphen-mit-Ueberpruefung.html))
 
-Requisiten - Michael Berg - Der Vorleser [Link](https://unterricht-mit-haj.netlify.app/scripts/micheal-berg-requisiten)
+Requisiten - Michael Berg - Der Vorleser ([Link](https://unterricht-mit-haj.netlify.app/scripts/micheal-berg-requisiten))
+
+Audio-Beitrag zur Sokratischen Methode ([Link](https://unterricht-mit-haj.netlify.app/scripts/Sokratische_Hebammenkunst_in_Philosophie_und_Therapie.m4a))
 
