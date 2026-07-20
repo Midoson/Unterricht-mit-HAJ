@@ -29,3 +29,7 @@ Requisiten - Michael Berg - Der Vorleser ([Link](https://unterricht-mit-haj.netl
 
 Audio-Beitrag zur Sokratischen Methode ([Link](https://unterricht-mit-haj.netlify.app/scripts/Sokratische_Hebammenkunst_in_Philosophie_und_Therapie.m4a))
 
+Insta-Posting von Kratylos ([Link](https://unterricht-mit-haj.netlify.app/scripts/insta-post-kratylos))
+
+[[Homepage/Wittgenstein in einfacher Sprache\|Wittgenstein in einfacher Sprache]] ([Link](https://unterricht-mit-haj.netlify.app/homepage/wittgenstein-in-einfacher-sprache/))
+
