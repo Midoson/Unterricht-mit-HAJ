@@ -8,17 +8,16 @@
 
 >[!leistung_o]- Sätze der Gruppe 1
 >|           | **Einfache Formulierung**   |
-| :-------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **1.**    | Die Welt besteht aus allem, was tatsächlich passiert oder der Fall ist.                                                                                                                                                                     |
-| **1.1**   | Die Welt besteht nicht nur aus einzelnen Dingen, sondern vor allem daraus, wie diese Dinge miteinander verbunden sind und was zwischen ihnen geschieht.                                                                                     |
-| **2.1**   | Menschen stellen sich vor, wie die Welt ist, und bilden diese Vorstellungen ab.                                                                                                                                                             |
-| **2.12**  | Ein Bild stellt die Wirklichkeit vereinfacht dar und zeigt, wie etwas aufgebaut oder miteinander verbunden ist.                                                                                                                             |
-| **2.161** | Damit etwas ein Bild von etwas anderem sein kann, muss es eine gemeinsame Eigenschaft oder Struktur mit dem Dargestellten haben.                                                                                                            |
-| **2.18**  | Damit ein Bild die Wirklichkeit darstellen kann, muss die Art, wie die Teile angeordnet sind, zur Wirklichkeit passen. Diese gemeinsame Struktur nennt Wittgenstein „logische Form“.                                                        |
-| **2.21**  | Ein Bild oder ein Satz kann stimmen oder nicht stimmen: Es hängt davon ab, ob es die Wirklichkeit richtig darstellt.                                                                                                                        |
-| **4.01**  | Ein Satz stellt einen möglichen Sachverhalt dar. Er zeigt, wie wir uns eine bestimmte Situation in der Welt vorstellen.                                                                                                                     |
-| **4.014** | Eine Musikaufnahme, Noten und die gehörte Musik sehen ganz unterschiedlich aus, können aber dasselbe Musikstück darstellen, weil sie dieselbe grundlegende Struktur besitzen. Genauso funktioniert die Beziehung zwischen Sprache und Welt. |
-****
+>| :-------- | :-------- |
+>| **1.**    | Die Welt besteht aus allem, was tatsächlich passiert oder der Fall ist.  |
+>| **1.1**   | Die Welt besteht nicht nur aus einzelnen Dingen, sondern vor allem daraus, wie diese Dinge miteinander verbunden sind und was zwischen ihnen geschieht.     |
+>| **2.1**   | Menschen stellen sich vor, wie die Welt ist, und bilden diese Vorstellungen ab.   |
+>| **2.12**  | Ein Bild stellt die Wirklichkeit vereinfacht dar und zeigt, wie etwas aufgebaut oder miteinander verbunden ist.   |
+>| **2.161** | Damit etwas ein Bild von etwas anderem sein kann, muss es eine gemeinsame Eigenschaft oder Struktur mit dem Dargestellten haben.   |
+>| **2.18**  | Damit ein Bild die Wirklichkeit darstellen kann, muss die Art, wie die Teile angeordnet sind, zur Wirklichkeit passen. Diese gemeinsame Struktur nennt Wittgenstein „logische Form“.     |
+>| **2.21**  | Ein Bild oder ein Satz kann stimmen oder nicht stimmen: Es hängt davon ab, ob es die Wirklichkeit richtig darstellt. |
+>| **4.01**  | Ein Satz stellt einen möglichen Sachverhalt dar. Er zeigt, wie wir uns eine bestimmte Situation in der Welt vorstellen.  |
+>| **4.014** | Eine Musikaufnahme, Noten und die gehörte Musik sehen ganz unterschiedlich aus, können aber dasselbe Musikstück darstellen, weil sie dieselbe grundlegende Struktur besitzen. Genauso funktioniert die Beziehung zwischen Sprache und Welt. |
 
 >[!leistung_o]- Sätze der Gruppe 2
 >|            | Einfache Formulierung                                                                                                                              |
