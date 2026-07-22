@@ -4,6 +4,7 @@
 
 
 
+
 # Wittgenstein in einfacher Sprache
 
 >[!leistung_o]- Sätze der Gruppe 1
