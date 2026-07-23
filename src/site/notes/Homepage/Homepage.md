@@ -33,3 +33,5 @@ Insta-Posting von Kratylos ([Link](https://unterricht-mit-haj.netlify.app/script
 
 [[Homepage/Wittgenstein in einfacher Sprache\|Wittgenstein in einfacher Sprache]] ([Link](https://unterricht-mit-haj.netlify.app/homepage/wittgenstein-in-einfacher-sprache/))
 
+Spiel - Sag's anders ([Link](https://unterricht-mit-haj.netlify.app/scripts/sags-anders/))
+
