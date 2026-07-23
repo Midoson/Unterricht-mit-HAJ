@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sag's anders!</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet">
+<style>
+  * {
+    box-sizing: border-box;
+  }
+
+  :root {
+    --felt-dark: #1b3b2f;
+    --felt-light: #2f6b4f;
+    --red: #ff4d5e;
+    --red-dark: #c22e3c;
+    --blue: #4da3ff;
+    --blue-dark: #2670c9;
+    --gold: #ffcd3c;
+    --gold-dark: #d99a1b;
+    --cream: #fdf6e3;
+    --ink: #2b2320;
+    --purple: #a259ff;
+  }
+
+  html, body {
+    height: 100%;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Baloo 2', 'Trebuchet MS', sans-serif;
+    background:
+      radial-gradient(ellipse at top, var(--felt-light) 0%, var(--felt-dark) 70%);
+    color: var(--cream);
+    overflow: hidden;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(circle, rgba(255,255,255,0.05) 1.5px, transparent 1.5px);
+    background-size: 26px 26px;
+    pointer-events: none;
+  }
+
+  .screen {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+    width: 100%;
+    max-width: 500px;
+    position: relative;
+    z-index: 1;
+  }
+  .screen.active {
+    display: flex;
+  }
+
+  h1 {
+    font-family: 'Pixelify Sans', 'Trebuchet MS', sans-serif;
+    font-size: 3em;
+    font-weight: 700;
+    margin: 0 0 55px 0;
+    color: var(--gold);
+    -webkit-text-stroke: 3px var(--ink);
+    text-shadow:
+      0 6px 0 var(--gold-dark),
+      0 10px 0 var(--ink),
+      0 14px 18px rgba(0,0,0,0.5);
+    letter-spacing: 2px;
+    line-height: 1.2em;
+    transform: rotate(-3deg);
+  }
+
+  .menu-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    width: 260px;
+  }
+
+  button {
+    font-family: 'Baloo 2', 'Trebuchet MS', sans-serif;
+    font-weight: 700;
+    font-size: 1.3em;
+    padding: 16px 20px;
+    border: 3px solid var(--ink);
+    border-radius: 16px;
+    background: linear-gradient(180deg, var(--blue) 0%, var(--blue-dark) 100%);
+    color: var(--cream);
+    cursor: pointer;
+    box-shadow:
+      inset 0 3px 0 rgba(255,255,255,0.35),
+      0 6px 0 var(--ink),
+      0 10px 14px rgba(0,0,0,0.4);
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+    letter-spacing: 1px;
+  }
+  button:hover {
+    transform: translateY(-2px) scale(1.03);
+  }
+  button:active {
+    transform: translateY(4px) scale(0.98);
+    box-shadow:
+      inset 0 3px 0 rgba(255,255,255,0.25),
+      0 2px 0 var(--ink),
+      0 4px 8px rgba(0,0,0,0.4);
+  }
+
+  #btn-erklaerung {
+    background: linear-gradient(180deg, var(--red) 0%, var(--red-dark) 100%);
+  }
+
+  /* Karten-Bereich */
+  .card-container {
+    perspective: 1400px;
+    width: 240px;
+    height: 340px;
+    margin-bottom: 60px;
+  }
+  .card {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    transform-style: preserve-3d;
+    transition: transform 0.45s cubic-bezier(.34,1.56,.64,1);
+  }
+  .card:hover {
+    transform: translateY(-4px) scale(1.02);
+  }
+  .card.flipped {
+    transform: rotateY(180deg);
+  }
+  .card.flipped:hover {
+    transform: rotateY(180deg) translateY(-4px) scale(1.02);
+  }
+  .card-face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border: 4px solid var(--ink);
+    border-radius: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow:
+      inset 0 4px 0 rgba(255,255,255,0.25),
+      0 10px 0 rgba(0,0,0,0.35),
+      0 18px 24px rgba(0,0,0,0.45);
+    padding: 22px;
+    text-align: center;
+    overflow: hidden;
+  }
+  .card-back {
+    background:
+      radial-gradient(circle at 30% 20%, rgba(255,255,255,0.15), transparent 45%),
+      linear-gradient(135deg, var(--purple) 0%, var(--blue-dark) 100%);
+    background-color: var(--purple);
+  }
+  .card-back::before {
+    content: "";
+    position: absolute;
+    inset: 14px;
+    border: 3px dashed rgba(255,255,255,0.35);
+    border-radius: 14px;
+  }
+  .card-back-inner {
+    font-size: 3em;
+    font-weight: 700;
+    color: var(--gold);
+    -webkit-text-stroke: 2px var(--ink);
+    text-shadow: 0 5px 0 var(--ink);
+    transform: rotate(-8deg);
+  }
+  .card-front {
+    background:
+      radial-gradient(circle at 25% 15%, rgba(255,255,255,0.6), transparent 40%),
+      var(--cream);
+    color: var(--ink);
+    transform: rotateY(180deg);
+    font-size: 1.5em;
+    font-weight: 700;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+    -webkit-hyphens: auto;
+    line-height: 1.5em;
+  }
+  .card-front::before {
+    content: "★";
+    position: absolute;
+    top: 12px;
+    left: 16px;
+    font-size: 0.5em;
+    color: var(--gold-dark);
+  }
+  .card-front::after {
+    content: "★";
+    position: absolute;
+    bottom: 12px;
+    right: 16px;
+    font-size: 0.5em;
+    color: var(--gold-dark);
+    transform: rotate(180deg);
+  }
+
+  .explanation-text {
+    font-size: 1.3em;
+    font-weight: 700;
+    max-width: 380px;
+    line-height: 1.7em;
+    margin-bottom: 60px;
+    color: var(--ink);
+    background: var(--cream);
+    border: 4px solid var(--ink);
+    border-radius: 20px;
+    padding: 28px;
+    box-shadow:
+      inset 0 3px 0 rgba(255,255,255,0.5),
+      0 8px 0 var(--gold-dark),
+      0 14px 18px rgba(0,0,0,0.4);
+  }
+
+  .start-button {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    margin: 0;
+    background: linear-gradient(180deg, var(--gold) 0%, var(--gold-dark) 100%);
+    color: var(--ink);
+    font-size: 1em;
+    padding: 12px 18px;
+  }
+</style>
+</head>
+<body>
+
+  <!-- Startbildschirm -->
+  <div id="start-screen" class="screen active">
+    <h1>★ Sag's<br>anders! ★</h1>
+    <div class="menu-buttons">
+      <button id="btn-los">Los geht's</button>
+      <button id="btn-erklaerung">Erklärung</button>
+    </div>
+  </div>
+
+  <!-- Kartenbildschirm -->
+  <div id="card-screen" class="screen">
+    <div class="card-container">
+      <div class="card" id="card">
+        <div class="card-face card-back">
+          <div class="card-back-inner">?</div>
+        </div>
+        <div class="card-face card-front" id="card-front-text"></div>
+      </div>
+    </div>
+    <button class="start-button" id="btn-start-1">Zurück</button>
+  </div>
+
+  <!-- Erklärungsbildschirm -->
+  <div id="explanation-screen" class="screen">
+    <p class="explanation-text">
+      Versuche, deinem Gegenüber den Begriff zu erklären, ohne das Wort selbst oder Teile des Wortes zu verwenden.
+    </p>
+    <button class="start-button" id="btn-start-2">Zurück</button>
+  </div>
+
+<script>
+  // ---- Wortliste ----
+  // Hier können beliebig viele Wörter ergänzt werden
+  const wordList = [
+    "Respekt", "Fernweh", "Arroganz", "Nostalgie", "Sehnsucht", "Geborgenheit",
+    "Melancholie", "Erleichterung", "Dankbarkeit", "Stolz", "Scham", "Schuldgefühl",
+    "Eifersucht", "Zufriedenheit", "Frustration", "Enttäuschung", "Überforderung",
+    "Bewunderung", "Ehrfurcht", "Misstrauen", "Schadenfreude", "Glück", "Liebe",
+    "Stress", "Ruhe", "Frieden", "Chaos", "Identität", "Heimat", "Würde", "Pflicht",
+    "Gut", "Böse", "Falsch", "Richtig", "Nachhaltigkeit", "Demokratie", "Vorurteil",
+    "Diskriminierung", "Algorithmus", "Theorie", "Wahrscheinlichkeit", "Globalisierung",
+    "Privatsphäre", "Inflation", "Déjà-vu", "Karma", "Moral", "Vertrauen", "Fairness",
+    "Schönheit", "Gleichheit", "Freundschaft", "Überraschung"
+  ];
+
+  let wordPool = [];
+  let currentWord = "";
+
+  function resetPool() {
+    wordPool = [...wordList];
+    shuffle(wordPool);
+  }
+
+  function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+  }
+
+  function getNextWord() {
+    if (wordPool.length === 0) {
+      resetPool();
+    }
+    return wordPool.pop();
+  }
+
+  // ---- Bildschirm-Steuerung ----
+  const screens = {
+    start: document.getElementById('start-screen'),
+    card: document.getElementById('card-screen'),
+    explanation: document.getElementById('explanation-screen')
+  };
+
+  function showScreen(name) {
+    Object.values(screens).forEach(s => s.classList.remove('active'));
+    screens[name].classList.add('active');
+  }
+
+  // ---- Karten-Logik ----
+  const card = document.getElementById('card');
+  const cardFrontText = document.getElementById('card-front-text');
+
+  function prepareNewCard() {
+    // Karte zurück auf Rückseite setzen (ohne Übergangsanimation direkt sichtbar)
+    card.classList.remove('flipped');
+    currentWord = getNextWord();
+    cardFrontText.textContent = currentWord;
+  }
+
+  card.addEventListener('click', () => {
+    if (card.classList.contains('flipped')) {
+      // Karte zeigt Wort -> zurückdrehen und neues Wort vorbereiten
+      card.classList.remove('flipped');
+      // Warten bis die Rückdreh-Animation fertig ist, dann neues Wort setzen
+      setTimeout(() => {
+        currentWord = getNextWord();
+        cardFrontText.textContent = currentWord;
+      }, 600);
+    } else {
+      // Karte zeigt Rückseite -> umdrehen und Wort zeigen
+      card.classList.add('flipped');
+    }
+  });
+
+  // ---- Button-Events ----
+  document.getElementById('btn-los').addEventListener('click', () => {
+    resetPool();
+    currentWord = getNextWord();
+    cardFrontText.textContent = currentWord;
+    card.classList.remove('flipped');
+    showScreen('card');
+  });
+
+  document.getElementById('btn-erklaerung').addEventListener('click', () => {
+    showScreen('explanation');
+  });
+
+  document.getElementById('btn-start-1').addEventListener('click', () => {
+    showScreen('start');
+  });
+
+  document.getElementById('btn-start-2').addEventListener('click', () => {
+    showScreen('start');
+  });
+</script>
+
+</body>
+</html>
