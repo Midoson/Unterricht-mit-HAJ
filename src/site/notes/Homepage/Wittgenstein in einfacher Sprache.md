@@ -7,7 +7,7 @@
 
 # Wittgenstein in einfacher Sprache
 
->[!leistung_o]- Sätze der Gruppe 1
+>[!leistung_o]- Sätze der Gruppe Regenbogen
 >|           | **Einfache Formulierung**   |
 >| :-------- | :-------- |
 >| **1.**    | Die Welt besteht aus allem, was tatsächlich passiert oder der Fall ist.  |
@@ -20,7 +20,7 @@
 >| **4.01**  | Ein Satz stellt eine mögliche Situation (einen möglichen Sachverhalt) in der Welt dar – er ist ein Bild davon, wie wir uns diese Situation vorstellen.  |
 >| **4.014** | Eine Musikaufnahme, Noten und die gehörte Musik sehen ganz unterschiedlich aus, können aber dasselbe Musikstück darstellen, weil sie dieselbe grundlegende Struktur besitzen. Genauso funktioniert die Beziehung zwischen Sprache und Welt. |
 
->[!leistung_o]- Sätze der Gruppe 2
+>[!leistung_o]- Sätze der Gruppe Sonne
 >|            | **Einfache Formulierung**    |
 >| :--------- | :--------------------------- |
 >| **4.001**  | Sprache besteht aus allen Sätzen, die wir bilden können.                                                                                           |
@@ -32,7 +32,7 @@
 >| **4.112**  | Die Aufgabe der Philosophie ist es nicht, neue Erkenntnisse über die Welt zu liefern, sondern unsere Gedanken und unsere Sprache klarer zu machen. |
 >| **4.116**  | Alles, was überhaupt gedacht werden kann, kann auch klar gedacht werden. Und alles, was sich sagen lässt, lässt sich klar sagen.  |
 
->[!leistung_o]- Sätze der Gruppe 3
+>[!leistung_o]- Sätze der Gruppe Stern
 >|            | **Einfache Formulierung**                                                                                                          |
 >| :--------- | :----------------------------------------------------------------------------------------------------------------------------- |
 >| **1.**     | Die Welt besteht aus allem, was tatsächlich passiert oder der Fall ist.     |
@@ -45,7 +45,7 @@
 >| **6.421**  | Die Ethik liegt außerhalb dessen, was in der Welt der Fall ist oder nicht der Fall ist – sie liegt jenseits (transzendental) der Grenze dessen, was sich mit Sätzen beschreiben lässt. |
 >| **6.522**  | Es gibt Unaussprechliches. Man kann es nicht sagen, aber es zeigt sich – Wittgenstein nennt dies das „Mystische". |
 
->[!leistung_o]- Sätze der Gruppe 4
+>[!leistung_o]- Sätze der Gruppe Welt
 >|           | **Einfache Formulierung**                                                                                                                                 |
 >| :-------- | :---------------------------------------------------------------------------------------------------------------------------------------------------- |
 >| **1.**    | Die Welt besteht aus allem, was tatsächlich passiert oder der Fall ist.                                                                               |
