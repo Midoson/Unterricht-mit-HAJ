@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>Zahlenstrahl-Werkstatt</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root {
+    --bg: #f7f5f0;
+    --card-bg: #ffffff;
+    --fg: #1f2430;
+    --muted: #6b7280;
+    --border: #dcd7cc;
+    --accent: #b5472b;
+    --accent2: #2f6f5e;
+    --tab-inactive: #eee9df;
+    --shadow: rgba(31,36,48,0.08);
+    --ok: #2f6f5e;
+    --bad: #b5472b;
+    --key-bg: #eee9df;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #1b1d22; --card-bg: #24262c; --fg: #eef0f3; --muted: #a4a9b3;
+      --border: #383b43; --accent: #e0784f; --accent2: #5fbf9f;
+      --tab-inactive: #2e3138; --shadow: rgba(0,0,0,0.35); --key-bg: #2e3138;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #1b1d22; --card-bg: #24262c; --fg: #eef0f3; --muted: #a4a9b3;
+    --border: #383b43; --accent: #e0784f; --accent2: #5fbf9f;
+    --tab-inactive: #2e3138; --shadow: rgba(0,0,0,0.35); --key-bg: #2e3138;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg);
+    font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+  body { padding: 20px 16px 40px; }
+  .wrap { max-width: 1080px; margin: 0 auto; }
+
+  h1 { font-size: clamp(20px, 3vw, 30px); margin: 0 0 4px; letter-spacing: -0.01em; }
+  .subtitle { color: var(--muted); margin: 0 0 18px; font-size: 15px; }
+
+  .diff-block-inline {
+    background: var(--bg); border: 1px solid var(--border); border-radius: 12px;
+    padding: 10px 12px; margin-bottom: 16px; display: flex; align-items: center;
+    flex-wrap: wrap; gap: 10px;
+  }
+  .diff-label { font-weight: 800; font-size: 14px; margin-right: 2px; }
+  .row { display: flex; flex-wrap: wrap; gap: 8px; }
+
+  button.chip {
+    border: 1px solid var(--border); background: var(--tab-inactive); color: var(--fg);
+    padding: 8px 15px; border-radius: 999px; font-size: 14.5px; font-weight: 700; cursor: pointer;
+    transition: transform 0.08s ease, background 0.15s ease, color 0.15s ease;
+  }
+  button.chip:hover { transform: translateY(-1px); }
+  button.chip.active { background: var(--accent2); border-color: var(--accent2); color: #fff; }
+
+  .accordion { display: flex; flex-direction: column; gap: 12px; }
+  .acc { background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px;
+    overflow: hidden; box-shadow: 0 4px 14px var(--shadow); }
+  .acc-header {
+    width: 100%; display: flex; align-items: center; gap: 10px; justify-content: space-between;
+    background: transparent; border: none; padding: 16px 18px; cursor: pointer; text-align: left;
+    color: var(--fg); font-size: 17px; font-weight: 800;
+  }
+  .acc-header .left { display:flex; align-items:center; gap:10px; }
+  .acc-badge {
+    font-size: 12.5px; font-weight: 800; padding: 4px 10px; border-radius: 999px;
+    background: var(--accent); color: #fff; white-space: nowrap;
+  }
+  .acc-chevron { transition: transform 0.25s ease; color: var(--muted); font-size: 18px; }
+  .acc.open .acc-chevron { transform: rotate(180deg); }
+  .acc-panel { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
+  .acc.open .acc-panel { max-height: 3000px; }
+  .acc-inner { padding: 0 20px 22px; border-top: 1px solid var(--border); padding-top: 18px; }
+
+  .instruction { font-size: clamp(16px, 2vw, 19px); font-weight: 700; line-height: 1.4; margin: 0 0 14px; }
+  .instruction .num { color: var(--accent); }
+
+  .stage svg { width: 100%; height: auto; display: block; margin-bottom: 6px; }
+
+  .answers { display: flex; flex-wrap: wrap; gap: 14px; margin: 14px 0; }
+  .ans-item { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+  .ans-label { font-size: 12.5px; font-weight: 700; color: var(--muted); }
+  .ans-box {
+    min-width: 74px; height: 48px; border-radius: 10px; border: 2px solid var(--border);
+    background: var(--bg); display: flex; align-items: center; justify-content: center;
+    font-size: 20px; font-weight: 800; cursor: pointer; padding: 0 10px; color: var(--fg);
+  }
+  .ans-box.active { border-color: var(--accent2); box-shadow: 0 0 0 3px rgba(47,111,94,0.18); }
+  .ans-box.correct { border-color: var(--ok); background: rgba(47,111,94,0.12); color: var(--ok); }
+  .ans-box.wrong { border-color: var(--bad); background: rgba(181,71,43,0.12); color: var(--bad); }
+  .ans-box.empty { color: var(--muted); }
+
+  .keypad { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; max-width: 420px; margin: 10px 0 16px; }
+  .keypad button {
+    border: none; border-radius: 10px; background: var(--key-bg); color: var(--fg);
+    font-size: 18px; font-weight: 800; padding: 12px 0; cursor: pointer; min-height: 46px;
+  }
+  .keypad button.wide { grid-column: span 2; background: var(--border); }
+  .keypad button:active { transform: translateY(1px); }
+
+  .solutionText { font-size: 16px; font-weight: 700; color: var(--accent2); min-height: 22px; margin-bottom: 6px; }
+
+  .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 4px; }
+  button.action { border: none; padding: 12px 20px; border-radius: 12px; font-size: 15px; font-weight: 800; cursor: pointer; color: #fff; }
+  button.action.primary { background: var(--accent); }
+  button.action.secondary { background: var(--muted); }
+  button.action.check { background: var(--accent2); }
+  button.action:active { transform: translateY(1px); }
+  button.action:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+  footer { color: var(--muted); font-size: 12.5px; text-align: center; margin-top: 18px; }
+
+  #exploreContainer { margin-bottom: 12px; }
+  .explore-range { font-weight: 700; font-size: 14.5px; color: var(--muted); margin: 4px 0 0; }
+  .acc-explore .acc-header { background: rgba(47,111,94,0.06); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>🔢 Zahlenstrahl-Werkstatt</h1>
+  <p class="subtitle">Klickt ein Aufgabenformat auf, um es aufzuklappen. Schwierigkeit direkt im Reiter wählen, Antworten über das Zahlenfeld eingeben (kein Tastatur-Popup) und kontrollieren.</p>
+
+  <div id="exploreContainer"></div>
+
+  <div class="accordion" id="accordion"></div>
+
+  <footer>5-Minuten-Puffer · Natürliche Zahlen · Klasse 5</footer>
+</div>
+
+<script>
+(function(){
+  const WIDTH = 1000;
+  const LEVELS = ['⭐','⭐⭐','⭐⭐⭐','⭐⭐⭐⭐'];
+  const MODES = [
+    {id:'zahl', icon:'🔍', label:'Zahl ablesen'},
+    {id:'nachbar', icon:'↔️', label:'Vorgänger & Nachfolger'},
+    {id:'mehrere', icon:'✏️', label:'Mehrere Punkte beschriften'},
+    {id:'einordnen', icon:'🎯', label:'Einordnen (Schätzen)'},
+    {id:'abstand', icon:'📏', label:'Abstand messen'}
+  ];
+
+  let level = 0;
+  let openMode = 'zahl';
+  const S = {}; // per-mode state
+  const els = {}; // per-mode dom refs
+
+  const ABS_MIN = 0, ABS_MAX = 1000000;
+  let explore = { min: ABS_MIN, max: ABS_MAX, open: false };
+  const exploreEls = {};
+
+  // ---------- helpers ----------
+  function rnd(a,b){ return a + Math.floor(Math.random()*(b-a+1)); }
+  function fmt(n){ return n.toLocaleString('de-DE'); }
+  function scaleFn(min,max,x0,x1){ return v => x0 + (v-min)/(max-min)*(x1-x0); }
+  function svgLine(x0,y0,x1,y1,w,color,cap){ return `<line x1="${x0}" y1="${y0}" x2="${x1}" y2="${y1}" stroke="${color}" stroke-width="${w}" stroke-linecap="${cap||'round'}"/>`; }
+  function svgText(x,y,text,size,weight,color,anchor){ return `<text x="${x}" y="${y}" font-size="${size}" font-weight="${weight||700}" fill="${color||'var(--fg)'}" text-anchor="${anchor||'middle'}" font-family="inherit">${text}</text>`; }
+  function svgTick(x,y,h,color,w){ return svgLine(x,y-h/2,x,y+h/2,w||3,color||'var(--fg)','round'); }
+  function svgArrowDown(x,tipY,size,color,label,revealed){
+    const w=size, h=size*1.25;
+    let s = `<polygon points="${x-w/2},${tipY-h} ${x+w/2},${tipY-h} ${x},${tipY}" fill="${color}"/>`;
+    s += svgText(x, tipY-h-14, revealed ? label : '?', revealed ? 24 : 26, 800, color);
+    return s;
+  }
+  function svgFlag(x,y,text,color){
+    const padW = Math.max(34, text.toString().length*13);
+    let s = svgLine(x,y,x,y-22,3,color);
+    s += `<rect x="${x-padW/2}" y="${y-52}" width="${padW}" height="32" rx="8" fill="${color}"/>`;
+    s += svgText(x, y-30, text, 20, 800, '#fff');
+    return s;
+  }
+  function axisEnds(y,x0,x1,color){
+    return `<polygon points="${x0-14},${y} ${x0},${y-9} ${x0},${y+9}" fill="${color}"/>` +
+           `<polygon points="${x1+14},${y} ${x1},${y-9} ${x1},${y+9}" fill="${color}"/>`;
+  }
+  function niceStep(rough){
+    if (rough <= 0) return 1;
+    const exp = Math.floor(Math.log10(rough));
+    const base = Math.pow(10, exp);
+    const norm = rough/base;
+    let niceNorm;
+    if (norm < 1.5) niceNorm = 1; else if (norm < 3.5) niceNorm = 2; else if (norm < 7.5) niceNorm = 5; else niceNorm = 10;
+    return niceNorm*base;
+  }
+
+  // ---------- generators ----------
+  const GEN = {
+    zahl(lvl){
+      const presets = [
+        {outerMin:0, outerMax:100, outerMajor:10, innerSteps:[1], labelEveries:[5], segmentsOptions:[2,3]},
+        {outerMin:0, outerMax:1000, outerMajor:100, innerSteps:[2,5,10], labelEveries:[4,5,6], segmentsOptions:[2,3,4]},
+        {outerMin:0, outerMax:1000, outerMajor:100, innerSteps:[1,2,5], labelEveries:[4,5,10], segmentsOptions:[2,4], cross:100},
+        {outerMin:0, outerMax:10000, outerMajor:1000, innerSteps:[2,5,10,20], labelEveries:[4,5,10], segmentsOptions:[2,4], cross:1000}
+      ];
+      const p = presets[lvl];
+      const innerStep = p.innerSteps[rnd(0, p.innerSteps.length-1)];
+      const labelEvery = p.labelEveries[rnd(0, p.labelEveries.length-1)];
+      const innerLabelStep = innerStep * labelEvery;
+      const segments = p.segmentsOptions[rnd(0, p.segmentsOptions.length-1)];
+      const zoomSpan = innerLabelStep * segments;
+      let zoomMin;
+      if (p.cross) {
+        const maxIdx = Math.floor(p.outerMax/p.cross)-1;
+        zoomMin = rnd(1,maxIdx)*p.cross - zoomSpan/2;
+      } else {
+        const maxStart = p.outerMax - zoomSpan;
+        const nSteps = Math.max(0, Math.floor(maxStart/p.outerMajor));
+        zoomMin = rnd(0,nSteps)*p.outerMajor;
+      }
+      const zoomMax = zoomMin + zoomSpan;
+      const ticks = [];
+      for (let v=zoomMin; v<=zoomMax+0.0001; v+=innerStep) ticks.push(Math.round(v));
+      const isLabeled = v => (v-zoomMin) % innerLabelStep === 0;
+      let candidates = ticks.filter(v => !isLabeled(v));
+      if (candidates.length===0) candidates = ticks;
+      const target = candidates[rnd(0,candidates.length-1)];
+      return {outerMin:p.outerMin, outerMax:p.outerMax, outerMajor:p.outerMajor, zoomMin, zoomMax, innerStep, innerLabelStep, target};
+    },
+    nachbar(lvl){
+      let center;
+      if (lvl===0) center = rnd(2,17);
+      else if (lvl===1) center = rnd(1,9)*10;
+      else if (lvl===2) center = rnd(1,9)*100;
+      else { const opts=[1000,2000,5000,9000,10000,20000,50000,90000]; center = opts[rnd(0,opts.length-1)]; }
+      return {center};
+    },
+    mehrere(lvl){
+      if (lvl === 0) {
+        const step = 1;
+        const count = rnd(5, 7);
+        const start = rnd(0, 15);
+        const values = []; for (let i=0;i<count;i++) values.push(start+i*step);
+        return {values, step};
+      }
+      if (lvl === 1) {
+        const pool = [20, 50, 100];
+        const step = pool[rnd(0, pool.length-1)];
+        const count = rnd(5, 7);
+        const start = rnd(0, 15) * step; // Vielfaches von step (20/50/100) -> endet immer auf 0
+        const values = []; for (let i=0;i<count;i++) values.push(start+i*step);
+        return {values, step};
+      }
+      const ranges = { 2: [100, 500], 3: [1000, 5000] };
+      const [lo, hi] = ranges[lvl];
+      const step = rnd(lo, hi); // jedes Mal ein anderer, frei gewählter Abstand
+      const count = rnd(5, 6);
+      let start = rnd(0, step*12);
+      if (start % step === 0 && Math.random() < 0.5) start += rnd(1, step-1); // nur manchmal unrund
+      const values = []; for (let i=0;i<count;i++) values.push(start+i*step);
+      return {values, step};
+    },
+    einordnen(lvl){
+      const presets = [
+        {min:0,max:100, majorStep:10}, {min:0,max:1000, majorStep:100},
+        {min:0,max:10000, majorStep:1000}, {min:0,max:100000, majorStep:10000}
+      ];
+      const p = presets[lvl];
+      const target = rnd(p.min+1, p.max-1);
+      return {min:p.min, max:p.max, majorStep:p.majorStep, target};
+    },
+    abstand(lvl){
+      const presets = [ {min:0,max:20}, {min:0,max:100}, {min:0,max:1000}, {min:0,max:10000} ];
+      const p = presets[lvl];
+      let a = rnd(p.min,p.max), b = rnd(p.min,p.max);
+      while (Math.abs(a-b) < (p.max-p.min)*0.15) { a = rnd(p.min,p.max); b = rnd(p.min,p.max); }
+      return {min:p.min, max:p.max, A:Math.min(a,b), B:Math.max(a,b)};
+    }
+  };
+
+  // ---------- blanks (checkable answers) ----------
+  const BLANKS = {
+    zahl: t => [{id:'v', label:'Gesuchte Zahl', correct: t.target}],
+    nachbar: t => [{id:'vor', label:'Vorgänger', correct: t.center-1}, {id:'nach', label:'Nachfolger', correct: t.center+1}],
+    mehrere: t => { const letters='ABCDEFG'; const arr=[]; for(let i=1;i<t.values.length-1;i++) arr.push({id:'p'+i, label:letters[i-1], correct:t.values[i]}); return arr; },
+    einordnen: t => [],
+    abstand: t => [{id:'diff', label:'Abstand', correct: t.B-t.A}]
+  };
+
+  // ---------- instructions ----------
+  function instructionFor(modeId, t) {
+    switch(modeId) {
+      case 'zahl': return `An welcher Stelle steht der Pfeil im vergrößerten Ausschnitt? Zählt vom nächsten beschrifteten Strich aus und tragt die Zahl ein.`;
+      case 'nachbar': return `Bestimmt Vorgänger und Nachfolger der Zahl <span class="num">${fmt(t.center)}</span>.`;
+      case 'mehrere': return `Beschriftet die fehlenden Punkte auf dem Zahlenstrahl.`;
+      case 'einordnen': return `Tippt auf die Stelle im Zahlenstrahl, an der ihr die Zahl <span class="num">${fmt(t.target)}</span> vermutet.`;
+      case 'abstand': return `Bestimmt den Abstand zwischen den Punkten A und B.`;
+    }
+  }
+
+  // ---------- svg renderers ----------
+  const RENDER = {
+    zahl(t, revealed){
+      const H=300, M=60, outerY=60, zoomTop=46, zoomBottom=76, innerBoxTop=150, innerBoxBottom=260, innerY=225, iL=40, iR=WIDTH-40;
+      const sOuter = scaleFn(t.outerMin,t.outerMax,M,WIDTH-M);
+      const sInner = scaleFn(t.zoomMin,t.zoomMax,iL+40,iR-40);
+      let s = '';
+      s += svgLine(M,outerY,WIDTH-M,outerY,4,'var(--fg)') + axisEnds(outerY,M,WIDTH-M,'var(--fg)');
+      for (let v=t.outerMin; v<=t.outerMax; v+=t.outerMajor) { s += svgTick(sOuter(v),outerY,16,'var(--fg)'); s += svgText(sOuter(v),outerY+34,fmt(v),16,700,'var(--muted)'); }
+      const zx0=sOuter(t.zoomMin), zx1=sOuter(t.zoomMax);
+      s += `<polygon points="${zx0},${zoomBottom} ${zx1},${zoomBottom} ${iR-40},${innerBoxTop} ${iL+40},${innerBoxTop}" fill="var(--accent)" opacity="0.08"/>`;
+      s += svgLine(zx0,zoomBottom,iL+40,innerBoxTop,2,'var(--accent)') + svgLine(zx1,zoomBottom,iR-40,innerBoxTop,2,'var(--accent)');
+      s += `<rect x="${zx0-3}" y="${zoomTop}" width="${zx1-zx0+6}" height="${zoomBottom-zoomTop}" fill="none" stroke="var(--accent)" stroke-width="3" rx="4"/>`;
+      s += `<rect x="${iL}" y="${innerBoxTop}" width="${iR-iL}" height="${innerBoxBottom-innerBoxTop}" rx="16" fill="var(--bg)" stroke="var(--accent)" stroke-width="2"/>`;
+      s += svgLine(iL+40,innerY,iR-40,innerY,4,'var(--fg)');
+      for (let v=t.zoomMin; v<=t.zoomMax+0.0001; v+=t.innerStep) { v=Math.round(v*100)/100; const lab=(v-t.zoomMin)%t.innerLabelStep===0; s += svgTick(sInner(v),innerY,lab?22:11,lab?'var(--fg)':'var(--muted)',lab?3:2); if(lab) s+=svgText(sInner(v),innerY+36,fmt(v),22,700,'var(--fg)'); }
+      s += svgArrowDown(sInner(t.target),innerY-4,22,'var(--accent)',fmt(t.target),revealed);
+      return {svg:s, h:H};
+    },
+    nachbar(t, revealed){
+      const H=190, y=110, c=t.center;
+      const s0 = scaleFn(0,4,60,WIDTH-60);
+      let s = svgLine(s0(0),y,s0(4),y,4,'var(--fg)') + axisEnds(y,s0(0),s0(4),'var(--fg)');
+      s += svgTick(s0(0)-30,y,10,'var(--muted)',2) + svgTick(s0(4)+30,y,10,'var(--muted)',2);
+      s += revealed ? svgFlag(s0(1),y,fmt(c-1),'var(--accent2)') : svgFlag(s0(1),y,'?','var(--border)');
+      s += svgFlag(s0(2),y,fmt(c),'var(--accent)');
+      s += revealed ? svgFlag(s0(3),y,fmt(c+1),'var(--accent2)') : svgFlag(s0(3),y,'?','var(--border)');
+      s += svgText(s0(1),y+30,'Vorgänger',14,700,'var(--muted)') + svgText(s0(3),y+30,'Nachfolger',14,700,'var(--muted)');
+      return {svg:s, h:H};
+    },
+    mehrere(t, revealed){
+      const H=190, y=110, vals=t.values, n=vals.length;
+      const sc = scaleFn(0,n-1,70,WIDTH-70);
+      let s = svgLine(sc(0),y,sc(n-1),y,4,'var(--fg)') + axisEnds(y,sc(0),sc(n-1),'var(--fg)');
+      const letters='ABCDEFG'; let li=0;
+      for (let i=0;i<n;i++){ const x=sc(i);
+        if (i===0||i===n-1){ s+=svgTick(x,y,22,'var(--fg)'); s+=svgText(x,y+38,fmt(vals[i]),20,700,'var(--fg)'); }
+        else { const letter=letters[li++];
+          if (revealed){ s+=svgTick(x,y,22,'var(--accent2)'); s+=svgText(x,y-32,fmt(vals[i]),19,800,'var(--accent2)'); }
+          else { s+=svgTick(x,y,14,'var(--accent2)'); s+=svgText(x,y-28,letter,20,800,'var(--accent2)'); }
+        }
+      }
+      return {svg:s, h:H};
+    },
+    einordnen(t, revealed, guess){
+      const H=210, y=100;
+      const sc = scaleFn(t.min,t.max,60,WIDTH-60);
+      let s = svgLine(sc(t.min),y,sc(t.max),y,4,'var(--fg)') + axisEnds(y,sc(t.min),sc(t.max),'var(--fg)');
+      for (let v=t.min; v<=t.max; v+=t.majorStep){ s+=svgTick(sc(v),y,16,'var(--fg)'); s+=svgText(sc(v),y+34,fmt(v),15,700,'var(--muted)'); }
+      if (guess !== undefined) {
+        const gx = sc(guess);
+        s += svgLine(gx,y,gx,y+24,3,'var(--accent2)');
+        const padW = Math.max(38, fmt(guess).length*13);
+        s += `<rect x="${gx-padW/2}" y="${y+24}" width="${padW}" height="30" rx="8" fill="var(--accent2)"/>`;
+        s += svgText(gx, y+45, fmt(guess), 17, 800, '#fff');
+      }
+      if (revealed) {
+        s += svgArrowDown(sc(t.target),y-4,22,'var(--accent)',fmt(t.target),true);
+        if (guess !== undefined) {
+          const gx = sc(guess), tx = sc(t.target), by = y+70;
+          s += svgLine(gx,by,tx,by,2,'var(--muted)') + svgLine(gx,by-6,gx,by+6,2,'var(--muted)') + svgLine(tx,by-6,tx,by+6,2,'var(--muted)');
+          s += svgText((gx+tx)/2, by+22, `Abstand: ${fmt(Math.abs(guess-t.target))}`, 15, 700, 'var(--muted)');
+        }
+      }
+      return {svg:s, h:H};
+    },
+    abstand(t, revealed){
+      const H=210, y=110;
+      const sc = scaleFn(t.min,t.max,70,WIDTH-70);
+      let s = svgLine(sc(t.min),y,sc(t.max),y,4,'var(--fg)') + axisEnds(y,sc(t.min),sc(t.max),'var(--fg)');
+      s += svgTick(sc(t.min),y,14,'var(--muted)',2) + svgTick(sc(t.max),y,14,'var(--muted)',2);
+      s += svgText(sc(t.min),y+32,fmt(t.min),14,700,'var(--muted)') + svgText(sc(t.max),y+32,fmt(t.max),14,700,'var(--muted)');
+      s += svgFlag(sc(t.A),y,fmt(t.A)+' (A)','var(--accent)') + svgFlag(sc(t.B),y,fmt(t.B)+' (B)','var(--accent2)');
+      if (revealed){ const xA=sc(t.A), xB=sc(t.B), by=y+58;
+        s += svgLine(xA,by,xB,by,3,'var(--fg)') + svgLine(xA,by-8,xA,by+8,3,'var(--fg)') + svgLine(xB,by-8,xB,by+8,3,'var(--fg)');
+        s += svgText((xA+xB)/2,by+30,`Abstand: ${fmt(t.B-t.A)}`,20,800,'var(--fg)');
+      }
+      return {svg:s, h:H};
+    }
+  };
+
+  // ---------- state management ----------
+  function newTaskFor(modeId){
+    const task = GEN[modeId](level);
+    S[modeId] = { task, revealed:false, answers:{}, status:{}, active:null, guess:undefined };
+    const blanks = BLANKS[modeId](task);
+    if (blanks.length) S[modeId].active = blanks[0].id;
+    renderMode(modeId);
+  }
+
+  function renderMode(modeId){
+    const st = S[modeId];
+    const e = els[modeId];
+    const { svg, h } = RENDER[modeId](st.task, st.revealed, st.guess);
+    e.stage.innerHTML = `<svg viewBox="0 0 ${WIDTH} ${h}">${svg}</svg>`;
+    e.instr.innerHTML = instructionFor(modeId, st.task);
+    const blanks = BLANKS[modeId](st.task);
+    e.answers.innerHTML = blanks.map(b => {
+      const val = st.answers[b.id];
+      const status = st.status[b.id];
+      let cls = 'ans-box';
+      if (b.id === st.active) cls += ' active';
+      if (status === true) cls += ' correct';
+      else if (status === false) cls += ' wrong';
+      if (val === undefined || val === '') cls += ' empty';
+      const display = (val === undefined || val === '') ? '?' : val;
+      return `<div class="ans-item"><span class="ans-label">${b.label}</span><div class="${cls}" data-blank="${b.id}">${display}</div></div>`;
+    }).join('');
+    e.answers.querySelectorAll('.ans-box').forEach(box => {
+      box.onclick = () => { S[modeId].active = box.dataset.blank; renderMode(modeId); };
+    });
+    if (!st.revealed && st.solutionMsg === undefined) e.solution.textContent = '';
+  }
+
+  function digit(modeId, ch){
+    const st = S[modeId];
+    if (!st.active) return;
+    let cur = st.answers[st.active] || '';
+    if (ch === '⌫') cur = cur.slice(0,-1);
+    else if (ch === 'C') cur = '';
+    else cur = (cur + ch).slice(0,7);
+    st.answers[st.active] = cur;
+    st.status[st.active] = undefined;
+    renderMode(modeId);
+  }
+
+  function checkMode(modeId){
+    if (modeId === 'einordnen') return checkEinordnen();
+    const st = S[modeId];
+    const blanks = BLANKS[modeId](st.task);
+    let correctCount = 0;
+    blanks.forEach(b => {
+      const val = Number(st.answers[b.id]);
+      const ok = st.answers[b.id] !== undefined && st.answers[b.id] !== '' && val === b.correct;
+      st.status[b.id] = ok;
+      if (ok) correctCount++;
+    });
+    renderMode(modeId);
+    els[modeId].solution.style.color = correctCount === blanks.length ? 'var(--ok)' : 'var(--bad)';
+    els[modeId].solution.textContent = correctCount === blanks.length
+      ? '🎉 Alles richtig!'
+      : `${correctCount} von ${blanks.length} richtig — versucht es nochmal!`;
+  }
+
+  function checkEinordnen(){
+    const st = S.einordnen;
+    if (st.guess === undefined) {
+      els.einordnen.solution.style.color = 'var(--bad)';
+      els.einordnen.solution.textContent = 'Erst auf den Zahlenstrahl tippen, um eine Stelle zu markieren.';
+      return;
+    }
+    const t = st.task;
+    const tolerance = Math.max(1, Math.round((t.max-t.min)*0.03));
+    const diff = Math.abs(st.guess - t.target);
+    const ok = diff <= tolerance;
+    els.einordnen.solution.style.color = ok ? 'var(--ok)' : 'var(--bad)';
+    els.einordnen.solution.textContent = ok
+      ? `🎉 Sehr nah dran! (eure Markierung: ${fmt(st.guess)})`
+      : `Noch nicht ganz — eure Markierung (${fmt(st.guess)}) ist ${fmt(diff)} von der Zahl entfernt. Versucht es nochmal!`;
+  }
+
+  function revealMode(modeId){
+    if (modeId === 'einordnen') return revealEinordnen();
+    const st = S[modeId];
+    st.revealed = true;
+    const blanks = BLANKS[modeId](st.task);
+    blanks.forEach(b => { st.answers[b.id] = String(b.correct); st.status[b.id] = true; });
+    renderMode(modeId);
+    els[modeId].solution.style.color = 'var(--accent2)';
+    els[modeId].solution.textContent = '👁️ Lösung eingetragen.';
+  }
+
+  function revealEinordnen(){
+    const st = S.einordnen;
+    st.revealed = true;
+    renderMode('einordnen');
+    els.einordnen.solution.style.color = 'var(--accent2)';
+    els.einordnen.solution.textContent = st.guess !== undefined
+      ? `👁️ Richtige Stelle: ${fmt(st.task.target)} · eure Markierung: ${fmt(st.guess)} (Abstand: ${fmt(Math.abs(st.guess-st.task.target))})`
+      : `👁️ Richtige Stelle: ${fmt(st.task.target)}`;
+  }
+
+  // ---------- build DOM ----------
+  function buildKeypad(modeId){
+    const keys = ['1','2','3','4','5','6','7','8','9','⌫','0','C'];
+    return keys.map(k => `<button data-k="${k}" class="${k==='⌫'||k==='C'?'wide':''}">${k}</button>`).join('');
+  }
+
+  // ---------- free explorer (no task) ----------
+  function renderExplore(){
+    const H = 170, y = 100;
+    const min = explore.min, max = explore.max;
+    const sc = scaleFn(min, max, 60, WIDTH-60);
+    const majorStep = niceStep((max-min)/8);
+    let s = svgLine(sc(min),y,sc(max),y,4,'var(--fg)') + axisEnds(y,sc(min),sc(max),'var(--fg)');
+    const first = Math.ceil(min/majorStep)*majorStep;
+    for (let v=first; v<=max; v+=majorStep) { s += svgTick(sc(v),y,18,'var(--fg)'); s += svgText(sc(v),y+34,fmt(Math.round(v)),16,700,'var(--muted)'); }
+    exploreEls.stage.innerHTML = `<svg viewBox="0 0 ${WIDTH} ${H}">${s}</svg>`;
+    exploreEls.range.textContent = `Aktueller Ausschnitt: ${fmt(min)} – ${fmt(max)}`;
+    exploreEls.outBtn.disabled = (min===ABS_MIN && max===ABS_MAX);
+    exploreEls.inBtn.disabled = (max-min) <= 10;
+    exploreEls.inMaxBtn.disabled = (min===ABS_MIN && (max-min)<=10);
+    exploreEls.leftBtn.disabled = (min<=ABS_MIN);
+    exploreEls.rightBtn.disabled = (max>=ABS_MAX);
+  }
+
+  function exploreZoomTo(center, factor){
+    let width = (explore.max-explore.min)/factor;
+    width = Math.max(10, Math.min(ABS_MAX-ABS_MIN, width));
+    let newMin = center - width/2, newMax = center + width/2;
+    if (newMin < ABS_MIN) { newMax += (ABS_MIN-newMin); newMin = ABS_MIN; }
+    if (newMax > ABS_MAX) { newMin -= (newMax-ABS_MAX); newMax = ABS_MAX; }
+    newMin = Math.max(ABS_MIN, Math.round(newMin));
+    newMax = Math.min(ABS_MAX, Math.round(newMax));
+    explore.min = newMin; explore.max = newMax;
+    renderExplore();
+  }
+
+  function exploreSetWidth(center, width){
+    width = Math.max(10, Math.min(ABS_MAX-ABS_MIN, width));
+    let newMin = center - width/2, newMax = center + width/2;
+    if (newMin < ABS_MIN) { newMax += (ABS_MIN-newMin); newMin = ABS_MIN; }
+    if (newMax > ABS_MAX) { newMin -= (newMax-ABS_MAX); newMax = ABS_MAX; }
+    newMin = Math.max(ABS_MIN, Math.round(newMin));
+    newMax = Math.min(ABS_MAX, Math.round(newMax));
+    explore.min = newMin; explore.max = newMax;
+    renderExplore();
+  }
+
+  function explorePan(direction){
+    const width = explore.max - explore.min;
+    const shift = width*0.5*direction;
+    let newMin = explore.min+shift, newMax = explore.max+shift;
+    if (newMin < ABS_MIN) { newMax += (ABS_MIN-newMin); newMin = ABS_MIN; }
+    if (newMax > ABS_MAX) { newMin -= (newMax-ABS_MAX); newMax = ABS_MAX; }
+    newMin = Math.max(ABS_MIN, Math.round(newMin));
+    newMax = Math.min(ABS_MAX, Math.round(newMax));
+    explore.min = newMin; explore.max = newMax;
+    renderExplore();
+  }
+
+  function buildExplore(){
+    const wrap = document.getElementById('exploreContainer');
+    const item = document.createElement('div');
+    item.className = 'acc acc-explore';
+    item.innerHTML = `
+      <button class="acc-header" data-explore-header>
+        <span class="left">🧭 Zahlenstrahl frei erkunden</span>
+        <span class="left"><span class="acc-chevron">▾</span></span>
+      </button>
+      <div class="acc-panel">
+        <div class="acc-inner">
+          <p class="instruction">Tippt auf eine Stelle, um dorthin reinzuzoomen. Kein Auftrag, einfach zum Zeigen und Erklären.</p>
+          <div class="stage" data-explore-stage></div>
+          <p class="explore-range" data-explore-range></p>
+          <div class="actions">
+            <button class="action secondary" data-explore-left>◀ Nach links</button>
+            <button class="action primary" data-explore-in>🔍+ Reinzoomen</button>
+            <button class="action primary" data-explore-inmax>🔎 Kleinster Ausschnitt (bei 0)</button>
+            <button class="action secondary" data-explore-out>🔍− Rauszoomen</button>
+            <button class="action secondary" data-explore-right>Nach rechts ▶</button>
+            <button class="action secondary" data-explore-reset>↺ Ganzer Bereich</button>
+          </div>
+        </div>
+      </div>`;
+    wrap.appendChild(item);
+
+    exploreEls.item = item;
+    exploreEls.header = item.querySelector('[data-explore-header]');
+    exploreEls.stage = item.querySelector('[data-explore-stage]');
+    exploreEls.range = item.querySelector('[data-explore-range]');
+    exploreEls.outBtn = item.querySelector('[data-explore-out]');
+    exploreEls.inBtn = item.querySelector('[data-explore-in]');
+    exploreEls.inMaxBtn = item.querySelector('[data-explore-inmax]');
+    exploreEls.leftBtn = item.querySelector('[data-explore-left]');
+    exploreEls.rightBtn = item.querySelector('[data-explore-right]');
+
+    exploreEls.header.onclick = () => {
+      explore.open = !explore.open;
+      item.classList.toggle('open', explore.open);
+    };
+    exploreEls.stage.style.cursor = 'zoom-in';
+    exploreEls.stage.addEventListener('click', (ev) => {
+      const svg = exploreEls.stage.querySelector('svg');
+      if (!svg) return;
+      const rect = svg.getBoundingClientRect();
+      const vb = svg.viewBox.baseVal;
+      const relX = (ev.clientX - rect.left) / rect.width * vb.width;
+      const val = explore.min + (relX-60)/(WIDTH-120)*(explore.max-explore.min);
+      exploreZoomTo(Math.max(explore.min, Math.min(explore.max, val)), 5);
+    });
+    exploreEls.outBtn.onclick = () => {
+      const center = (explore.min+explore.max)/2;
+      exploreZoomTo(center, 1/5);
+    };
+    exploreEls.inBtn.onclick = () => {
+      const center = (explore.min+explore.max)/2;
+      exploreZoomTo(center, 5);
+    };
+    exploreEls.inMaxBtn.onclick = () => {
+      explore.min = ABS_MIN; explore.max = ABS_MIN + 10;
+      renderExplore();
+    };
+    exploreEls.leftBtn.onclick = () => explorePan(-1);
+    exploreEls.rightBtn.onclick = () => explorePan(1);
+    item.querySelector('[data-explore-reset]').onclick = () => {
+      explore.min = ABS_MIN; explore.max = ABS_MAX;
+      renderExplore();
+    };
+
+    renderExplore();
+  }
+
+  function buildAccordion(){
+    const acc = document.getElementById('accordion');
+    MODES.forEach(m => {
+      const item = document.createElement('div');
+      item.className = 'acc' + (m.id === openMode ? ' open' : '');
+      item.innerHTML = `
+        <button class="acc-header" data-mode="${m.id}">
+          <span class="left">${m.icon} ${m.label}</span>
+          <span class="left"><span class="acc-badge" data-badge="${m.id}">${LEVELS[level]}</span><span class="acc-chevron">▾</span></span>
+        </button>
+        <div class="acc-panel">
+          <div class="acc-inner">
+            <div class="diff-block-inline">
+              <span class="diff-label">Schwierigkeit:</span>
+              <div class="row" data-levelrow="${m.id}"></div>
+            </div>
+            <p class="instruction" data-instr="${m.id}"></p>
+            <div class="stage" data-stage="${m.id}"></div>
+            <div class="answers" data-answers="${m.id}"></div>
+            <div class="keypad" data-keypad="${m.id}">${buildKeypad(m.id)}</div>
+            <div class="solutionText" data-solution="${m.id}"></div>
+            <div class="actions">
+              <button class="action primary" data-new="${m.id}">🎲 Neue Aufgabe</button>
+              <button class="action check" data-check="${m.id}">✓ Kontrollieren</button>
+              <button class="action secondary" data-reveal="${m.id}">👁️ Lösung zeigen</button>
+            </div>
+          </div>
+        </div>`;
+      acc.appendChild(item);
+
+      els[m.id] = {
+        item,
+        header: item.querySelector('.acc-header'),
+        instr: item.querySelector(`[data-instr="${m.id}"]`),
+        stage: item.querySelector(`[data-stage="${m.id}"]`),
+        answers: item.querySelector(`[data-answers="${m.id}"]`),
+        keypad: item.querySelector(`[data-keypad="${m.id}"]`),
+        solution: item.querySelector(`[data-solution="${m.id}"]`),
+        badge: item.querySelector(`[data-badge="${m.id}"]`),
+        levelRow: item.querySelector(`[data-levelrow="${m.id}"]`)
+      };
+
+      LEVELS.forEach((l,i) => {
+        const b = document.createElement('button');
+        b.className = 'chip' + (i===level ? ' active' : '');
+        b.textContent = l;
+        b.onclick = () => setLevel(i);
+        els[m.id].levelRow.appendChild(b);
+      });
+
+      els[m.id].header.onclick = () => {
+        document.querySelectorAll('.acc:not(.acc-explore)').forEach(a => a.classList.remove('open'));
+        if (openMode !== m.id || !item.classList.contains('open')) {
+          item.classList.add('open');
+          openMode = m.id;
+        } else { openMode = null; }
+      };
+      els[m.id].keypad.querySelectorAll('button').forEach(btn => {
+        btn.onclick = () => digit(m.id, btn.dataset.k);
+      });
+      item.querySelector(`[data-new="${m.id}"]`).onclick = () => newTaskFor(m.id);
+      item.querySelector(`[data-check="${m.id}"]`).onclick = () => checkMode(m.id);
+      item.querySelector(`[data-reveal="${m.id}"]`).onclick = () => revealMode(m.id);
+
+      if (m.id === 'einordnen') {
+        els[m.id].keypad.style.display = 'none';
+        els[m.id].answers.style.display = 'none';
+        els[m.id].stage.style.cursor = 'pointer';
+        els[m.id].stage.addEventListener('click', (ev) => {
+          const svg = els[m.id].stage.querySelector('svg');
+          if (!svg) return;
+          const rect = svg.getBoundingClientRect();
+          const vb = svg.viewBox.baseVal;
+          const relX = (ev.clientX - rect.left) / rect.width * vb.width;
+          const t = S[m.id].task;
+          let val = t.min + (relX-60)/(WIDTH-120)*(t.max-t.min);
+          val = Math.max(t.min, Math.min(t.max, Math.round(val)));
+          S[m.id].guess = val;
+          S[m.id].status = {};
+          renderMode(m.id);
+        });
+      }
+
+      newTaskFor(m.id);
+    });
+  }
+
+  function setLevel(i){
+    level = i;
+    MODES.forEach(m => {
+      els[m.id].levelRow.querySelectorAll('.chip').forEach((c,ci)=>c.classList.toggle('active', ci===i));
+      els[m.id].badge.textContent = LEVELS[level];
+      newTaskFor(m.id);
+    });
+  }
+
+  buildExplore();
+  buildAccordion();
+})();
+</script>
+</body>
+</html>
