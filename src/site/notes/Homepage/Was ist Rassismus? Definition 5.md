@@ -2,7 +2,7 @@
 {"dg-publish":true,"permalink":"/homepage/was-ist-rassismus-definition-5/","tags":["Homepage"],"dg-note-properties":{"tags":["Homepage"]}}
 ---
 
-
+<br>
 # Was ist Rassismus? Defintion 5
 
 <details>

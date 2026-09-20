@@ -2,7 +2,7 @@
 {"dg-publish":true,"permalink":"/homepage/was-ist-rassismus-definition-1/","tags":["Homepage"],"dg-note-properties":{"tags":["Homepage"]}}
 ---
 
-
+<br>
 # Was ist Rassismus? Definition 1
 
 <details>
