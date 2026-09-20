@@ -3,6 +3,7 @@
 ---
 
 <br>
+
 # Was ist Rassismus? Definition 1
 
 <details>
