@@ -14,7 +14,7 @@
 [[Homepage/Lineare Funktionen beschreiben\|Lineare Funktionen beschreiben]] ([Link](https://unterricht-mit-haj.netlify.app/homepage/lineare-funktionen-beschreiben))
 [[Homepage/Definitions- und Wertemenge\|Definitions- und Wertemenge]] ([Link](https://unterricht-mit-haj.netlify.app/homepage/definitions-und-wertemenge/))
 
-[[Homepage/Tipp Basketballwurf\|Tipp Basketballwurf]] ([Link](https://unterricht-mit-haj.netlify.app/tipp-basketballwurf/))
+[[Homepage/Tipp Basketballwurf\|Tipp Basketballwurf]] ([Link](https://unterricht-mit-haj.netlify.app/homepage/tipp-basketballwurf/))
 
 [[Homepage/Serviceseite für Psychologen\|Serviceseite für Psychologen]] ([Link](https://unterricht-mit-haj.netlify.app/homepage/serviceseite-fuer-psychologen/))
 [[Homepage/Serviceseite für Medienexperten\|Serviceseite für Medienexperten]] ([Link](https://unterricht-mit-haj.netlify.app/homepage/serviceseite-fuer-medienexperten/))
@@ -34,4 +34,8 @@ Insta-Posting von Kratylos ([Link](https://unterricht-mit-haj.netlify.app/script
 [[Homepage/Wittgenstein in einfacher Sprache\|Wittgenstein in einfacher Sprache]] ([Link](https://unterricht-mit-haj.netlify.app/homepage/wittgenstein-in-einfacher-sprache/))
 
 Spiel - Sag's anders ([Link](https://unterricht-mit-haj.netlify.app/scripts/sags-anders/))
+
+Schülervertretung ([Link](https://unterricht-mit-haj.netlify.app/scripts/schuelervertretung_threads))
+
+Zahlenstrahl-Vergnügen ([Link](https://unterricht-mit-haj.netlify.app/scripts/zahlenstrahl_vergnuegen))
 

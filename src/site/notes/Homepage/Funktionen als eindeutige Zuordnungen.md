@@ -6,14 +6,14 @@
 
 Bei Zuordnungen hängt der Wert einer Größe vom Wert einer anderen Größe ab.
 
->[!information]+ Beispiele
+>[!informationblau]+ Beispiele
 > - Die Fahrtdauer richtet sich nach der Anzahl der gefahrenen Kilometer.
 > - Die Bewertung einer Klassenarbeit richtet sich nach der erreichten Punktzahl.
 
 Nun sind Funktionen ganz besondere Zuordnungen:
 In der Mathematik spricht man von einer Funktion, wenn <u>jedem Wert aus einer Startmenge genau ein Wert aus einer Zielmenge</u> zugeordnet ist.
 
->[!information]+ Beispiel
+>[!informationblau]+ Beispiel
 > In einer Bäckerei kostet jedes Brötchen genau 0,40 €.  
 > → Der Preis hängt eindeutig von der Anzahl der gekauften Brötchen ab.
 > 
@@ -32,30 +32,30 @@ Funktionen lassen sich auf verschiedene Arten beschreiben:
 - [[Homepage/Funktionen als eindeutige Zuordnungen#5. Funktionen als Funktionsgleichung\|als Funktionsgleichung]]
  
 ### 1. Funktionen in Worten
->[!information]+ Beispiel
+>[!informationblau]+ Beispiel
 > Jede Nummer auf der Klassenliste ist genau einem Namen zugeordnet..  
 > → Diese Zuordnung ist eindeutig und somit eine <u>Funktion</u>.
 
->[!information]+ Gegenbeispiel
+>[!informationblau]+ Gegenbeispiel
 > Zu jeder Telefonnummer werden alle Personen aufgelistet, die sie benutzen.  
 > → Es kann mehrere Personen pro Nummer geben (zum Beispiel bei einem Festnetzanschluss oder in einem Büro) → Die Zuordnung ist <u>keine Funktion</u>.
 
 ### 2. Funktionen als Pfeildiagramme
->[!information]+ Beispiel
+>[!informationblau]+ Beispiel
 > Jeder Planet unseres Sonnensystems hat eine feste Umlaufzeit um die Sonne.  
 > 
 >![Pfeildiagramm Funktion.png\|400](/img/user/Homepage/Anh%C3%A4nge/Pfeildiagramm%20Funktion.png)
 >
 >→ Jeder Planet hat genau eine Umlaufzeit → Diese Zuordnung ist eindeutig und somit eine <u>Funktion</u>.  
 
->[!information]+ Gegenbeispiel
+>[!informationblau]+ Gegenbeispiel
 > Jeder Mensch werden alle Sprachen zugeordnet, die er spricht.  
 > 
 >![Pfeildiagramm keine Funktion.png\|400](/img/user/Homepage/Anh%C3%A4nge/Pfeildiagramm%20keine%20Funktion.png)
 >→ Mehrere Sprachen pro Person → Diese Zuordnung ist <u>keine Funktion</u>.
 
 ### 3. Funktionen als Wertetabellen
->[!information]+ Beispiel
+>[!informationblau]+ Beispiel
 >
 >| Anzahl Äpfel | 1 | 2 | 3 | 4 | 5 |
 >| ------------ | - | - | - | - | - |
@@ -63,7 +63,7 @@ Funktionen lassen sich auf verschiedene Arten beschreiben:
 >
 >Jede Apfelanzahl hat genau ein Gesamtgewicht → Diese Zuordnung ist eine <u>Funktion</u>.
 
->[!information]+ Kein Funktionsbeispiel
+>[!informationblau]+ Kein Funktionsbeispiel
 >| Farbe | rot | blau | grün |
 >| ----- | --- | ---- | ---- |
 >| passende Kleidungsstücke | T-Shirt, Mütze | Jacke | Hose, Schal |
@@ -71,14 +71,14 @@ Funktionen lassen sich auf verschiedene Arten beschreiben:
 > Manche Farben sind mit mehreren Kleidungsstücken verknüpft → Diese Zuordnung ist <u>keine Funktion</u>, weil sie nicht eindeutig ist.
 
 ### 4. Funktionen als Graphen
->[!information]+ Beispiel 
+>[!informationblau]+ Beispiel 
 > Der Wasserstand eines Beckens wird jede Minute gemessen, während es sich mit konstantem Tempo füllt
 > 
 >![Funktion Wasserstand.jpeg\|500](/img/user/Homepage/Anh%C3%A4nge/Funktion%20Wasserstand.jpeg)
 >
 > → Jede Minute hat genau einen Wasserstandswert → Die Zuordnung ist eine <u>Funktion</u>.
 
->[!information]+ Gegenbeispiel
+>[!informationblau]+ Gegenbeispiel
 >![Kreis.png\|350](/img/user/Homepage/Anh%C3%A4nge/Kreis.png)
 > 
 >→ Einem x-Wert (zum Beispiel x = 4) sind mehrere y-Werte (im Beispiel etwa 4,2 und -4,2) zugeordnet → Dieser Graph ist <u>keine Funktion</u>.
@@ -90,7 +90,7 @@ Wenn eine senkrechte Gerade in einem Koordinatensystem jeden Punkt des Graphen h
 ### 5. Funktionen als Funktionsgleichung
 Eine weitere Möglichkeit, Funktionen darzustellen, ist durch <u>Funktionsgleichungen</u>. Dabei wird die Beziehung zwischen den Größen mit einer mathematischen Formel beschrieben.
 
-> [!information]+ Beispiel  
+> [!informationblau]+ Beispiel  
 > Gegeben ist die Funktion $f(x)=2x+3$. 
 > 
 >Wenn wir nun Beispielwerte für $x$ einsetzen, erkennt man, dass nie unterschiedliche Werte als Ergebnis herauskommen, sondern immer nur ein einziger.

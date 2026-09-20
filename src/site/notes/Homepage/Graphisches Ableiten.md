@@ -16,25 +16,25 @@
 
 <hr style="border-color: light grey;">
 
->[!info|center]- Schritt 1 - Graph der Funktion f betrachten
+>[!information_rot]- Schritt 1 - Graph der Funktion f betrachten
 >Gegeben ist der Graph der <font color="#6425d0">Funktion f</font>. <br>
 >![Graphisches Ableiten 1.jpeg.webp\|400](/img/user/Homepage/Anh%C3%A4nge/Graphisches%20Ableiten%201.jpeg.webp)
 
->[!info|center]- Schritt 2 - Extrempunkte markieren
+>[!information_rot]- Schritt 2 - Extrempunkte markieren
 >Markiere die Extrempunkte des Graphen der <font color="#6425d0">Funktion f</font>. Diese liegen auf dem Graphen.<br>
 >![Graphisches Ableiten 2.jpeg.webp\|400](/img/user/Homepage/Anh%C3%A4nge/Graphisches%20Ableiten%202.jpeg.webp)
 
->[!info|center]- Schritt 3 - Extremstellen markieren
+>[!information_rot]- Schritt 3 - Extremstellen markieren
 >Markiere die Extremstellen des Graphen der <font color="#6425d0">Funktion f</font> auf der x-Achse. Die Extremstellen des Graphen der <font color="#6425d0">Funktion f</font> sind die Nullstellen des Graphen der <font color="#ff0000">Funktion f'</font>.<br>
 >![Graphisches Ableiten 3.jpeg.webp\|400](/img/user/Homepage/Anh%C3%A4nge/Graphisches%20Ableiten%203.jpeg.webp)
 
->[!info|center]- Schritt 4 - Monotonie betrachten
+>[!information_rot]- Schritt 4 - Monotonie betrachten
 >Lege die Intervalle fest, in denen der Graphen der <font color="#6425d0">Funktion f</font> <mark style="background:rgba(238, 232, 249, 0.55); color: black;">streng monoton steigend</mark> bzw. <mark style="background:rgba(232, 238, 232, 0.55); color: black;">streng monoton fallend</mark> ist.
 >- In den Intervallen, in denen der Graph der <font color="#6425d0">Funktion f</font> streng monoton steigt, sind die Funktionswerte der <font color="#ff0000">Funktion f'</font> positiv. Der Graph der <font color="#ff0000">Funktion f'</font> verläuft demnach oberhalb der x-Achse.
 >- In den Intervallen, in denen der Graph der <font color="#6425d0">Funktion f</font> streng monoton fällt, sind die Funktionswerte der <font color="#ff0000">Funktion f'</font> negativ. Der Graph der <font color="#ff0000">Funktion f'</font> verläuft demnach unterhalb der x-Achse.<br>
 >![Graphisches Ableiten 4.jpeg.webp\|400](/img/user/Homepage/Anh%C3%A4nge/Graphisches%20Ableiten%204.jpeg.webp)
 
->[!info|center]- Schritt 5 - Graph der Ableitungsfunktion zeichnen
+>[!information_rot]- Schritt 5 - Graph der Ableitungsfunktion zeichnen
 >Zeichne entsprechend deinen vorherigen Feststellungen den Graphen der <font color="#ff0000">Funktion f'</font>. Die <font color="#ff0000">Ableitung f'</font> beschreibt die Steigung der <font color="#6425d0">Funktion f</font>. Der <font color="#ff0000">Graph von f'</font> zeigt also, wie steil der <font color="#6425d0">Graph von f</font> an jeder Stelle ist.
 >- Wenn die Steigung des <font color="#6425d0">Graphen von f</font> groß ist, dann sind die Funktionswerte der  <font color="#ff0000">Funktion f'</font> groß - sie liegen also weit von der x-Achse entfernt.
 >- Wenn die Steigung des <font color="#6425d0">Graphen von f</font> klein ist, dann sind die Funktionswerte der  <font color="#ff0000">Funktion f'</font> klein - sie liegen also nah bei der x-Achse entfernt.<br>
