@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Punktefeld &amp; Malkreuz</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F4F1E8;
+    --panel: #FFFFFF;
+    --panel-edge: #E4DFD0;
+    --ink: #2B2A26;
+    --sub: #7C7666;
+    --accent-blue: #3B6EA5;
+    --accent-green: #74923C;
+    --dot-navy: #1B2B78;
+    --dot-green: #4C9A3A;
+    --dot-red: #E0392C;
+    --dot-orange: #F2A73B;
+    --dot-stroke: #00000055;
+    --grey-cover: #D6D2C6;
+    --grey-cover-edge: #C4BFAF;
+    --card-white: #FFFFFF;
+    --track: #EAE5D8;
+    --focus: #B8763F;
+
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  :root:not([data-theme="light"]) {
+    @media (prefers-color-scheme: dark) {
+      --bg: #1B1E23;
+      --panel: #262A31;
+      --panel-edge: #343941;
+      --ink: #EDEAE2;
+      --sub: #9AA0AC;
+      --accent-blue: #6FA1D6;
+      --accent-green: #9BC15C;
+      --dot-navy: #3E56C4;
+      --dot-green: #64B24E;
+      --dot-red: #E5624F;
+      --dot-orange: #F3B75C;
+      --dot-stroke: #00000077;
+      --grey-cover: #3B4048;
+      --grey-cover-edge: #4A505A;
+      --card-white: #2E333B;
+      --track: #313640;
+      --focus: #E0A567;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #1B1E23;
+    --panel: #262A31;
+    --panel-edge: #343941;
+    --ink: #EDEAE2;
+    --sub: #9AA0AC;
+    --accent-blue: #6FA1D6;
+    --accent-green: #9BC15C;
+    --dot-navy: #3E56C4;
+    --dot-green: #64B24E;
+    --dot-red: #E5624F;
+    --dot-orange: #F3B75C;
+    --dot-stroke: #00000077;
+    --grey-cover: #3B4048;
+    --grey-cover-edge: #4A505A;
+    --card-white: #2E333B;
+    --track: #313640;
+    --focus: #E0A567;
+  }
+
+  html, body {
+    height: 100%;
+  }
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Nunito Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    min-height: 100%;
+    scroll-padding-top: env(safe-area-inset-top, 0px);
+  }
+
+  .wrap {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 28px 20px calc(40px + env(safe-area-inset-bottom, 0px));
+  }
+
+  header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 22px;
+    flex-wrap: wrap;
+  }
+  h1 {
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 700;
+    font-size: clamp(22px, 3.4vw, 30px);
+    margin: 0;
+    letter-spacing: 0.2px;
+  }
+  h1 span { color: var(--accent-blue); }
+  .tagline {
+    color: var(--sub);
+    font-size: 14px;
+    margin: 0;
+  }
+
+  /* ---------- Controls ---------- */
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    align-items: flex-end;
+    background: var(--panel);
+    border: 1px solid var(--panel-edge);
+    border-radius: 18px;
+    padding: 18px;
+    margin-bottom: 26px;
+  }
+
+  .factor-group {
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+  }
+
+  .factor-field label {
+    display: block;
+    font-size: 12.5px;
+    color: var(--sub);
+    margin-bottom: 6px;
+    font-weight: 600;
+  }
+  .stepper {
+    display: flex;
+    align-items: center;
+    border: 1.5px solid var(--panel-edge);
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--bg);
+  }
+  .stepper button {
+    width: 36px;
+    height: 44px;
+    border: none;
+    background: transparent;
+    color: var(--sub);
+    font-size: 19px;
+    cursor: pointer;
+    line-height: 1;
+  }
+  .stepper button:hover { color: var(--ink); background: var(--track); }
+  .stepper input {
+    width: 54px;
+    text-align: center;
+    border: none;
+    background: transparent;
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--ink);
+    -moz-appearance: textfield;
+  }
+  .stepper input::-webkit-outer-spin-button,
+  .stepper input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+  .stepper input:focus { outline: none; }
+  .times-sign {
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 24px;
+    color: var(--sub);
+    padding: 0 2px 8px;
+  }
+
+  .size-field {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .size-field input[type="range"] {
+    width: 140px;
+    accent-color: var(--accent-blue);
+    height: 4px;
+    cursor: pointer;
+  }
+  .size-field .size-value {
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--sub);
+    min-width: 30px;
+    text-align: center;
+  }
+
+  .mode-field {
+    margin-left: auto;
+  }
+  .mode-field > label {
+    display: block;
+    font-size: 12.5px;
+    color: var(--sub);
+    margin-bottom: 6px;
+    font-weight: 600;
+  }
+  .segmented {
+    display: flex;
+    border: 1.5px solid var(--panel-edge);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .segmented button {
+    border: none;
+    background: var(--bg);
+    color: var(--sub);
+    font-family: 'Nunito Sans', sans-serif;
+    font-weight: 600;
+    font-size: 13.5px;
+    padding: 11px 14px;
+    cursor: pointer;
+    border-right: 1px solid var(--panel-edge);
+    white-space: nowrap;
+  }
+  .segmented button:last-child { border-right: none; }
+  .segmented button.active {
+    background: var(--accent-blue);
+    color: #fff;
+  }
+  .segmented button:focus-visible,
+  .stepper button:focus-visible,
+  .cell.tappable:focus-visible,
+  .reveal-btn:focus-visible {
+    outline: 2.5px solid var(--focus);
+    outline-offset: 2px;
+  }
+
+  /* ---------- Stage ---------- */
+  .stage {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    gap: 22px;
+    align-items: start;
+  }
+  @media (max-width: 780px) {
+    .stage { grid-template-columns: 1fr; }
+  }
+
+  .stage.no-kreuz {
+    grid-template-columns: 1fr;
+  }
+  .stage.no-kreuz .card {
+    max-width: 760px;
+    margin: 0 auto;
+    width: 100%;
+  }
+  #kreuzCard.hidden { display: none; }
+
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--panel-edge);
+    border-radius: 18px;
+    padding: 18px;
+  }
+  .card h2 {
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--sub);
+    margin: 0 0 14px;
+  }
+
+  .field-svg-holder {
+    width: 100%;
+    max-height: 65vh;
+    overflow: auto;
+    display: flex;
+    justify-content: safe center;
+  }
+  .field-svg-holder svg {
+    display: block;
+    flex-shrink: 0;
+  }
+
+  .equation {
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 20px;
+    text-align: center;
+    margin-top: 14px;
+    color: var(--ink);
+  }
+  .equation .r { color: var(--accent-blue); }
+  .equation .n { color: var(--accent-green); }
+
+  /* ---------- Malkreuz ---------- */
+  .kreuz-empty {
+    color: var(--sub);
+    font-size: 14px;
+    padding: 30px 10px;
+    text-align: center;
+  }
+  .kreuz-grid {
+    display: grid;
+    gap: 3px;
+    background: var(--panel-edge);
+    border: 1px solid var(--panel-edge);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .cell {
+    background: var(--card-white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 56px;
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 700;
+    font-size: 19px;
+    color: var(--ink);
+    padding: 4px;
+    position: relative;
+  }
+  .cell.corner { background: var(--panel); }
+  .cell.head-col { color: #fff; font-size: 20px; }
+  .cell.head-row { color: #fff; font-size: 20px; }
+  .cell.head-blue { background: var(--accent-blue); }
+  .cell.head-green { background: var(--accent-green); }
+  .cell.prod-navy { background: color-mix(in srgb, var(--dot-navy) 22%, var(--card-white)); }
+  .cell.prod-green { background: color-mix(in srgb, var(--dot-green) 24%, var(--card-white)); }
+  .cell.prod-red { background: color-mix(in srgb, var(--dot-red) 22%, var(--card-white)); }
+  .cell.prod-orange { background: color-mix(in srgb, var(--dot-orange) 30%, var(--card-white)); }
+  .cell.sum { background: var(--track); font-size: 18px; }
+  .cell.total {
+    background: var(--panel);
+    border: 2px solid var(--ink);
+    border-radius: 6px;
+    margin: 2px;
+    font-size: 21px;
+  }
+  .cell.tappable {
+    cursor: pointer;
+  }
+  .cell.tappable .placeholder {
+    color: var(--sub);
+    font-size: 15px;
+    font-weight: 600;
+  }
+  .cell.tappable:not(.revealed):hover { filter: brightness(1.06); }
+  .cell.tappable.revealed { cursor: default; }
+
+  .kreuz-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 14px;
+    justify-content: center;
+  }
+  .reveal-btn {
+    border: 1.5px solid var(--panel-edge);
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Nunito Sans', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    padding: 9px 14px;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+  .reveal-btn:hover { background: var(--track); }
+
+  .hint {
+    text-align: center;
+    color: var(--sub);
+    font-size: 12.5px;
+    margin-top: 10px;
+  }
+
+  footer {
+    text-align: center;
+    color: var(--sub);
+    font-size: 12px;
+    margin-top: 30px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div>
+      <h1>Punktefeld <span>&amp;</span> Malkreuz</h1>
+      <p class="tagline">Multiplikation sinnbildend erarbeiten – für die digitale Tafel</p>
+    </div>
+  </header>
+
+  <div class="controls">
+    <div class="factor-group">
+      <div class="factor-field">
+        <label for="factorA">Faktor 1 (waagerecht)</label>
+        <div class="stepper">
+          <button type="button" id="aMinus" aria-label="Faktor 1 verringern">−</button>
+          <input type="number" id="factorA" value="18" min="1" max="99" inputmode="numeric">
+          <button type="button" id="aPlus" aria-label="Faktor 1 erhöhen">+</button>
+        </div>
+      </div>
+      <div class="times-sign">×</div>
+      <div class="factor-field">
+        <label for="factorB">Faktor 2 (senkrecht)</label>
+        <div class="stepper">
+          <button type="button" id="bMinus" aria-label="Faktor 2 verringern">−</button>
+          <input type="number" id="factorB" value="17" min="1" max="99" inputmode="numeric">
+          <button type="button" id="bPlus" aria-label="Faktor 2 erhöhen">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="mode-field" style="margin-left: 0;">
+      <label for="sizeSlider">Punktgröße</label>
+      <div class="size-field">
+        <input type="range" id="sizeSlider" min="12" max="40" step="1" value="22">
+        <span class="size-value" id="sizeValue">22</span>
+      </div>
+    </div>
+
+    <div class="mode-field">
+      <label>Malkreuz</label>
+      <div class="segmented" id="modeSeg">
+        <button type="button" data-mode="none" class="active">Ausblenden</button>
+        <button type="button" data-mode="filled">Ausgefüllt</button>
+        <button type="button" data-mode="reveal">Zum Aufdecken</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="stage" id="stage">
+    <div class="card">
+      <h2>Punktefeld</h2>
+      <div class="field-svg-holder" id="fieldHolder"></div>
+      <div class="equation" id="equationLine"></div>
+    </div>
+
+    <div class="card" id="kreuzCard">
+      <h2>Malkreuz</h2>
+      <div id="kreuzHolder"></div>
+      <div class="kreuz-actions" id="kreuzActions" style="display:none;">
+        <button class="reveal-btn" id="revealAll">Alles aufdecken</button>
+        <button class="reveal-btn" id="hideAll">Alles verdecken</button>
+      </div>
+      <p class="hint" id="kreuzHint" style="display:none;">Tippe auf ein Feld, um es aufzudecken.</p>
+    </div>
+  </div>
+
+  <footer>Zahlen ändern aktualisiert Punktefeld und Malkreuz automatisch.</footer>
+</div>
+
+<script>
+(function () {
+  const factorAInput = document.getElementById('factorA');
+  const factorBInput = document.getElementById('factorB');
+  const fieldHolder = document.getElementById('fieldHolder');
+  const kreuzHolder = document.getElementById('kreuzHolder');
+  const kreuzActions = document.getElementById('kreuzActions');
+  const kreuzHint = document.getElementById('kreuzHint');
+  const stage = document.getElementById('stage');
+  const kreuzCard = document.getElementById('kreuzCard');
+  const equationLine = document.getElementById('equationLine');
+  const modeSeg = document.getElementById('modeSeg');
+  const sizeSlider = document.getElementById('sizeSlider');
+  const sizeValue = document.getElementById('sizeValue');
+
+  let mode = 'none'; // none | filled | reveal
+  let dotUnit = 22; // px per grid cell, driven by the size slider
+  let revealed = new Set(); // keys of revealed cells in reveal mode
+  let lastA = 18, lastB = 17; // fallback values while a field is mid-edit
+
+  // top-left/top-right/bottom-left/bottom-right quadrant colors, matching the
+  // printed four-colour Punktefeld sheet handed out to students
+  function quadrantColor(colIndex, rowIndex) {
+    if (rowIndex === 0) return colIndex === 0 ? 'var(--dot-navy)' : 'var(--dot-green)';
+    return colIndex === 0 ? 'var(--dot-red)' : 'var(--dot-orange)';
+  }
+  function quadrantClass(colIndex, rowIndex) {
+    if (rowIndex === 0) return colIndex === 0 ? 'prod-navy' : 'prod-green';
+    return colIndex === 0 ? 'prod-red' : 'prod-orange';
+  }
+
+  function clamp(n) {
+    n = Math.round(n);
+    if (isNaN(n)) return 1;
+    return Math.max(1, Math.min(99, n));
+  }
+
+  function parts(n) {
+    const tens = Math.floor(n / 10) * 10;
+    const rem = n - tens;
+    const out = [];
+    if (rem === 0 && tens >= 20) {
+      // e.g. 20 -> 10 + 10, 30 -> 20 + 10: keep two visible parts (and colors)
+      out.push(tens - 10, 10);
+    } else {
+      if (tens > 0) out.push(tens);
+      if (rem > 0) out.push(rem);
+      if (out.length === 0) out.push(n);
+    }
+    return out;
+  }
+
+  function offsets(arr) {
+    const off = [0];
+    for (let i = 0; i < arr.length; i++) off.push(off[i] + arr[i]);
+    return off;
+  }
+
+  function buildFieldSVG(A, B) {
+    const colParts = parts(A);
+    const rowParts = parts(B);
+    const colOff = offsets(colParts);
+    const rowOff = offsets(rowParts);
+    const sheetW = Math.ceil(A / 10) * 10;
+    const sheetH = Math.ceil(B / 10) * 10;
+
+    const unit = dotUnit;
+    const marginLeft = unit * 1.7;
+    const marginTop = unit * 1.6;
+    const gap = Math.max(4, unit * 0.22);
+
+    const totalW = marginLeft + sheetW * unit + 4;
+    const totalH = marginTop + sheetH * unit + 4;
+
+    let svg = `<svg width="${totalW}" height="${totalH}" viewBox="0 0 ${totalW} ${totalH}" xmlns="http://www.w3.org/2000/svg">`;
+
+    // grey cover sheet (the full poster area)
+    svg += `<rect x="${marginLeft}" y="${marginTop}" width="${sheetW * unit}" height="${sheetH * unit}" rx="10" fill="var(--grey-cover)" stroke="var(--grey-cover-edge)" stroke-width="1"/>`;
+
+    // column headers
+    colParts.forEach((val, i) => {
+      const cx = marginLeft + (colOff[i] + val / 2) * unit;
+      const cy = marginTop * 0.62;
+      const color = i === 0 ? 'var(--accent-blue)' : 'var(--accent-green)';
+      svg += `<text x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="middle" font-family="Baloo 2, sans-serif" font-weight="700" font-size="${unit * 0.85}" fill="${color}">${val}</text>`;
+    });
+    // row headers
+    rowParts.forEach((val, j) => {
+      const cx = marginLeft * 0.55;
+      const cy = marginTop + (rowOff[j] + val / 2) * unit;
+      const color = j === 0 ? 'var(--accent-blue)' : 'var(--accent-green)';
+      svg += `<text x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="middle" font-family="Baloo 2, sans-serif" font-weight="700" font-size="${unit * 0.85}" fill="${color}">${val}</text>`;
+    });
+
+    // quadrants
+    colParts.forEach((cw, ci) => {
+      rowParts.forEach((rh, ri) => {
+        const x = marginLeft + colOff[ci] * unit;
+        const y = marginTop + rowOff[ri] * unit;
+        const w = cw * unit;
+        const h = rh * unit;
+        const dotColor = quadrantColor(ci, ri);
+
+        svg += `<rect x="${x + gap / 2}" y="${y + gap / 2}" width="${w - gap}" height="${h - gap}" rx="8" fill="var(--card-white)" stroke="var(--panel-edge)" stroke-width="1"/>`;
+
+        let dots = '';
+        const r = unit * 0.30;
+        for (let rr = 0; rr < rh; rr++) {
+          for (let cc = 0; cc < cw; cc++) {
+            const dx = x + (cc + 0.5) * unit;
+            const dy = y + (rr + 0.5) * unit;
+            dots += `<circle cx="${dx}" cy="${dy}" r="${r}" fill="${dotColor}" stroke="var(--dot-stroke)" stroke-width="${Math.max(0.6, unit * 0.035)}"/>`;
+          }
+        }
+        svg += dots;
+
+        // dashed 5er-grouping lines, to help students count in fives
+        let guides = '';
+        const guideWidth = Math.max(1.4, unit * 0.09);
+        for (let cc = 5; cc < cw; cc += 5) {
+          const gx = x + cc * unit;
+          guides += `<line x1="${gx}" y1="${y + gap / 2}" x2="${gx}" y2="${y + h - gap / 2}" stroke="var(--ink)" stroke-opacity="0.5" stroke-width="${guideWidth}" stroke-dasharray="6,4"/>`;
+        }
+        for (let rr = 5; rr < rh; rr += 5) {
+          const gy = y + rr * unit;
+          guides += `<line x1="${x + gap / 2}" y1="${gy}" x2="${x + w - gap / 2}" y2="${gy}" stroke="var(--ink)" stroke-opacity="0.5" stroke-width="${guideWidth}" stroke-dasharray="6,4"/>`;
+        }
+        svg += guides;
+      });
+    });
+
+    svg += `</svg>`;
+    return svg;
+  }
+
+  function cellKey(prefix, i, j) { return prefix + '-' + i + '-' + j; }
+
+  function buildKreuz(A, B) {
+    const colParts = parts(A);
+    const rowParts = parts(B);
+    const colClass = (i) => i === 0 ? 'head-blue' : 'head-green';
+    const rowClass = (j) => j === 0 ? 'head-blue' : 'head-green';
+
+    const cols = colParts.length;
+    const rows = rowParts.length;
+
+    let html = `<div class="kreuz-grid" style="grid-template-columns: repeat(${cols + 2}, 1fr);">`;
+
+    // header row
+    html += `<div class="cell corner">·</div>`;
+    colParts.forEach((val, i) => {
+      html += `<div class="cell head-col ${colClass(i)}">${val}</div>`;
+    });
+    html += `<div class="cell corner"></div>`;
+
+    // data rows
+    rowParts.forEach((rv, j) => {
+      html += `<div class="cell head-row ${rowClass(j)}">${rv}</div>`;
+      colParts.forEach((cv, i) => {
+        const product = rv * cv;
+        const pclass = quadrantClass(i, j);
+        const key = cellKey('p', i, j);
+        if (mode === 'reveal') {
+          const isRev = revealed.has(key);
+          html += `<div class="cell ${pclass} tappable" data-key="${key}" data-value="${product}" tabindex="0" role="button" aria-label="Feld aufdecken">${isRev ? product : '<span class="placeholder">?</span>'}</div>`;
+        } else {
+          html += `<div class="cell ${pclass}">${product}</div>`;
+        }
+      });
+      const rowSum = rv * A;
+      const rkey = cellKey('rs', 0, j);
+      if (mode === 'reveal') {
+        const isRev = revealed.has(rkey);
+        html += `<div class="cell sum tappable" data-key="${rkey}" data-value="${rowSum}" tabindex="0" role="button" aria-label="Zeilensumme aufdecken">${isRev ? rowSum : '<span class="placeholder">?</span>'}</div>`;
+      } else {
+        html += `<div class="cell sum">${rowSum}</div>`;
+      }
+    });
+
+    // sum row
+    html += `<div class="cell corner"></div>`;
+    colParts.forEach((cv) => {
+      const colSum = cv * B;
+      const ckey = cellKey('cs', cv, 0);
+      if (mode === 'reveal') {
+        const isRev = revealed.has(ckey);
+        html += `<div class="cell sum tappable" data-key="${ckey}" data-value="${colSum}" tabindex="0" role="button" aria-label="Spaltensumme aufdecken">${isRev ? colSum : '<span class="placeholder">?</span>'}</div>`;
+      } else {
+        html += `<div class="cell sum">${colSum}</div>`;
+      }
+    });
+    const total = A * B;
+    const tkey = 'total';
+    if (mode === 'reveal') {
+      const isRev = revealed.has(tkey);
+      html += `<div class="cell total tappable" data-key="${tkey}" data-value="${total}" tabindex="0" role="button" aria-label="Gesamtergebnis aufdecken">${isRev ? total : '<span class="placeholder">?</span>'}</div>`;
+    } else {
+      html += `<div class="cell total">${total}</div>`;
+    }
+
+    html += `</div>`;
+    return html;
+  }
+
+  function attachRevealHandlers() {
+    kreuzHolder.querySelectorAll('.cell.tappable').forEach(el => {
+      const toggle = () => {
+        const key = el.getAttribute('data-key');
+        if (revealed.has(key)) revealed.delete(key); else revealed.add(key);
+        render();
+      };
+      el.addEventListener('click', toggle);
+      el.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
+      });
+    });
+  }
+
+  function readFactor(input, fallback) {
+    const raw = parseInt(input.value, 10);
+    if (isNaN(raw)) return fallback;
+    return clamp(raw);
+  }
+
+  function normalize(input, fallback) {
+    const v = readFactor(input, fallback);
+    input.value = v;
+    return v;
+  }
+
+  function render() {
+    const A = readFactor(factorAInput, lastA);
+    const B = readFactor(factorBInput, lastB);
+    lastA = A;
+    lastB = B;
+
+    fieldHolder.innerHTML = buildFieldSVG(A, B);
+    equationLine.innerHTML = `${A} × ${B} = <span class="r">${A}</span><span style="color:var(--sub)"> × </span><span class="n">${B}</span> = ${A * B}`;
+
+    if (mode === 'none') {
+      kreuzCard.classList.add('hidden');
+      stage.classList.add('no-kreuz');
+    } else {
+      kreuzCard.classList.remove('hidden');
+      stage.classList.remove('no-kreuz');
+      kreuzHolder.innerHTML = buildKreuz(A, B);
+      if (mode === 'reveal') {
+        kreuzActions.style.display = 'flex';
+        kreuzHint.style.display = 'block';
+        attachRevealHandlers();
+      } else {
+        kreuzActions.style.display = 'none';
+        kreuzHint.style.display = 'none';
+      }
+    }
+  }
+
+  // controls
+  document.getElementById('aMinus').addEventListener('click', () => { lastA = clamp(readFactor(factorAInput, lastA) - 1); factorAInput.value = lastA; render(); });
+  document.getElementById('aPlus').addEventListener('click', () => { lastA = clamp(readFactor(factorAInput, lastA) + 1); factorAInput.value = lastA; render(); });
+  document.getElementById('bMinus').addEventListener('click', () => { lastB = clamp(readFactor(factorBInput, lastB) - 1); factorBInput.value = lastB; render(); });
+  document.getElementById('bPlus').addEventListener('click', () => { lastB = clamp(readFactor(factorBInput, lastB) + 1); factorBInput.value = lastB; render(); });
+
+  // while typing: just re-render the preview, never rewrite what the person is typing
+  factorAInput.addEventListener('input', render);
+  factorBInput.addEventListener('input', render);
+  // once they leave the field (or press Enter), tidy the field itself up to a valid number
+  factorAInput.addEventListener('blur', () => { normalize(factorAInput, lastA); render(); });
+  factorBInput.addEventListener('blur', () => { normalize(factorBInput, lastB); render(); });
+  [factorAInput, factorBInput].forEach(inp => {
+    inp.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') { inp.blur(); }
+    });
+  });
+
+  sizeSlider.addEventListener('input', () => {
+    dotUnit = parseInt(sizeSlider.value, 10);
+    sizeValue.textContent = dotUnit;
+    render();
+  });
+
+  modeSeg.addEventListener('click', (e) => {
+    const btn = e.target.closest('button[data-mode]');
+    if (!btn) return;
+    mode = btn.getAttribute('data-mode');
+    revealed = new Set();
+    modeSeg.querySelectorAll('button').forEach(b => b.classList.toggle('active', b === btn));
+    render();
+  });
+
+  document.getElementById('revealAll').addEventListener('click', () => {
+    const A = readFactor(factorAInput, lastA);
+    const B = readFactor(factorBInput, lastB);
+    const colParts = parts(A), rowParts = parts(B);
+    colParts.forEach((cv, i) => rowParts.forEach((rv, j) => revealed.add(cellKey('p', i, j))));
+    rowParts.forEach((rv, j) => revealed.add(cellKey('rs', 0, j)));
+    colParts.forEach((cv) => revealed.add(cellKey('cs', cv, 0)));
+    revealed.add('total');
+    render();
+  });
+  document.getElementById('hideAll').addEventListener('click', () => { revealed = new Set(); render(); });
+
+  render();
+})();
+</script>
+</body>
+</html>
