@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wie sagt man denn nun? Quiz</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap">
+<style>
+:root{
+  --bg:#EEF0F4; --surface:#FFFFFF; --surface2:#F6F7FA; --ink:#1B2130; --muted:#5A6376; --line:#D6DAE3;
+  --accent:#1E6F6A; --accent-ink:#FFFFFF; --accent-soft:#DCEEEC;
+  --p1:#2F5FC0; --p1-soft:#E1E9F9; --p2:#B94E24; --p2-soft:#F8E4DA;
+  --good:#23794A; --good-soft:#DDF1E5; --bad:#B03434; --bad-soft:#F7E0E0;
+  --hint-bg:#F7EDD3; --hint-ink:#6B4E0E;
+  --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --r:10px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#11141B; --surface:#1A1F28; --surface2:#20262F; --ink:#E8EBF1; --muted:#9BA4B6; --line:#2D3441;
+    --accent:#52B5AC; --accent-ink:#0E1A19; --accent-soft:#1C3533;
+    --p1:#86A9F2; --p1-soft:#1F2A40; --p2:#EE8C62; --p2-soft:#3A251C;
+    --good:#62C58F; --good-soft:#193225; --bad:#E57373; --bad-soft:#3A1E1E;
+    --hint-bg:#352C19; --hint-ink:#F0D48F;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#11141B; --surface:#1A1F28; --surface2:#20262F; --ink:#E8EBF1; --muted:#9BA4B6; --line:#2D3441;
+  --accent:#52B5AC; --accent-ink:#0E1A19; --accent-soft:#1C3533;
+  --p1:#86A9F2; --p1-soft:#1F2A40; --p2:#EE8C62; --p2-soft:#3A251C;
+  --good:#62C58F; --good-soft:#193225; --bad:#E57373; --bad-soft:#3A1E1E;
+  --hint-bg:#352C19; --hint-ink:#F0D48F;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55;padding-inline:16px;padding-block:24px 48px}
+.wrap{max-width:780px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+h1,h2,h3{font-family:var(--display);line-height:1.15;text-wrap:balance;margin:0}
+h1{font-size:clamp(30px,6vw,44px);font-weight:800;letter-spacing:-.01em}
+h2{font-size:24px;font-weight:700}
+h3{font-size:18px;font-weight:700}
+p{margin:0}
+.eyebrow{font-size:12.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.muted{color:var(--muted)}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:22px}
+.stack{display:flex;flex-direction:column;gap:14px}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+button{font:inherit;cursor:pointer}
+.btn{border:0;border-radius:8px;padding:11px 20px;font-weight:700;background:var(--accent);color:var(--accent-ink);font-size:16px}
+.btn:hover{filter:brightness(1.07)}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.btn:disabled{opacity:.45;cursor:not-allowed;filter:none}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.linkbtn{background:none;border:0;color:var(--muted);text-decoration:underline;padding:4px;font-size:14px}
+
+/* Header */
+.masthead{display:flex;flex-direction:column;gap:8px}
+.source{font-size:14.5px;color:var(--muted)}
+.quote{font-family:var(--display);font-weight:500;font-size:19px;border-left:3px solid var(--accent);padding-left:14px;color:var(--ink)}
+
+/* Setup */
+.modes{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+.mode{border:2px solid var(--line);border-radius:var(--r);background:var(--surface2);padding:16px;text-align:left;color:var(--ink);display:flex;flex-direction:column;gap:6px}
+.mode[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
+.mode strong{font-family:var(--display);font-size:20px}
+.field{display:flex;flex-direction:column;gap:5px;flex:1 1 200px}
+.field label{font-size:14px;font-weight:700;color:var(--muted)}
+.field input{font:inherit;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink)}
+table.rules{border-collapse:collapse;width:100%;font-size:15px;font-variant-numeric:tabular-nums}
+table.rules th,table.rules td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left}
+table.rules th{font-size:12.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.tablewrap{overflow-x:auto}
+
+/* Scorebar */
+.scorebar{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.scorebar.single{grid-template-columns:1fr}
+.sc{border-radius:var(--r);padding:10px 14px;border:2px solid transparent;background:var(--surface);display:flex;justify-content:space-between;align-items:center;gap:10px}
+.sc .nm{font-weight:700}
+.sc .pt{font-family:var(--display);font-weight:800;font-size:26px;font-variant-numeric:tabular-nums}
+.sc .sub{font-size:13px;color:var(--muted)}
+.sc.p1{border-color:var(--p1-soft)} .sc.p2{border-color:var(--p2-soft)}
+.sc.p1.active{border-color:var(--p1);background:var(--p1-soft)}
+.sc.p2.active{border-color:var(--p2);background:var(--p2-soft)}
+.sc.p1 .pt{color:var(--p1)} .sc.p2 .pt{color:var(--p2)}
+.progress{height:6px;background:var(--line);border-radius:3px;overflow:hidden}
+.progress>div{height:100%;background:var(--accent);transition:width .3s}
+
+/* Question */
+.qcard{border-top:5px solid var(--p1)}
+.qcard.p2{border-top-color:var(--p2)}
+.qmeta{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-size:12.5px;font-weight:700;padding:3px 9px;border-radius:999px;background:var(--surface2);border:1px solid var(--line);color:var(--muted);white-space:nowrap}
+.chip.afb{background:var(--accent-soft);border-color:transparent;color:var(--accent)}
+.turn{font-weight:700}
+.turn.p1{color:var(--p1)} .turn.p2{color:var(--p2)}
+.qtext{font-size:20px;font-weight:700;line-height:1.4}
+.qsub{color:var(--muted);font-size:15px}
+.attempts{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--muted);font-variant-numeric:tabular-nums}
+.dots{display:flex;gap:5px}
+.dot{width:12px;height:12px;border-radius:50%;border:2px solid var(--line)}
+.dot.used{background:var(--bad);border-color:var(--bad)}
+.dot.ok{background:var(--good);border-color:var(--good)}
+.nowpts{font-weight:700;color:var(--ink)}
+
+.opts{display:flex;flex-direction:column;gap:8px}
+.opt{display:flex;gap:12px;align-items:flex-start;text-align:left;padding:12px 14px;border:2px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink);width:100%}
+.opt:hover:not(:disabled){border-color:var(--muted)}
+.opt .box{flex:0 0 20px;height:20px;border:2px solid var(--muted);border-radius:50%;margin-top:2px;display:grid;place-items:center}
+.opt.sq .box{border-radius:4px}
+.opt[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
+.opt[aria-pressed="true"] .box{background:var(--accent);border-color:var(--accent)}
+.opt[aria-pressed="true"] .box::after{content:"";width:8px;height:8px;border-radius:50%;background:var(--accent-ink)}
+.opt.sq[aria-pressed="true"] .box::after{border-radius:1px}
+.opt.right{border-color:var(--good);background:var(--good-soft)}
+.opt:disabled{cursor:default}
+
+.tfrow{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+.tfrow:last-child{border-bottom:0}
+.seg{display:flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.seg button{border:0;background:var(--surface);color:var(--ink);padding:8px 12px;font-weight:700;font-size:14px}
+.seg button+button{border-left:1px solid var(--line)}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+@media (max-width:520px){.tfrow{grid-template-columns:1fr}}
+
+.orderlist{display:flex;flex-direction:column;gap:8px;list-style:none;padding:0;margin:0}
+.orderlist li{display:grid;grid-template-columns:28px 1fr auto;gap:10px;align-items:center;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface2)}
+.orderlist .n{font-family:var(--display);font-weight:800;color:var(--accent);font-variant-numeric:tabular-nums}
+.mv{display:flex;gap:4px}
+.mv button{width:34px;height:34px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--ink);font-size:16px;line-height:1}
+.mv button:disabled{opacity:.3}
+
+.matchrow{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line)}
+.matchrow:last-child{border-bottom:0}
+.matchrow .l{font-weight:700}
+select{font:inherit;font-size:15px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink);width:100%;max-width:100%}
+@media (max-width:560px){.matchrow{grid-template-columns:1fr}}
+.cloze{line-height:2.3}
+.cloze select{width:auto;display:inline-block;padding:4px 8px;margin:0 2px;vertical-align:baseline}
+.inputq input{font:inherit;width:100%;padding:12px;border:2px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink)}
+
+.fb{border-radius:8px;padding:12px 14px;font-size:15.5px;display:flex;flex-direction:column;gap:6px}
+.fb.bad{background:var(--bad-soft);color:var(--ink);border-left:4px solid var(--bad)}
+.fb.good{background:var(--good-soft);border-left:4px solid var(--good)}
+.fb.hint{background:var(--hint-bg);color:var(--hint-ink);border-left:4px solid var(--hint-ink)}
+.fb.sol{background:var(--surface2);border-left:4px solid var(--muted)}
+.fb b{font-weight:700}
+.fb ul,.fb ol{margin:0;padding-left:20px}
+.actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:space-between;align-items:center}
+
+/* Results */
+.winner{text-align:center;display:flex;flex-direction:column;gap:6px;align-items:center}
+.big{font-family:var(--display);font-weight:800;font-size:clamp(34px,8vw,52px);font-variant-numeric:tabular-nums;line-height:1}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+.res.p1{border-top:5px solid var(--p1)} .res.p2{border-top:5px solid var(--p2)} .res.p0{border-top:5px solid var(--accent)}
+.bars{display:flex;flex-direction:column;gap:10px}
+.bar{display:flex;flex-direction:column;gap:4px}
+.bar .lab{display:flex;justify-content:space-between;font-size:14.5px;gap:8px}
+.bar .lab span:last-child{font-variant-numeric:tabular-nums;color:var(--muted);white-space:nowrap}
+.bar .track{height:10px;background:var(--line);border-radius:5px;overflow:hidden}
+.bar .fill{height:100%;border-radius:5px}
+.fill.lo{background:var(--bad)} .fill.mid{background:#C8942B} .fill.hi{background:var(--good)}
+.diag{display:flex;flex-direction:column;gap:10px}
+.diag .item{padding:10px 12px;border-radius:8px;background:var(--surface2);border-left:4px solid var(--bad);font-size:15.5px}
+.diag .item.ok{border-left-color:var(--good)}
+.diag .item.warn{border-left-color:#C8942B}
+.diag .tip{color:var(--muted);font-size:14.5px;margin-top:4px}
+details.review{border-top:1px solid var(--line);padding-top:10px}
+details.review summary{cursor:pointer;font-weight:700}
+.rv{padding:10px 0;border-bottom:1px solid var(--line);font-size:15px;display:flex;flex-direction:column;gap:4px}
+.rv:last-child{border-bottom:0}
+.tag{font-size:12px;font-weight:700;padding:2px 7px;border-radius:999px;white-space:nowrap}
+.tag.fail{background:var(--bad-soft);color:var(--bad)}
+.tag.late{background:var(--hint-bg);color:var(--hint-ink)}
+.stats{display:flex;gap:18px;flex-wrap:wrap;font-size:14.5px;color:var(--muted)}
+.stats b{color:var(--ink);font-variant-numeric:tabular-nums}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<div class="wrap" id="app"></div>
+
+<script>
+/* ============ Fragenpool ============ */
+const CATS = {
+  inhalt:  {name:"Inhalt erfassen", tip:"Text abschnittsweise lesen, zu jedem Abschnitt eine Kernaussage am Rand notieren und Daten, Namen und Beispiele markieren."},
+  begriffe:{name:"Begriffe & Fachsprache", tip:"Die Worterläuterungen (1–18) konsequent nutzen und ein eigenes Glossar mit den Schlüsselbegriffen der Debatte anlegen (BPoC, Othering, Colorism, Deutungshoheit …)."},
+  stimmen: {name:"Stimmen & Positionen", tip:"Eine Übersicht anlegen: Person – Organisation – Position – Belegzitat. So lassen sich die zitierten Stimmen sicher auseinanderhalten."},
+  schluss: {name:"Schlussfolgern & Deuten", tip:"Bei Deutungsfragen vom Beleg ausgehen: Was steht im Text? Was folgt daraus? Und was folgt gerade nicht daraus? Antworten, die über den Text hinausgehen, kritisch prüfen."},
+  argument:{name:"Argumentation & Autorposition", tip:"Den Gedankengang in Sinnabschnitte gliedern und jedem Abschnitt eine Funktion zuordnen (These, Einwand, Beleg, Einräumung, Widerlegung). Auf wertende Formulierungen des Autors achten."},
+  sprache: {name:"Sprache & Wirkung", tip:"Sprachliche Mittel nicht nur benennen, sondern ihre Wirkung im Zusammenhang mit der Absicht des Autors erklären (z. B. Ironie als Mittel der Distanzierung)."}
+};
+const FORMATS = {mc:"Einfachauswahl", multi:"Mehrfachauswahl", tf:"Richtig/Falsch", order:"Reihenfolge", match:"Zuordnung", cloze:"Lückentext", input:"Freie Eingabe"};
+const AFB = {1:{name:"AFB I", long:"Wiedergeben", pts:[3,2,1]}, 2:{name:"AFB II", long:"Erklären & Schlussfolgern", pts:[4,2,1]}, 3:{name:"AFB III", long:"Beurteilen & Deuten", pts:[5,3,1]}};
+
+/* mc: opts[0] ist richtig (wird gemischt). multi: opts {t,c}. tf: items {s,v}. order: items in richtiger Reihenfolge.
+   match: pairs [links, rechts]. cloze: Text mit [[richtig|falsch|falsch]]. input: accept (RegExp), sol. */
+const POOL = [
+/* ---------- Inhalt erfassen ---------- */
+{id:"i1",cat:"inhalt",afb:1,type:"mc",q:"Wofür steht die Abkürzung „BPoC“?",
+ opts:["Blacks and People of Color","Black People of Culture","British People of Color","Black Power of Color"],
+ hints:["Der Begriff verbindet zwei Gruppen mit einem „and“.","Das „B“ benennt die Gruppe, die im deutschen PoC-Begriff gerade nicht mitgemeint ist."],
+ expl:"BPoC steht für „Blacks and People of Color“. Der Text betont, dass es B-P-o-C ausgesprochen wird."},
+{id:"i2",cat:"inhalt",afb:1,type:"mc",q:"Wann und wo ist der Artikel von Jörg Häntzschel erschienen?",
+ opts:["Am 24. Juli 2020 in der Süddeutschen Zeitung", "Am 24. Juli 2020 in der Wochenzeitung Die Zeit", "Im Jahr 2016 in der Süddeutschen Zeitung", "Am 24. Juli 2020 im Glossar der Neuen Medienmacher"],
+ hints:["Die Zeit wird im Text nur zitiert, sie ist nicht die Quelle.","Schau in die Quellenangabe unter dem Titel: Die Zeitung sitzt in München."],
+ expl:"Der Artikel erschien am 24. Juli 2020 in der Süddeutschen Zeitung. 2016 ist das Jahr, in dem Otoo den Bachmann-Preis gewann."},
+{id:"i3",cat:"inhalt",afb:1,type:"tf",q:"Richtig oder falsch? Entscheide für jede Aussage zur Geschichte des Begriffs.",
+ items:[{s:"Im 18. Jahrhundert nannte man Schwarze, die keine Sklaven waren, „persons of color“.",v:true},
+        {s:"Die amerikanische Bürgerrechtsbewegung brachte den Begriff in den Sechzigern als Alternative zum N-Wort ins Spiel.",v:true},
+        {s:"Im deutschen Kontext schließt „PoC“ Schwarze Menschen ausdrücklich mit ein.",v:false},
+        {s:"BPoC wird laut Text als ein Wort gesprochen („Bi-Pock“).",v:false}],
+ hints:["Zwei Aussagen stimmen, zwei nicht.","Achte auf den Satz „Doch im deutschen Kontext bezeichnet PoC alle …“ und auf die Klammer zur Aussprache."],
+ expl:"Im deutschen Kontext bezeichnet PoC „alle außer den Schwarzen“, deshalb das zusätzliche B. Ausgesprochen wird der Begriff B-P-o-C."},
+{id:"i4",cat:"inhalt",afb:1,type:"mc",q:"Worauf bezieht sich der Begriff BPoC im deutschen Kontext laut Text in erster Linie?",
+ opts:["Auf die Rassismus-Erfahrungen, die eine Person gemacht hat", "Auf die Hautfarbe, die eine Person von der Mehrheit unterscheidet", "Auf die Herkunft der Eltern oder Großeltern einer Person", "Auf den Aufenthaltsstatus und die Staatsangehörigkeit einer Person"],
+ hints:["Der Text sagt, der Begriff beziehe sich „anders als zu erwarten wäre“ gerade nicht auf das Naheliegende.","Es geht um etwas, das eine Person erlebt hat, nicht um ein äußeres Merkmal."],
+ expl:"BPoC bezieht sich „gerade nicht auf die Hautfarbe, sondern auf Rassismus-Erfahrungen, die eine Person gemacht hat“."},
+{id:"i5",cat:"inhalt",afb:1,type:"multi",q:"Warum eignet sich der Ausdruck „Menschen mit Migrationshintergrund“ laut Text nicht als Bezeichnung für diese Gruppe? Wähle alle zutreffenden Gründe.",
+ opts:[{t:"Er umfasst alle Zugewanderten, ob aus Österreich oder aus Ghana.",c:true},
+       {t:"Viele nicht deutsch aussehende Menschen leben seit Generationen hier und haben gar keinen Migrationshintergrund.",c:true},
+       {t:"Der Ausdruck ist ein englisches Akronym und im Deutschen schwer verständlich.",c:false},
+       {t:"Der Ausdruck wurde von den Neuen Medienmachern aus ihrem Glossar gestrichen.",c:false}],
+ hints:["Es sind zwei Gründe.","Ein Grund: Der Ausdruck ist zu weit. Der andere: Er trifft auf viele Betroffene gar nicht zu."],
+ expl:"Der Ausdruck ist zu weit (Österreich wie Ghana) und zugleich zu eng, weil viele Betroffene seit Generationen in Deutschland leben."},
+{id:"i6",cat:"inhalt",afb:1,type:"input",q:"Welche Berliner Straße nennt der Autor als einzige tatsächliche Umbenennung, von der man absehen müsse?",
+ accept:[/mohren\s*-?\s*stra(ss|ß)e/i, /m-stra(ss|ß)e/i], sol:"Die (Berliner) Mohrenstraße",
+ hints:["Die Stelle steht im zweiten Absatz, direkt nach „In Wahrheit wird …“.","Der Name der Straße enthält eine alte, heute als rassistisch kritisierte Bezeichnung für Schwarze Menschen."],
+ expl:"„In Wahrheit wird, sieht man von der Umbenennung der Berliner Mohrenstraße ab, in Deutschland vor allem höflich diskutiert.“"},
+{id:"i7",cat:"inhalt",afb:1,type:"order",q:"Bringe die im Text genannten Stationen in die zeitlich richtige Reihenfolge.",
+ items:["„persons of color“ bezeichnet Schwarze, die keine Sklaven sind","Die US-Bürgerrechtsbewegung bringt den Begriff als Alternative zum N-Wort ins Spiel","Schwarze in Deutschland gründen Initiativen wie ISD, Adefra oder EOTO","Deutsche Medien greifen BPoC und PoC schnell auf"],
+ hints:["Die Stationen reichen vom 18. Jahrhundert bis zur Gegenwart des Artikels (2020).","Die Initiativen gibt es „seit den Achtzigerjahren“, die Bürgerrechtsbewegung wirkte in den Sechzigern."],
+ expl:"18. Jahrhundert → 1960er Jahre → seit den 1980er Jahren → 2020 (Gegenwart des Artikels)."},
+{id:"i8",cat:"inhalt",afb:1,type:"order",q:"In welcher Reihenfolge verwendeten Schwarze Initiativen in Deutschland laut Text ihre Selbstbezeichnungen?",
+ items:["„Afrodeutsche“","„Schwarze Deutsche“","„Schwarze Menschen in Deutschland“"],
+ hints:["Der Text nennt die Begriffe mit „von … über … und zuletzt …“.","Die jüngste Bezeichnung trägt auch die Initiative von Tahir Della im Namen."],
+ expl:"Die Begriffe wechselten „von ‚Afrodeutsche‘ über ‚Schwarze Deutsche‘ und zuletzt ‚Schwarze Menschen in Deutschland‘“."},
+{id:"i9",cat:"inhalt",afb:1,type:"multi",q:"In welchen Bereichen werden rassifizierte Menschen laut Text diskriminierend behandelt? Wähle alle, die der Text nennt.",
+ opts:[{t:"in der Schule",c:true},{t:"von der Polizei",c:true},{t:"bei Job-Interviews",c:true},{t:"bei der Wohnungssuche",c:false},{t:"in Arztpraxen",c:false}],
+ hints:["Der Text nennt drei Bereiche nach einem Doppelpunkt.","Suche den Satz „Sie werden, unabhängig von Pass, Biografie, Einkommen diskriminierend behandelt: …“"],
+ expl:"Genannt werden Schule, Polizei und Job-Interviews. Wohnungssuche und Arztpraxen kommen im Text nicht vor."},
+{id:"i10",cat:"inhalt",afb:1,type:"cloze",q:"Ergänze die Lücken passend zum Text.",
+ text:"Viele Schwarze schreiben „schwarz“ mit großem [[S|W|B]], manche schreiben „weiß“ [[klein|groß|kursiv]]. Beim Streit um die Sprache geht es laut Autor um nicht mehr als eine [[Handvoll Buchstaben|neue Rechtschreibreform|Umbenennung von Straßen]].",
+ hints:["Der Autor will zeigen, wie gering die geforderten Änderungen eigentlich sind.","Die Großschreibung markiert die Selbstbezeichnung, die Kleinschreibung nimmt „weiß“ die Rolle einer Norm."],
+ expl:"Großes S in „Schwarz“, kleines w in „weiß“: Der Autor spielt die Aufregung herunter, es gehe „um nicht mehr als eine Handvoll Buchstaben“."},
+{id:"i11",cat:"inhalt",afb:1,type:"mc",q:"Welchen Wunsch formuliert Sharon Dodua Otoo am Ende des Artikels?",
+ opts:["Achtsam mit Sprache umgehen und einander wohlwollend auf Fehler hinweisen", "Verbindliche Begriffe in einem gemeinsamen „Schwarzen Duden“ festhalten", "Diskriminierende Begriffe in Medien und Behörden konsequent untersagen", "Auf Gruppenbezeichnungen künftig ganz verzichten, um Unterschiede aufzuheben"],
+ hints:["Otoo sagt ausdrücklich, die Communities wollten keinen „Schwarzen Duden“ schreiben.","Ihr Wunsch beschreibt ein gegenseitiges Verhalten: Hinweisen und Annehmen."],
+ expl:"Otoo wünscht sich einen achtsamen Umgang mit Sprache: wohlwollend auf Fehler hinweisen und darauf mit „Oh, Verzeihung. Das wusste ich nicht.“ reagieren."},
+{id:"i12",cat:"inhalt",afb:1,type:"tf",q:"Richtig oder falsch? Aussagen zum Gebrauch des Begriffs BPoC.",
+ items:[{s:"Viele aus der Community sind überrascht, wie schnell die deutschen Medien BPoC aufgegriffen haben.",v:true},
+        {s:"Wer sich selbst als BPoC bezeichnet, erwartet, auch von Weißen so bezeichnet zu werden.",v:false},
+        {s:"Vielen erscheint das Wort wenig eingängig.",v:true},
+        {s:"Wer den Begriff für andere benutzt, müsste streng genommen erst deren Rassismus-Erfahrung erfragen.",v:true}],
+ hints:["Nur eine Aussage ist falsch.","Der Text unterscheidet zwischen Selbstbezeichnung und Bezeichnung durch andere."],
+ expl:"Die Nutzer:innen verwenden den Begriff für sich selbst, „vorläufig ohne zu erwarten, dass sie damit von Weißen bezeichnet werden“."},
+
+/* ---------- Begriffe & Fachsprache ---------- */
+{id:"b1",cat:"begriffe",afb:1,type:"match",q:"Ordne den Fremdwörtern ihre Bedeutung zu.",
+ pairs:[["Paradoxie","etwas Widersinniges, Widersprüchliches"],["Ambivalenz","Zwiespältigkeit, Zerrissenheit"],["Empowerment","Handlungsfähigkeit"],["Deutungshoheit","alleiniges Recht zu interpretieren"]],
+ hints:["Die Worterläuterungen am Textende helfen.","„Ambi-“ heißt „beide“: Es geht um ein Hin- und Hergerissensein."],
+ expl:"Paradoxie = Widersprüchliches, Ambivalenz = Zwiespältigkeit, Empowerment = Handlungsfähigkeit, Deutungshoheit = alleiniges Recht zu interpretieren."},
+{id:"b2",cat:"begriffe",afb:1,type:"input",q:"Wie heißt die Diskriminierung von Menschen aufgrund ihrer (vermuteten) Zugehörigkeit zu einer niedrigeren sozialen Klasse? (ein Wort)",
+ accept:[/^\s*(der\s+)?klassismus\s*$/i], sol:"Klassismus",
+ hints:["Jeff Kwasi Klein verwendet den Begriff im Zusammenhang mit der Kassiererin.","Das Wort ist analog zu „Rassismus“ gebildet."],
+ expl:"Klassismus: Klein sagt, wer der Kassiererin unterstellt, das Konzept nicht zu verstehen, füge zum Rassismus noch Klassismus hinzu."},
+{id:"b3",cat:"begriffe",afb:1,type:"mc",q:"Was versteht man unter „Colorism“, von dem Mahret Ifeoma Kupka berichtet?",
+ opts:["Die Benachteiligung dunkelhäutiger Schwarzer durch hellhäutige Schwarze", "Die Großschreibung von Farbbezeichnungen wie „Schwarz“ als Selbstbezeichnung", "Die Einteilung von Menschen nach ihrer Hautfarbe in amtlichen Statistiken", "Die Abwertung von People of Color durch die weiße Mehrheitsgesellschaft"],
+ hints:["Es geht um Diskriminierung innerhalb einer Gruppe.","Der Unterschied liegt in hellerer und dunklerer Hautfarbe."],
+ expl:"Colorism bezeichnet die Benachteiligung dunkelhäutiger Schwarzer durch hellhäutige, also Diskriminierung innerhalb der Minderheit."},
+{id:"b4",cat:"begriffe",afb:2,type:"mc",q:"Was ist mit „Othering“ in der Frage „Antwortet man nicht auf das Othering durch die Mehrheitsgesellschaft, indem man sich selbst othert?“ gemeint?",
+ opts:["Menschen als „die Anderen“ markieren und von einer angenommenen Norm abgrenzen", "Fremde Begriffe aus dem Englischen in die eigene Sprache übernehmen", "Sich mit anderen Minderheiten zu einer gemeinsamen Gruppe zusammenschließen", "Andere Menschen danach fragen, wie sie selbst bezeichnet werden möchten"],
+ hints:["„other“ ist Englisch für „anders, der/die andere“.","Der Satz steht im Zusammenhang mit der Grenze zwischen „normal“ und „fremd“."],
+ expl:"Othering heißt, Menschen als „anders“ bzw. „fremd“ zu markieren. Der Einwand lautet: Eine eigene Gruppenbezeichnung könnte diese Abgrenzung von innen wiederholen."},
+{id:"b5",cat:"begriffe",afb:2,type:"mc",q:"Signifikant und Signifikat stehen bei BPoC „anders als bei Katze oder Apfel, in einer variablen Beziehung“. Was bedeutet das?",
+ opts:["Wer mit dem Wort gemeint ist, hängt von persönlichen Erfahrungen ab, nicht von einem festen Merkmal.", "Das Wort wird je nach Region und Sprecher:in unterschiedlich ausgesprochen und geschrieben.", "Das Wort kann je nach Satz beliebig durch Synonyme wie „Farbige“ ersetzt werden.", "Das Wort bezeichnet je nach Hautton unterschiedlich große Gruppen von Menschen."],
+ hints:["Der Signifikant ist die Ausdrucksseite (das Wort), das Signifikat das Gemeinte.","Bei „Katze“ ist klar, worauf sich das Wort bezieht. Bei BPoC entscheidet etwas Persönliches."],
+ expl:"Bei „Katze“ ist der Bezug fest. Bei BPoC hängt die Zugehörigkeit von persönlichen Rassismus-Erfahrungen ab, der Bezug ist also variabel."},
+{id:"b6",cat:"begriffe",afb:1,type:"match",q:"Ordne die Begriffe ihrer Erklärung zu.",
+ pairs:[["Selbstzuschreibung","Bezeichnung, die eine Gruppe sich selbst gibt"],["Fremdzuschreibung","Bezeichnung, die anderen von außen gegeben wird"],["Rassifizierung","Einordnung von Menschen nach konstruierten „rassischen“ Merkmalen"],["Akronym","Abkürzung aus Anfangsbuchstaben"]],
+ hints:["„Selbst-“ und „Fremd-“ unterscheiden, wer die Bezeichnung vergibt.","Zur Rassifizierung gibt es eine lange Erläuterung (Nr. 10) am Textende."],
+ expl:"BPoC ist eine Selbstzuschreibung und ein Akronym. Sie soll den Fremdzuschreibungen und der Rassifizierung etwas entgegensetzen."},
+{id:"b7",cat:"begriffe",afb:1,type:"mc",q:"Weiße Kritiker nennen die neuen Begriffe „akademische Glasperlenspiele“. Was werfen sie damit vor?",
+ opts:["Es handle sich um theoretische Gedankenspiele ohne praktischen Nutzen im Alltag.", "Die Begriffe seien nur an Universitäten verständlich und dort vorgeschrieben.", "Die Begriffe seien schön anzusehen, aber zerbrechlich und schnell wieder vergessen.", "Die Begriffe würden von Intellektuellen genutzt, um andere Gruppen auszugrenzen."],
+ hints:["Die Worterläuterung Nr. 12 erklärt das Wort.","Der folgende Satz fragt, was es der Mutter an der Rewe-Kasse helfe."],
+ expl:"Ein Glasperlenspiel ist ein rein theoretisches Gedankenspiel ohne praktischen Zweck. Die Kritiker bestreiten den Nutzen im Alltag."},
+{id:"b8",cat:"begriffe",afb:1,type:"cloze",q:"Ergänze die Aussagen von Sharon Dodua Otoo.",
+ text:"Die zusätzlichen Signale, mit denen Sprache angereichert wird, nennt Otoo [[„Post-it-Notes“|„Sprachpolizei“|„Glasperlen“]]. Die Schwarzen Communities wollen keinen [[Schwarzen Duden|neuen Wortschatz|Sprachrat]] schreiben, sondern wollen, dass der [[Diskurs|Duden|Kulturkampf]] durchlässiger wird.",
+ hints:["Die Stellen stehen im vorletzten Absatz.","Ein Post-it ist ein kleiner Notizzettel, den man auf etwas klebt."],
+ expl:"Otoo spricht von „Post-it-Notes“ und sagt, die Communities wollten „keinen Schwarzen Duden schreiben, sondern wollen, dass der Diskurs durchlässiger wird“."},
+{id:"b9",cat:"begriffe",afb:2,type:"mc",q:"Der Text fragt, ob BPoC „die Demarkationslinie wieder schärfer“ ziehe. Was ist mit „Demarkationslinie“ hier übertragen gemeint?",
+ opts:["Die Grenze zwischen dem, was als „normal“, und dem, was als „fremd“ gilt", "Die vorläufige Staatsgrenze zwischen Deutschland und seinen Nachbarländern", "Die Grenze zwischen Schwarzen Menschen und People of Color innerhalb von BPoC", "Die Trennlinie zwischen wissenschaftlicher und alltäglicher Sprache"],
+ hints:["Wörtlich ist eine Demarkationslinie eine vorläufige Grenze zwischen Staaten, hier ist sie im übertragenen Sinn gemeint.","Lies den Satzanfang: „Stoppt er nicht die allmähliche Erweiterung dessen, was … als ‚normal‘ … gesehen wird …“"],
+ expl:"Gemeint ist die gesellschaftliche Grenze zwischen „normal“ und „fremd“, die sich allmählich verschiebt und durch eine eigene Gruppenbezeichnung wieder schärfer werden könnte."},
+
+/* ---------- Stimmen & Positionen ---------- */
+{id:"p1",cat:"stimmen",afb:1,type:"match",q:"Ordne die zitierten Personen ihrer Organisation zu.",
+ pairs:[["Konstantina Vassiliou-Enz","Neue Medienmacher"],["Tahir Della","Initiative Schwarze Menschen in Deutschland"],["Ayse Demir","Türkischer Bund Berlin"],["Jeff Kwasi Klein","Migrationsrat Berlin"]],
+ hints:["Die Neuen Medienmacher veröffentlichen ein Glossar.","Ayse Demir ist ein türkischer Name, Tahir Della spricht für Schwarze Menschen."],
+ expl:"Vassiliou-Enz: Neue Medienmacher · Della: ISD · Demir: Türkischer Bund Berlin · Klein: Migrationsrat Berlin."},
+{id:"p2",cat:"stimmen",afb:1,type:"match",q:"Ordne jeder Person die passende Aussage bzw. Position zu.",
+ pairs:[["Mahret Ifeoma Kupka","Die große Unsicherheit um BPoC ist gerade das Gute an ihm."],["Konstantina Vassiliou-Enz","„Aber wir haben keinen besseren gefunden.“"],["Jeff Kwasi Klein","PoC und schwarz sind anti-elitäre Begriffe aus der Bürgerrechtsbewegung."],["Ayse Demir","Solange nicht alle gleichberechtigt sind, braucht man solche Begriffe."]],
+ hints:["Kupka ist Kuratorin und sieht die Irritationen positiv.","Klein argumentiert historisch gegen den Vorwurf des Akademischen."],
+ expl:"Kupka hält Irritation für produktiv, Vassiliou-Enz räumt Schwächen ein, Klein verweist auf die Herkunft der Begriffe, Demir begründet ihre vorläufige Notwendigkeit."},
+{id:"p3",cat:"stimmen",afb:1,type:"mc",q:"Wer berichtet im Text vom „Colorism“?",
+ opts:["Mahret Ifeoma Kupka","Sharon Dodua Otoo","Tahir Della","Ayse Demir"],
+ hints:["Die Person lebt in Frankfurt.","Sie ist Kuratorin und Kunstwissenschaftlerin."],
+ expl:"Die Frankfurter Kuratorin und Kunstwissenschaftlerin Mahret Ifeoma Kupka berichtet vom Colorism."},
+{id:"p4",cat:"stimmen",afb:1,type:"mc",q:"Warum bestehen viele Schwarze laut Tahir Della auf dem „B“ in BPoC?",
+ opts:["Weil ihre Erfahrungen mit Sklaverei und Kolonialismus eine „andere Qualität“ hatten", "Weil Schwarze Menschen die größte Gruppe unter den BPoC in Deutschland bilden", "Weil der Begriff ohne B im Deutschen zu sehr an das Wort „colored“ erinnert", "Weil die US-Bürgerrechtsbewegung das B von Anfang an so vorgesehen hat"],
+ hints:["Della verweist auf die Geschichte.","Zwei historische Unrechtssysteme werden genannt."],
+ expl:"Laut Della hatten die Rassismuserfahrungen Schwarzer mit Sklaverei und Kolonialismus eine „andere Qualität“ als die anderer Gruppen."},
+{id:"p5",cat:"stimmen",afb:1,type:"mc",q:"Worüber wundert sich die Schriftstellerin Sharon Dodua Otoo?",
+ opts:["Dass Weiße beim Thema Rassismus besonders empfindlich auf ihrer Deutungshoheit beharren", "Dass deutsche Medien den Begriff BPoC so schnell und ohne Nachfrage übernommen haben", "Dass viele Schwarze Menschen in Deutschland den Begriff BPoC für sich ablehnen", "Dass in Deutschland mehr über Straßennamen als über Rassismus selbst gestritten wird"],
+ hints:["Das Zitat beginnt mit „Wenn es um Rassismus geht …“.","Sie vermutet, Weiße fragten sich: „Wollen sie uns was wegnehmen?“"],
+ expl:"Otoo stellt eine „besondere Empfindlichkeit“ fest: Weiße beharrten beim Thema Rassismus auf ihrer Deutungshoheit."},
+{id:"p6",cat:"stimmen",afb:1,type:"tf",q:"Richtig oder falsch? Aussagen zu Tahir Della und Jeff Kwasi Klein.",
+ items:[{s:"Della: Ziel muss sein, Zuschreibungen überflüssig zu machen.",v:true},
+        {s:"Della: Auf dem Weg dorthin wird es immer neue Selbstbezeichnungen geben.",v:true},
+        {s:"Della hält BPoC für die endgültige Lösung der Bezeichnungsfrage.",v:false},
+        {s:"Klein nennt den Vorwurf der Glasperlenspiele einen Versuch, Dominanz über den Diskurs zu gewinnen.",v:true}],
+ hints:["Eine Aussage ist falsch.","Della spricht von Selbstbezeichnungen als „Abbildern“ dessen, wo die Gesellschaft gerade steht."],
+ expl:"Della sieht Selbstbezeichnungen als vorläufig; es werde „immer neue“ geben. Von einer endgültigen Lösung spricht er nicht."},
+{id:"p7",cat:"stimmen",afb:1,type:"mc",q:"Aus welcher Quelle stammen die zitierten Schlagworte „Umerziehung“ und „moralische Vernichtung wegen Falschdenk“?",
+ opts:["Aus der Wochenzeitung Die Zeit","Aus einem Interview mit Sharon Dodua Otoo","Aus dem Glossar der Neuen Medienmacher","Aus einer Stellungnahme des Migrationsrats Berlin"],
+ hints:["Die Quelle steht in Klammern direkt hinter dem Zitat.","Es ist eine Wochenzeitung aus Hamburg."],
+ expl:"Die Formulierungen stammen aus der Zeit. Der Autor nutzt sie als Beispiel für die aufgeregten Kommentare."},
+{id:"p8",cat:"stimmen",afb:2,type:"multi",q:"Welche Personen benennen im Text Schwächen, Probleme oder Zweifel rund um den Begriff BPoC? Wähle alle zutreffenden.",
+ opts:[{t:"Konstantina Vassiliou-Enz",c:true},{t:"Mahret Ifeoma Kupka",c:true},{t:"Tahir Della",c:true},{t:"Jeff Kwasi Klein",c:false},{t:"Ayse Demir",c:false}],
+ hints:["Drei Personen sind richtig.","Wer verteidigt den Begriff gegen Kritik von außen, ohne selbst Probleme zu nennen?"],
+ expl:"Vassiliou-Enz räumt Paradoxien ein, Kupka berichtet von Colorism und Unsicherheit, Della betont die spezifische Erfahrung Schwarzer. Klein und Demir verteidigen den Begriff."},
+
+/* ---------- Schlussfolgern & Deuten ---------- */
+{id:"s1",cat:"schluss",afb:2,type:"mc",q:"Der Text sagt, BPoC „ersetzt also keinen anderen Begriff“. Warum?",
+ opts:["Weil die Gruppe vorher keinen eigenen Namen hatte und nur als „nicht weiß“ galt", "Weil die älteren Begriffe daneben weiterhin gültig und korrekt bleiben", "Weil BPoC nur als Übersetzung von „Menschen mit Migrationshintergrund“ dient", "Weil BPoC ausschließlich als Selbstbezeichnung und nie für andere gilt"],
+ hints:["Etwas ersetzen kann man nur, wenn es vorher schon da war.","Der Text nennt die Gruppe bisher „namenlos“."],
+ expl:"BPoC benennt eine Gruppe, die trotz ähnlicher Erfahrungen bisher „namenlos war und allenfalls durch ihre Abweichung von der Norm als ‚nicht weiß‘ klassifiziert wurde“."},
+{id:"s2",cat:"schluss",afb:2,type:"mc",q:"Welche Folgerung ergibt sich daraus, dass BPoC sich auf Erfahrungen und nicht auf das Aussehen bezieht?",
+ opts:["Von außen lässt sich nicht sicher entscheiden, wer BPoC ist; man müsste die Person fragen.", "Jede Person kann sich unabhängig von eigenen Erfahrungen als BPoC bezeichnen.", "Der Begriff eignet sich besonders gut, um Gruppen in Statistiken genau zu erfassen.", "Wer keine eigene Rassismus-Erfahrung hat, darf den Begriff überhaupt nicht aussprechen."],
+ hints:["Erfahrungen sieht man einer Person nicht an.","Der Text sagt, wer den Begriff für andere benützt, müsste streng genommen erst etwas erfragen."],
+ expl:"Weil der Begriff an persönliche Rassismus-Erfahrung gebunden ist, lässt er sich nicht von außen zuweisen. Daraus folgt der Vorrang der Selbstbezeichnung."},
+{id:"s3",cat:"schluss",afb:3,type:"mc",q:"Welches Paradox steckt im erklärten Ziel des Begriffs BPoC?",
+ opts:["Der Begriff soll eine Gesellschaft herbeiführen, in der er selbst überflüssig ist.", "Der Begriff soll alle Minderheiten vereinen, schließt aber Schwarze Menschen aus.", "Der Begriff soll deutsch wirken, ist aber ein englisches Akronym aus den USA.", "Der Begriff soll sich auf die Hautfarbe beziehen und zugleich farbenblind sein."],
+ hints:["Lies das Ende des Abschnitts zum solidarischen Akt: „… was den Begriff eines Tages überflüssig machen soll“.","Auch Della spricht davon, Zuschreibungen „überflüssig“ zu machen."],
+ expl:"BPoC betont Unterschiede, um eine Gesellschaft vorwegzunehmen, „in der über äußerliche Unterschiede nicht mehr gesprochen werden muss“. Am Ziel angekommen, wäre der Begriff überflüssig."},
+{id:"s4",cat:"schluss",afb:2,type:"mc",q:"Welches Dilemma beschreibt die Frage „Antwortet man nicht auf das Othering … indem man sich selbst othert?“",
+ opts:["Wer sich zur Abwehr als eigene Gruppe benennt, betont womöglich selbst die Grenze zur Mehrheit.", "Wer sich nicht selbst benennt, wird automatisch der Mehrheitsgesellschaft zugerechnet.", "Wer einen englischen Begriff wählt, grenzt Menschen ohne Englischkenntnisse aus.", "Wer Rassismus öffentlich kritisiert, wird von der Mehrheit selbst als fremd markiert."],
+ hints:["Ein Dilemma heißt: Beide Wege haben einen Nachteil.","Die Gegenwehr kann ungewollt das bestätigen, wogegen sie sich richtet."],
+ expl:"Die Selbstbezeichnung soll Fremdzuschreibungen entgegenwirken, kann aber die Trennung zwischen „normal“ und „fremd“ erneut markieren."},
+{id:"s5",cat:"schluss",afb:2,type:"mc",q:"Warum vergleicht der Autor BPoC mit der LGBTQ-Bewegung?",
+ opts:["Weil sich in beiden Fällen verschiedene Minderheiten solidarisch zusammenschließen", "Weil beide Begriffe in der US-Bürgerrechtsbewegung der Sechziger entstanden sind", "Weil beide Bewegungen ihre Begriffe verbindlich im Duden festschreiben wollen", "Weil beide Gruppen im Alltag genau dieselben Diskriminierungen erleben"],
+ hints:["Beide Begriffe sind Sammelbezeichnungen aus mehreren Buchstaben.","Der Text spricht von einem „solidarischen Akt“ und einem „Zusammenschluss“."],
+ expl:"Wie bei LGBTQ geht es um einen Zusammenschluss von Minderheiten, „die sich trotz ihrer Unterschiede in einem … einig sind“."},
+{id:"s6",cat:"schluss",afb:2,type:"multi",q:"Welche Schlüsse über Spannungen innerhalb der BPoC-Gruppe lassen sich aus dem Text ziehen? Wähle alle zutreffenden.",
+ opts:[{t:"Auch Minderheiten sind nicht frei von Diskriminierung untereinander.",c:true},
+       {t:"Der Gewinn an gemeinsamer Handlungsfähigkeit kann zulasten spezifischer Gruppenidentitäten gehen.",c:true},
+       {t:"Schwarze Menschen sehen ihre Geschichte durch den Sammelbegriff nicht immer angemessen abgebildet.",c:true},
+       {t:"Alle Untergruppen lehnen den Sammelbegriff BPoC grundsätzlich und geschlossen ab.",c:false},
+       {t:"Konflikte gibt es nur zwischen BPoC und der weißen Mehrheit, nicht untereinander.",c:false}],
+ hints:["Drei Aussagen treffen zu.","Denk an Colorism, an den „BPoC-Schirm“ und an Dellas Begründung für das B."],
+ expl:"Colorism zeigt Diskriminierung innerhalb der Gruppe. Unter dem „BPoC-Schirm“ geht spezifische Identität verloren. Schwarze bestehen wegen Sklaverei und Kolonialismus auf dem B. Eine grundsätzliche Ablehnung aller behauptet der Text nicht."},
+{id:"s7",cat:"schluss",afb:3,type:"mc",q:"Der Autor schreibt einmal „der Autor“ und dann „mir, einem weißen Deutschen“. Was lässt sich über seine Rolle im Artikel schließen?",
+ opts:["Er legt seine Sprecherposition offen und tritt als Zuhörender auf, der Betroffene erklären lässt.", "Er stellt sich als neutraler Beobachter dar, der keine eigene Meinung zum Thema vertritt.", "Er will zeigen, dass auch weiße Deutsche von Sprachkontrolle und Verdacht betroffen sind.", "Er tritt als Experte auf, der den Betroffenen die angemessenen Begriffe erklärt."],
+ hints:["Wer spricht hier eigentlich über wen? Das ist genau das Thema des Artikels.","Die Gesprächspartner erklärten ihm „ihr Anliegen geduldig“."],
+ expl:"Durch die offengelegte Position als weißer Deutscher und das Zuhören spiegelt der Autor das Anliegen des Textes: Die Besprochenen sollen mitreden."},
+{id:"s8",cat:"schluss",afb:2,type:"mc",q:"Warum ist es laut Jeff Kwasi Klein Klassismus, zu behaupten, der alleinerziehenden Mutter an der Kasse nütze der Begriff nichts?",
+ opts:["Weil man ihr wegen ihrer sozialen Stellung abspricht, das Konzept verstehen zu können", "Weil man ihre Arbeit an der Kasse als weniger wertvoll als akademische Arbeit darstellt", "Weil man sie als Alleinerziehende auf ihre familiäre Situation reduziert", "Weil man übersieht, dass sie selbst womöglich keine Rassismus-Erfahrungen macht"],
+ hints:["Klassismus richtet sich gegen Menschen aus einer niedrigeren sozialen Klasse.","Klein spricht von einer „imaginären Person“, der man Dummheit unterstelle."],
+ expl:"Wer annimmt, diese imaginäre Person sei „zu dumm“, das Konzept zu verstehen, wertet sie wegen ihrer Klasse ab: Zum Rassismus kommt Klassismus hinzu."},
+{id:"s9",cat:"schluss",afb:3,type:"mc",q:"Der letzte Satz lautet: „Es wäre im Übrigen eine Haltung, die man vielleicht auch in ganz anderen Kontexten übernehmen könnte.“ Wie lässt er sich am plausibelsten deuten?",
+ opts:["Als Anregung, den wohlwollenden, fehlertoleranten Umgang auf andere Debatten zu übertragen", "Als Forderung, den Begriff BPoC auch in anderen Ländern und Sprachen einzuführen", "Als ironische Distanzierung von Otoos Wunsch, den der Autor für naiv hält", "Als Hinweis, dass neue Sprachregeln auch in Schulen und Behörden gelten sollten"],
+ hints:["„Haltung“ bezieht sich auf Otoos Wunsch im Satz davor.","Denk an die hitzigen Debatten, die der Autor am Anfang und beim Gendersternchen erwähnt."],
+ expl:"Der Autor verallgemeinert Otoos Haltung (achtsam, wohlwollend, fehlertolerant) zu einem Modell für Debattenkultur überhaupt, etwa beim Gendern."},
+{id:"s10",cat:"schluss",afb:2,type:"tf",q:"Richtig oder falsch? Welche Aussagen lassen sich aus dem Text ableiten, auch wenn sie so nicht wörtlich dastehen?",
+ items:[{s:"Der Sprachwandel verschiebt Macht vom Sprechenden hin zu denen, über die gesprochen wird.",v:true},
+        {s:"Der Autor hält die Warnungen vor einem „Kulturkampf“ für übertrieben.",v:true},
+        {s:"Der Autor fordert, BPoC verbindlich im Duden festzuschreiben.",v:false},
+        {s:"Selbstbezeichnungen gelten im Text als vorläufig und wandeln sich mit der Gesellschaft.",v:true}],
+ hints:["Eine Aussage ist falsch.","Denk an Otoos Satz über den „Schwarzen Duden“."],
+ expl:"Nirgends wird eine verbindliche Festschreibung gefordert. Im Gegenteil: Die Communities wollen „keinen Schwarzen Duden“."},
+{id:"s11",cat:"schluss",afb:2,type:"mc",q:"Warum hält Kupka die Irritationen um den Begriff für „produktiv“?",
+ opts:["Weil sie alle Beteiligten dazu zwingen, über Sprache und Rassismus nachzudenken", "Weil sie dafür sorgen, dass sich der Begriff in den Medien schneller verbreitet", "Weil sie zeigen, dass der Begriff bald durch einen besseren ersetzt werden wird", "Weil sie die Kritiker dazu bringen, sich aus der Debatte zurückzuziehen"],
+ hints:["„Produktiv“ heißt: Es entsteht etwas Nützliches.","Der Text sagt: „… weil sie alle Beteiligten zum …“"],
+ expl:"Laut Kupka zwingt die Unsicherheit „alle Beteiligten zum Nachdenken“. Gerade das Unfertige mache den Begriff wertvoll."},
+{id:"s12",cat:"schluss",afb:2,type:"mc",q:"Warum erwähnt der Autor, dass viele in sozialen Netzen ihre Pronomen angeben?",
+ opts:["Als Beleg, dass Besprochene zunehmend mitbestimmen, wie sie bezeichnet werden", "Als Beispiel dafür, dass soziale Netzwerke die Sprache zunehmend verflachen", "Als Vorschlag, Pronomen künftig anstelle des Begriffs BPoC zu verwenden", "Als Beleg dafür, dass die Kritiker mit ihrer Warnung vor Sprachkontrolle recht haben"],
+ hints:["Achte auf den Satz danach: „… sind verglichen damit alles andere als radikal.“","Es geht um die Frage, wer über eine Bezeichnung entscheidet."],
+ expl:"Die Pronomen zeigen eine allgemeine Entwicklung: Wer besprochen wird, redet mit. Im Vergleich dazu sind die neuen Begriffe „alles andere als radikal“."},
+
+/* ---------- Argumentation & Autorposition ---------- */
+{id:"a1",cat:"argument",afb:2,type:"mc",q:"Welcher Textsorte lässt sich der Artikel am ehesten zuordnen?",
+ opts:["Meinungsbetonter Feuilleton-Artikel, der Recherche, Zitate und eigene Wertung verbindet", "Sachliche Nachricht, die ohne eigene Wertung über eine aktuelle Debatte informiert", "Interview, in dem Betroffene ausführlich auf die Fragen des Autors antworten", "Wissenschaftlicher Aufsatz, der Fachbegriffe mit Fußnoten und Quellen definiert"],
+ hints:["Der Autor wertet deutlich, etwa mit „In Wahrheit …“ oder „hysterische Abwehrreaktionen“.","Zugleich zitiert er viele Gesprächspartner, die er befragt hat."],
+ expl:"Der Text ist meinungsbetont (klare Wertungen, Ironie), beruht aber auf Recherche und Zitaten. Das ist typisch für einen Feuilleton-Artikel bzw. Essay."},
+{id:"a2",cat:"argument",afb:3,type:"mc",q:"Welche Funktion hat der Einstieg „Es sind schlimme Zeiten. Nicht nur für Schwarze in den USA … Sondern, glaubt man vielen Kommentaren, auch für die weißen Deutschen …“?",
+ opts:["Er stellt reale Gewalt der gefühlten Bedrohung weißer Deutscher gegenüber und relativiert sie ironisch.", "Er stellt die Bedrohung Schwarzer und die Bedrohung weißer Deutscher als gleich schwerwiegend dar.", "Er informiert sachlich über die Lage in den USA, bevor er zum eigentlichen Thema überleitet.", "Er schildert die Sorgen weißer Deutscher ausführlich, um Verständnis für die Kritiker zu wecken."],
+ hints:["Achte auf die Konstruktion „Nicht nur … sondern auch“ und auf „glaubt man vielen Kommentaren“.","Vergleiche Tränengas und Morddrohungen mit „Umerziehung“ und „Falschdenk“."],
+ expl:"Die Reihung stellt echte Gewalt neben eine eingebildete Bedrohung. Die Wendung „glaubt man vielen Kommentaren“ distanziert sich und entlarvt die Klage ironisch."},
+{id:"a3",cat:"argument",afb:2,type:"order",q:"Bringe die Abschnitte des Gedankengangs in die Reihenfolge des Artikels.",
+ items:["Kontrast: reale Gewalt gegen gefühlten „Kulturkampf“","Bedeutung, Aussprache und Geschichte des Begriffs BPoC","Idee des Begriffs: Selbstzuschreibung und solidarischer Zusammenschluss","Probleme innerhalb der Gruppe und der Einwand des „Othering“","Widerlegung des Vorwurfs der „Glasperlenspiele“","Einordnung in ein neues Sprachverständnis und Otoos Appell zur Achtsamkeit"],
+ hints:["Der Artikel beginnt mit der Situation und endet mit einem Wunsch.","Erst wird der Begriff erklärt, dann kritisiert, dann gegen Kritik von außen verteidigt."],
+ expl:"Einstieg (Kontrast) → Begriffsklärung → Idee → Kritik von innen und außen → Widerlegung des Glasperlen-Vorwurfs → Einordnung und Schlussappell."},
+{id:"a4",cat:"argument",afb:2,type:"mc",q:"Mit welchem Argument entkräftet Jeff Kwasi Klein vor allem den Vorwurf, die Begriffe seien akademisch?",
+ opts:["Mit einem historischen Argument: Die Begriffe stammen aus der Bürgerrechtsbewegung.", "Mit einem Autoritätsargument: Die Neuen Medienmacher führen die Begriffe im Glossar.", "Mit einem Erfahrungsargument: Er selbst habe den Begriff zuerst im Alltag gehört.", "Mit einem Zahlenargument: Die Mehrheit der Betroffenen nutze den Begriff bereits."],
+ hints:["Klein spricht über die „Entstehungsgeschichte“.","Er nennt ein Jahrzehnt und eine Bewegung."],
+ expl:"Klein verweist auf die Herkunft: „Sowohl der Begriff schwarz als auch der Begriff PoC kommen aus der Bürgerrechtsbewegung der Sechziger. Das sind anti-elitäre Begriffe.“"},
+{id:"a5",cat:"argument",afb:2,type:"mc",q:"In welchem Punkt gibt der Autor den „empörten Sprachverteidigern“ recht?",
+ opts:["Das große S und BPoC sind tatsächlich Etappen zu einem neuen Sprachverständnis.", "Die deutsche Kultur und Geschichte geraten durch die neuen Begriffe unter Druck.", "Es gibt einzelne Sprachpolizisten, die andere wegen falscher Wörter verfolgen.", "Die neuen Begriffe sind für Menschen außerhalb der Universitäten kaum verständlich."],
+ hints:["Der Satz beginnt mit „Recht haben die empörten Sprachverteidiger allerdings in einem: …“","Es geht um eine langfristige Entwicklung der Sprache."],
+ expl:"Der Autor räumt ein, dass hier wirklich ein Wandel im Sprachverständnis stattfindet, bewertet ihn aber anders als die Kritiker: Die Besprochenen sollen mitreden dürfen."},
+{id:"a6",cat:"argument",afb:2,type:"multi",q:"Welche Strategien nutzt der Autor, um seine Position zu stützen? Wähle alle zutreffenden.",
+ opts:[{t:"Er lässt Betroffene und Fachleute ausführlich zu Wort kommen.",c:true},
+       {t:"Er stellt Behauptungen der Kritiker der Wirklichkeit gegenüber („In Wahrheit …“).",c:true},
+       {t:"Er räumt Schwächen und Gegenargumente ein, bevor er bewertet.",c:true},
+       {t:"Er belegt seine Thesen mit Umfragestatistiken zur Verbreitung von Rassismus.",c:false},
+       {t:"Er schildert eigene Erfahrungen, um die Leser emotional anzusprechen.",c:false}],
+ hints:["Drei Strategien treffen zu.","Statistiken findest du im Text nicht, und über eigene Erlebnisse spricht der Autor kaum."],
+ expl:"Zitate, der Kontrast zwischen Behauptung und Wirklichkeit und das Einräumen von Paradoxien und Einwänden machen seine Position glaubwürdig. Statistiken und Anekdoten fehlen."},
+{id:"a7",cat:"argument",afb:2,type:"mc",q:"Wie lässt sich die Haltung des Autors gegenüber den Kritikern der angeblichen „Sprachkontrolle“ am besten beschreiben?",
+ opts:["Ironisch-distanziert und kritisch", "Zustimmend und verständnisvoll", "Sachlich-neutral und abwägend", "Besorgt und eindringlich warnend"],
+ hints:["Er nennt ihre Reaktionen „hysterische Abwehrreaktionen“.","Er schreibt: „Sprachpolizisten konnte der Autor nicht finden.“"],
+ expl:"Der Autor übernimmt die Formulierungen der Kritiker, um sie ironisch zu entkräften („In Wahrheit … höflich diskutiert“), und nennt ihre Reaktionen unbegründet."},
+{id:"a8",cat:"argument",afb:2,type:"tf",q:"Richtig oder falsch? Aussagen zur Position des Autors.",
+ items:[{s:"Er stellt fest, dass er keine „Sprachpolizisten“ finden konnte.",v:true},
+        {s:"Er hält die Abwehrreaktionen vieler Sprachwächter für unbegründet.",v:true},
+        {s:"Er hält BPoC für einen Begriff ohne Schwächen.",v:false},
+        {s:"Er bewertet die neuen Begriffe im Vergleich als „alles andere als radikal“.",v:true}],
+ hints:["Eine Aussage ist falsch.","Der Autor fragt selbst: „Sind das nicht ein paar Paradoxien und Ambivalenzen zu viel …?“"],
+ expl:"Der Autor benennt Schwächen des Begriffs ausdrücklich (Paradoxien, Ambivalenzen), verteidigt aber sein Anliegen."},
+{id:"a9",cat:"argument",afb:3,type:"mc",q:"Welche Schlussfolgerung legt die Argumentation insgesamt nahe?",
+ opts:["Entscheidend ist weniger der Begriff als das Recht Betroffener, über ihre Bezeichnung mitzubestimmen.", "BPoC ist trotz kleiner Mängel der richtige Begriff und sollte überall verbindlich verwendet werden.", "Wegen seiner vielen Widersprüche sollte der Begriff BPoC bald wieder aufgegeben werden.", "Die Debatte ist letztlich unwichtig, weil es nur um eine Handvoll Buchstaben geht."],
+ hints:["Der Autor räumt die Schwächen ein, verteidigt aber das Anliegen.","Denk an den Zwischentitel „Der, über den gesprochen wird, soll künftig ein Wörtchen mitreden“."],
+ expl:"Trotz aller Paradoxien bleibt das Kernanliegen: Selbstbezeichnung statt Fremdbestimmung, in einem offenen, „kollektiven Prozess“."},
+
+/* ---------- Sprache & Wirkung ---------- */
+{id:"t1",cat:"sprache",afb:3,type:"mc",q:"„Als würde ein jakobinischer Mob landauf, landab Denkmäler schleifen, Straßen umbenennen und Karrieren beenden.“ Welche Wirkung hat dieser Satz im Zusammenhang?",
+ opts:["Er überzeichnet die Sicht der Kritiker im Konjunktiv und entlarvt sie als Übertreibung.", "Er beschreibt anschaulich, was derzeit in vielen deutschen Städten tatsächlich geschieht.", "Er warnt die Leser vor radikalen Gruppen, die Denkmäler und Straßennamen angreifen.", "Er stellt die Französische Revolution als historisches Vorbild für die Debatte dar."],
+ hints:["Achte auf den Konjunktiv „Als würde …“ und auf den nächsten Satz „In Wahrheit …“.","Ein „jakobinischer Mob“ ist ein Bild für revolutionäre Radikalität, also stark übertrieben."],
+ expl:"Der Konjunktiv markiert eine Vorstellung, keine Wirklichkeit. Die Übertreibung macht die Kritik lächerlich, das „In Wahrheit“ stellt die Realität dagegen."},
+{id:"t2",cat:"sprache",afb:2,type:"mc",q:"„Geht’s noch?, werden wohl auch die Letzten nun sagen.“ Was bewirkt diese Formulierung?",
+ opts:["Sie nimmt die vermutete genervte Reaktion der Leser vorweg und greift deren Einwand auf.", "Sie gibt wörtlich wieder, wie Kritiker in der Zeit auf den Begriff reagiert haben.", "Sie zeigt, dass der Autor selbst den Begriff BPoC für unbrauchbar und überflüssig hält.", "Sie beendet die Begriffsklärung und leitet unmittelbar zum Fazit des Artikels über."],
+ hints:["Wer spricht hier? „Die Letzten“ meint Leser, die bisher noch Geduld hatten.","Nach der Frage folgt ein Einwand, den der Autor anschließend bespricht."],
+ expl:"Der Autor antizipiert die genervte Leserreaktion auf die vielen Widersprüche, nimmt sie ernst und bindet die Leser so in den Gedankengang ein."},
+{id:"t3",cat:"sprache",afb:2,type:"match",q:"Ordne den Textstellen das passende sprachliche Mittel zu.",
+ pairs:[["„Wollen sie uns was wegnehmen?“","rhetorische Frage"],["„akademische Glasperlenspiele“","Metapher"],["„Sprachpolizisten konnte der Autor nicht finden.“","ironische Widerlegung"],["„landauf, landab“","Paarformel"]],
+ hints:["Eine Paarformel verbindet zwei ähnliche Wörter fest miteinander.","Ein Glasperlenspiel wird hier nicht wörtlich gespielt."],
+ expl:"Rhetorische Frage (Otoo), Metapher (Glasperlenspiele), ironische Widerlegung (Sprachpolizisten), Paarformel (landauf, landab)."},
+{id:"t4",cat:"sprache",afb:2,type:"mc",q:"Warum setzt der Autor „Kultur“ und „Geschichte“ in „Die deutsche ‚Kultur‘, die deutsche ‚Geschichte‘ ist nicht in Gefahr“ in Anführungszeichen?",
+ opts:["Um sich von diesen Schlagworten der Kritiker zu distanzieren und sie infrage zu stellen", "Um die beiden Begriffe als wörtliche Zitate aus Otoos Aussagen zu kennzeichnen", "Um zu betonen, dass Kultur und Geschichte für den Autor besonders wichtig sind", "Um die Begriffe als Fachwörter hervorzuheben, die in den Fußnoten erklärt werden"],
+ hints:["Anführungszeichen können auch Distanz ausdrücken.","Wer spricht davon, dass Kultur und Geschichte „in Gefahr“ seien?"],
+ expl:"Die Anführungszeichen zeigen: So reden die Kritiker. Der Autor übernimmt ihre Begriffe nicht, sondern stellt sie infrage."},
+{id:"t5",cat:"sprache",afb:3,type:"mc",q:"Der Autor schreibt zunächst über sich in der dritten Person („der Autor“), dann in der ersten („mir, einem weißen Deutschen“). Welche Wirkung hat dieser Wechsel?",
+ opts:["Er legt seine eigene Sprecherposition offen und reflektiert sie, passend zum Thema.", "Er wechselt die Perspektive, um den Text sachlicher und unpersönlicher wirken zu lassen.", "Er macht dadurch kenntlich, dass Teile des Textes von einer anderen Person stammen.", "Er will betonen, dass er als weißer Deutscher selbst Diskriminierung erfährt."],
+ hints:["Der Wechsel geschieht genau dort, wo er von seinen Gesprächen berichtet.","Der Artikel handelt davon, aus welcher Position jemand spricht."],
+ expl:"Mit dem Wechsel zur ersten Person und der Selbstbezeichnung „weißer Deutscher“ legt der Autor seine Perspektive offen. Das ist ein selbstreflexives Signal im Sinne des Themas."},
+{id:"t6",cat:"sprache",afb:2,type:"mc",q:"Was veranschaulicht die Metapher „unter dem BPoC-Schirm“?",
+ opts:["Den Begriff als gemeinsames Dach, das verschiedene Gruppen vereint, aber ihre Eigenständigkeit verdeckt", "Den Begriff als Schutz, hinter dem sich Einzelne vor Kritik aus der eigenen Gruppe verstecken", "Den Begriff als vorübergehende Lösung, die man bei Bedarf einfach wieder zuklappen kann", "Den Begriff als Abgrenzung, die weiße Menschen bewusst von der Debatte ausschließen soll"],
+ hints:["Man denke an einen Regenschirm: Wer steht darunter?","Direkt danach heißt es, man verliere „an spezifischer Gruppenidentität“."],
+ expl:"Ein Schirm vereint mehrere unter sich und schützt sie (Empowerment). Wer darunter steht, tritt aber weniger als eigene Gruppe hervor."},
+{id:"t7",cat:"sprache",afb:2,type:"mc",q:"Otoo vergleicht die neuen Sprachsignale mit „Post-it-Notes“. Was drückt dieses Bild aus?",
+ opts:["Sprache wird um zusätzliche Hinweise ergänzt, ohne dass das bestehende System verschwindet.", "Neue Begriffe halten nur kurz und fallen wie Notizzettel schnell wieder ab.", "Alte Wörter sollen vollständig überklebt und durch neue Wörter ersetzt werden.", "Sprachliche Regeln sollen künftig schriftlich festgehalten und überall ausgehängt werden."],
+ hints:["Ein Post-it wird auf etwas Bestehendes geklebt.","Der Text sagt: Sprache wird „angereichert mit allen möglichen zusätzlichen Signalen“."],
+ expl:"Wie Notizzettel ergänzen die Signale die Sprache um Informationen, etwa wie jemand bezeichnet werden möchte. Die Sprache wird angereichert, nicht ersetzt."}
+];
+
+/* ============ Hilfsfunktionen ============ */
+const $ = (s, el=document) => el.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function shuffle(a){ a=[...a]; for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
+const byId = Object.fromEntries(POOL.map(q=>[q.id,q]));
+function parseCloze(text){
+  const parts=[]; const gaps=[]; let last=0; const re=/\[\[(.+?)\]\]/g; let m;
+  while((m=re.exec(text))){ parts.push({t:text.slice(last,m.index)}); const o=m[1].split("|"); gaps.push(o[0]); parts.push({gap:gaps.length-1,opts:o}); last=re.lastIndex; }
+  parts.push({t:text.slice(last)}); return {parts,gaps};
+}
+function solutionHTML(q){
+  switch(q.type){
+    case "mc": return esc(q.opts[0]);
+    case "multi": return "<ul>"+q.opts.filter(o=>o.c).map(o=>"<li>"+esc(o.t)+"</li>").join("")+"</ul>";
+    case "tf": return "<ul>"+q.items.map(i=>"<li><b>"+(i.v?"Richtig":"Falsch")+":</b> "+esc(i.s)+"</li>").join("")+"</ul>";
+    case "order": return "<ol>"+q.items.map(i=>"<li>"+esc(i)+"</li>").join("")+"</ol>";
+    case "match": return "<ul>"+q.pairs.map(p=>"<li><b>"+esc(p[0])+"</b> → "+esc(p[1])+"</li>").join("")+"</ul>";
+    case "cloze": return esc(q.text.replace(/\[\[(.+?)(\|.*?)?\]\]/g,(m,a)=>"‹"+a+"›")).replace(/‹(.+?)›/g,"<b>$1</b>");
+    case "input": return esc(q.sol);
+  }
+}
+
+/* ============ Ziehung ============ */
+const SETS = {
+  text:   {name:"Textverständnis", cats:["inhalt","begriffe","stimmen","schluss"],
+           duo:{per:10, mix:{1:5,2:4,3:1}}, solo:{per:15, mix:{1:7,2:6,3:2}}},
+  analyse:{name:"Analyse", cats:["argument","sprache"],
+           duo:{per:7, mix:{1:0,2:5,3:2}}, solo:{per:12, mix:{1:0,2:8,3:4}}}
+};
+function draw(nPlayers, mix, cats){
+  const out = Array.from({length:nPlayers},()=>[]);
+  for(const lvl of [1,2,3]){
+    const byCat = {};
+    POOL.filter(q=>q.afb===lvl && cats.includes(q.cat)).forEach(q=>{(byCat[q.cat] ||= []).push(q.id);});
+    const lists = shuffle(Object.keys(byCat)).map(c=>shuffle(byCat[c]));
+    const rr=[]; let added=true;
+    while(added){ added=false; for(const l of lists){ if(l.length){ rr.push(l.shift()); added=true; } } }
+    const need = mix[lvl]*nPlayers;
+    rr.slice(0,need).forEach((id,i)=>out[(i+Math.floor(i/nPlayers))%nPlayers].push(id));
+  }
+  return out.map(shuffle);
+}
+
+/* ============ Zustand ============ */
+let S = {screen:"setup", mode:"duo", set:"text", names:["Spieler:in 1","Spieler:in 2"]};
+
+function newGame(){
+  const duo = S.mode==="duo";
+  const cfg = SETS[S.set][duo?"duo":"solo"];
+  const per = cfg.per;
+  const sets = draw(duo?2:1, cfg.mix, SETS[S.set].cats);
+  S.players = sets.map((ids,i)=>({name:(S.names[i]||"").trim()||(duo?"Spieler:in "+(i+1):"Du"), ids, score:0, log:[]}));
+  S.seq = [];
+  for(let k=0;k<per;k++) S.players.forEach((p,pi)=>S.seq.push({p:pi,k}));
+  S.step = 0; S.per = per; S.screen="game"; S.confirmQuit=false;
+  startQuestion();
+}
+function cur(){ const s=S.seq[S.step]; const pl=S.players[s.p]; return {pi:s.p, pl, q:byId[pl.ids[s.k]], k:s.k}; }
+function startQuestion(){
+  const {q}=cur();
+  const st = {tries:0, done:false, solved:false, pts:0, msgs:[]};
+  if(q.type==="mc") st.order = shuffle(q.opts.map((_,i)=>i)), st.sel=null;
+  if(q.type==="multi") st.order = shuffle(q.opts.map((_,i)=>i)), st.sel=new Set();
+  if(q.type==="tf") st.sel = q.items.map(()=>null);
+  if(q.type==="order"){ let o; do{ o=shuffle(q.items.map((_,i)=>i)); }while(o.every((v,i)=>v===i)); st.arr=o; }
+  if(q.type==="match"){ st.rights = shuffle(q.pairs.map((_,i)=>i)); st.sel=q.pairs.map(()=>""); }
+  if(q.type==="cloze"){ st.cz=parseCloze(q.text); st.cz.parts.forEach(p=>{ if(p.opts) p.shown=shuffle(p.opts); }); st.sel=st.cz.gaps.map(()=>""); }
+  if(q.type==="input") st.val="";
+  S.q = st; render();
+}
+function complete(){
+  const st=S.q;
+  if(st.tries===0) return false;
+  const {q}=cur();
+  switch(q.type){
+    case "mc": return st.sel!==null;
+    case "tf": return st.sel.every(v=>v!==null);
+    case "match": return st.sel.every(v=>v!=="");
+    case "cloze": return st.sel.every(v=>v!=="");
+    case "input": return st.val.trim().length>0;
+    case "multi": return st.sel.size>0;
+    default: return true;
+  }
+}
+function canCheck(){
+  const {q}=cur(); const st=S.q;
+  switch(q.type){
+    case "mc": return st.sel!==null;
+    case "tf": return st.sel.every(v=>v!==null);
+    case "match": return st.sel.every(v=>v!=="");
+    case "cloze": return st.sel.every(v=>v!=="");
+    case "input": return st.val.trim().length>0;
+    case "multi": return st.sel.size>0;
+    default: return true;
+  }
+}
+/* returns {ok, right, total} */
+function evaluate(){
+  const {q}=cur(); const st=S.q;
+  switch(q.type){
+    case "mc": return {ok:st.sel===0};
+    case "multi": { let r=0; q.opts.forEach((o,i)=>{ if(o.c===st.sel.has(i)) r++; }); return {ok:r===q.opts.length, right:r, total:q.opts.length, unit:"Antwortoptionen richtig entschieden"}; }
+    case "tf": { let r=0; q.items.forEach((it,i)=>{ if(st.sel[i]===it.v) r++; }); return {ok:r===q.items.length,right:r,total:q.items.length,unit:"Aussagen richtig beurteilt"}; }
+    case "order": { let r=0; st.arr.forEach((v,i)=>{ if(v===i) r++; }); return {ok:r===st.arr.length,right:r,total:st.arr.length,unit:"Elemente an der richtigen Stelle"}; }
+    case "match": { let r=0; st.sel.forEach((v,i)=>{ if(String(v)===String(i)) r++; }); return {ok:r===q.pairs.length,right:r,total:q.pairs.length,unit:"Zuordnungen richtig"}; }
+    case "cloze": { let r=0; st.sel.forEach((v,i)=>{ if(v===st.cz.gaps[i]) r++; }); return {ok:r===st.cz.gaps.length,right:r,total:st.cz.gaps.length,unit:"Lücken richtig gefüllt"}; }
+    case "input": { const v=st.val.trim(); return {ok:q.accept.some(re=>re.test(v))}; }
+  }
+}
+function check(){
+  const {q,pl}=cur(); const st=S.q; if(st.done||!canCheck()) return;
+  const r = evaluate(); st.tries++;
+  const pts = AFB[q.afb].pts;
+  if(r.ok){
+    st.done=true; st.solved=true; st.pts=pts[st.tries-1];
+  } else if(st.tries>=3){
+    st.done=true; st.solved=false; st.pts=0;
+  }
+  st.last = r;
+  if(st.done){
+    pl.score += st.pts;
+    pl.log.push({id:q.id, tries:st.tries, solved:st.solved, pts:st.pts, max:pts[0]});
+  }
+  render();
+  const f=$("#feedback"); if(f) f.scrollIntoView({block:"nearest",behavior:"smooth"});
+}
+function next(){
+  S.step++;
+  if(S.step>=S.seq.length){ S.screen="result"; render(); window.scrollTo({top:0}); return; }
+  startQuestion(); window.scrollTo({top:0,behavior:"smooth"});
+}
+
+/* ============ Rendering ============ */
+const app = $("#app");
+function render(){
+  if(S.screen==="setup") return renderSetup();
+  if(S.screen==="game") return renderGame();
+  return renderResult();
+}
+function masthead(){
+  return `<header class="masthead">
+    <span class="eyebrow">Deutsch · Leistungskurs MSS · ${SETS[S.set].name}</span>
+    <h1>Wie sagt man denn nun?</h1>
+    <p class="source">Quiz zu Jörg Häntzschels Artikel über rassistische Sprache und den Begriff BPoC · Süddeutsche Zeitung, 24. Juli 2020</p>
+  </header>`;
+}
+function renderSetup(){
+  const duo = S.mode==="duo";
+  const cD = SETS[S.set].duo, cS = SETS[S.set].solo, cur_ = duo?cD:cS;
+  const poolN = POOL.filter(q=>SETS[S.set].cats.includes(q.cat)).length;
+  const mixTxt = [1,2,3].filter(l=>cur_.mix[l]).map(l=>cur_.mix[l]+" × "+AFB[l].name).join(", ");
+  app.innerHTML = masthead() + `
+  <section class="panel stack">
+    <h2>Fragenbereich wählen</h2>
+    <div class="modes">
+      <button class="mode" id="s-text" aria-pressed="${S.set==="text"}"><strong>Textverständnis</strong><span class="muted">Inhalt, Begriffe, Stimmen und Positionen, Schlussfolgerungen</span></button>
+      <button class="mode" id="s-analyse" aria-pressed="${S.set==="analyse"}"><strong>Analyse</strong><span class="muted">Argumentation, Autorposition, Sprache und Wirkung</span></button>
+    </div>
+  </section>
+  <section class="panel stack">
+    <h2>Spielmodus wählen</h2>
+    <div class="modes">
+      <button class="mode" id="m-duo" aria-pressed="${duo}"><span class="eyebrow">Zwei Spieler:innen</span><strong>Duell · 2 × ${cD.per} Fragen</strong><span class="muted">Ihr spielt abwechselnd. Jede:r bekommt eigene Fragen, keine Frage kommt doppelt vor.</span></button>
+      <button class="mode" id="m-solo" aria-pressed="${!duo}"><span class="eyebrow">Einzelspiel</span><strong>Training · ${cS.per} Fragen</strong><span class="muted">Allein üben, am Ende mit Auswertung deiner Stärken und Schwächen.</span></button>
+    </div>
+    <div class="row">
+      <div class="field"><label for="n1">${duo?"Name Spieler:in 1":"Dein Name"}</label><input id="n1" value="${esc(S.names[0])}" maxlength="24"></div>
+      ${duo?`<div class="field"><label for="n2">Name Spieler:in 2</label><input id="n2" value="${esc(S.names[1])}" maxlength="24"></div>`:""}
+    </div>
+    <div class="row"><button class="btn" id="start">Spiel starten</button><span class="muted">Die Fragen werden bei jedem Spiel neu aus ${poolN} Fragen gezogen.</span></div>
+  </section>
+  <section class="panel stack">
+    <h2>So wird gepunktet</h2>
+    <p>Jede Frage hat drei Versuche. Nach einem Fehlversuch erscheint ein Lösungshinweis, nach dem zweiten ein genauerer. Nach dem dritten Fehlversuch gibt es keine Punkte mehr, und die Lösung wird angezeigt.</p>
+    <div class="tablewrap"><table class="rules">
+      <thead><tr><th>Anforderungsbereich</th><th>1. Versuch</th><th>2. Versuch</th><th>3. Versuch</th><th>danach</th></tr></thead>
+      <tbody>${[1,2,3].filter(l=>cur_.mix[l]).map(l=>`<tr><td><b>${AFB[l].name}</b> · ${AFB[l].long}</td>${AFB[l].pts.map(p=>`<td>${p} P</td>`).join("")}<td>0 P</td></tr>`).join("")}</tbody>
+    </table></div>
+    <p class="muted">${duo?"Im Duell erhalten beide dieselbe Mischung ("+mixTxt+"), damit die Chancen fair verteilt sind.":"Im Einzelspiel: "+mixTxt+"."} Aufgabenformate: ${Object.values(FORMATS).join(", ")}.</p>
+  </section>`;
+  $("#s-text").onclick=()=>{saveNames(); S.set="text"; render();};
+  $("#s-analyse").onclick=()=>{saveNames(); S.set="analyse"; render();};
+  $("#m-duo").onclick=()=>{saveNames(); S.mode="duo"; render();};
+  $("#m-solo").onclick=()=>{saveNames(); S.mode="solo"; render();};
+  $("#start").onclick=()=>{saveNames(); newGame();};
+}
+function saveNames(){ const a=$("#n1"), b=$("#n2"); if(a) S.names[0]=a.value; if(b) S.names[1]=b.value; }
+
+function scorebar(active){
+  const duo=S.players.length===2;
+  return `<div class="scorebar ${duo?"":"single"}">${S.players.map((p,i)=>{
+    const done=p.log.length;
+    return `<div class="sc ${duo?"p"+(i+1):"p1"} ${active===i?"active":""}"><div><div class="nm">${esc(p.name)}</div><div class="sub">${done} von ${S.per} Fragen beantwortet</div></div><div class="pt">${p.score}</div></div>`;
+  }).join("")}</div>
+  <div class="progress" aria-hidden="true"><div style="width:${(S.step/S.seq.length*100).toFixed(1)}%"></div></div>`;
+}
+function renderGame(){
+  const {pi,pl,q,k}=cur(); const st=S.q; const duo=S.players.length===2;
+  const pcls = duo?"p"+(pi+1):"p1";
+  const pts = AFB[q.afb].pts;
+  const nowPts = st.done? st.pts : pts[Math.min(st.tries,2)];
+  const dots = [0,1,2].map(i=>{ let c="dot"; if(i<st.tries){ c+= (st.solved && i===st.tries-1)?" ok":" used"; } return `<span class="${c}"></span>`; }).join("");
+  let body="";
+  const dis = st.done?"disabled":"";
+  switch(q.type){
+    case "mc":
+      body = `<div class="opts" role="radiogroup">${st.order.map(i=>`<button class="opt ${st.done&&i===0?"right":""}" data-i="${i}" role="radio" aria-pressed="${st.sel===i}" aria-checked="${st.sel===i}" ${dis}><span class="box"></span><span>${esc(q.opts[i])}</span></button>`).join("")}</div>`; break;
+    case "multi":
+      body = `<p class="qsub">Mehrere Antworten können richtig sein.</p><div class="opts">${st.order.map(i=>`<button class="opt sq ${st.done&&q.opts[i].c?"right":""}" data-i="${i}" aria-pressed="${st.sel.has(i)}" ${dis}><span class="box"></span><span>${esc(q.opts[i].t)}</span></button>`).join("")}</div>`; break;
+    case "tf":
+      body = `<div>${q.items.map((it,i)=>`<div class="tfrow"><span>${esc(it.s)}</span><div class="seg" role="group" aria-label="Aussage ${i+1}"><button data-tf="${i}" data-v="1" aria-pressed="${st.sel[i]===true}" ${dis}>Richtig</button><button data-tf="${i}" data-v="0" aria-pressed="${st.sel[i]===false}" ${dis}>Falsch</button></div></div>`).join("")}</div>`; break;
+    case "order":
+      body = `<p class="qsub">Mit den Pfeilen verschieben.</p><ol class="orderlist">${st.arr.map((v,i)=>`<li><span class="n">${i+1}</span><span>${esc(q.items[v])}</span><span class="mv"><button data-up="${i}" aria-label="nach oben" ${i===0||st.done?"disabled":""}>↑</button><button data-dn="${i}" aria-label="nach unten" ${i===st.arr.length-1||st.done?"disabled":""}>↓</button></span></li>`).join("")}</ol>`; break;
+    case "match":
+      body = `<div>${q.pairs.map((p,i)=>`<div class="matchrow"><span class="l">${esc(p[0])}</span><select id="mt-${q.id}-${i}" data-mt="${i}" ${dis} aria-label="Zuordnung für ${esc(p[0])}"><option value="">– bitte wählen –</option>${st.rights.map(r=>`<option value="${r}" ${String(st.sel[i])===String(r)?"selected":""}>${esc(q.pairs[r][1])}</option>`).join("")}</select></div>`).join("")}</div>`; break;
+    case "cloze":
+      body = `<p class="cloze">${st.cz.parts.map(p=> p.opts? `<select id="cz-${q.id}-${p.gap}" data-cz="${p.gap}" ${dis} aria-label="Lücke ${p.gap+1}"><option value="">…</option>${p.shown.map(o=>`<option ${st.sel[p.gap]===o?"selected":""}>${esc(o)}</option>`).join("")}</select>` : esc(p.t)).join("")}</p>`; break;
+    case "input":
+      body = `<div class="inputq"><input id="inp-${q.id}" value="${esc(st.val)}" placeholder="Antwort eingeben" autocomplete="off" ${dis}></div>`; break;
+  }
+  // feedback
+  let fb="";
+  if(st.tries>0){
+    if(st.done && st.solved){
+      fb += `<div class="fb good"><b>Richtig${st.tries>1?" im "+st.tries+". Versuch":""}! +${st.pts} Punkte.</b><span>${esc(q.expl)}</span></div>`;
+    } else if(st.done){
+      fb += `<div class="fb bad"><b>Drei Fehlversuche, für diese Frage gibt es keine Punkte.</b></div>`;
+      fb += `<div class="fb sol"><b>Lösung</b><div>${solutionHTML(q)}</div><span>${esc(q.expl)}</span></div>`;
+    } else {
+      const r=st.last;
+      fb += `<div class="fb bad"><b>Noch nicht richtig.</b>${r.total?`<span>${r.right} von ${r.total} ${r.unit}.</span>`:""}<span>Du hast noch ${3-st.tries} ${3-st.tries===1?"Versuch":"Versuche"}.</span></div>`;
+      fb += `<div class="fb hint"><b>Hinweis ${st.tries}</b>${q.hints.slice(0,st.tries).map(h=>`<span>${esc(h)}</span>`).join("")}</div>`;
+    }
+  }
+  const last = S.step===S.seq.length-1;
+  const nxt = S.seq[S.step+1];
+  const nextLabel = last? "Zur Auswertung" : (duo? `Weiter: ${esc(S.players[nxt.p].name)} ist dran` : "Nächste Frage");
+  app.innerHTML = `
+  <header class="row" style="justify-content:space-between"><span class="eyebrow">Wie sagt man denn nun? · ${SETS[S.set].name} · ${duo?"Duell":"Training"}</span>
+    <span>${S.confirmQuit?`<button class="linkbtn" id="quit-yes">Ja, Spiel abbrechen</button><button class="linkbtn" id="quit-no">Weiterspielen</button>`:`<button class="linkbtn" id="quit">Spiel abbrechen</button>`}</span></header>
+  ${scorebar(pi)}
+  <section class="panel stack qcard ${duo&&pi===1?"p2":""}">
+    <div class="qmeta">
+      <span class="turn ${pcls}">${esc(pl.name)} · Frage ${k+1} von ${S.per}</span>
+      <div class="chips"><span class="chip afb">${AFB[q.afb].name}</span><span class="chip">${CATS[q.cat].name}</span><span class="chip">${FORMATS[q.type]}</span></div>
+    </div>
+    <p class="qtext">${esc(q.q)}</p>
+    ${body}
+    <div class="attempts"><span class="dots" aria-label="Versuche">${dots}</span><span>${st.done?"":"Versuch "+(st.tries+1)+" von 3 · "}<span class="nowpts">${st.done?st.pts+" Punkte erhalten":"jetzt "+nowPts+" Punkte möglich"}</span></span></div>
+    <div id="feedback" class="stack">${fb}</div>
+    <div class="actions">
+      ${st.done? `<span></span><button class="btn" id="next">${nextLabel}</button>` : `<span class="muted" style="font-size:14px">${canCheck()?"":"Bitte zuerst vollständig antworten."}</span><button class="btn" id="check" ${canCheck()?"":"disabled"}>Antwort prüfen</button>`}
+    </div>
+  </section>`;
+  bindGame();
+}
+function bindGame(){
+  const {q}=cur(); const st=S.q;
+  const q_ = s=>app.querySelectorAll(s);
+  const qq=$("#quit"); if(qq) qq.onclick=()=>{S.confirmQuit=true; render();};
+  const qy=$("#quit-yes"); if(qy) qy.onclick=()=>{S.screen="setup"; render();};
+  const qn=$("#quit-no"); if(qn) qn.onclick=()=>{S.confirmQuit=false; render();};
+  const c=$("#check"); if(c) c.onclick=check;
+  const n=$("#next"); if(n) n.onclick=next;
+  if(st.done) return;
+  const refreshBtn=()=>{ const b=$("#check"); if(b){ b.disabled=!canCheck(); b.previousElementSibling.textContent=canCheck()?"":"Bitte zuerst vollständig antworten."; } };
+  if(q.type==="mc") q_(".opt").forEach(b=>b.onclick=()=>{st.sel=+b.dataset.i; render();});
+  if(q.type==="multi") q_(".opt").forEach(b=>b.onclick=()=>{const i=+b.dataset.i; st.sel.has(i)?st.sel.delete(i):st.sel.add(i); render();});
+  if(q.type==="tf") q_("[data-tf]").forEach(b=>b.onclick=()=>{st.sel[+b.dataset.tf]=b.dataset.v==="1"; render();});
+  if(q.type==="order"){
+    q_("[data-up]").forEach(b=>b.onclick=()=>{const i=+b.dataset.up; [st.arr[i-1],st.arr[i]]=[st.arr[i],st.arr[i-1]]; render(); const f=app.querySelector(`[data-up="${i-1}"]`)||app.querySelector(`[data-dn="${i-1}"]`); if(f) f.focus();});
+    q_("[data-dn]").forEach(b=>b.onclick=()=>{const i=+b.dataset.dn; [st.arr[i+1],st.arr[i]]=[st.arr[i],st.arr[i+1]]; render(); const f=app.querySelector(`[data-dn="${i+1}"]`)||app.querySelector(`[data-up="${i+1}"]`); if(f) f.focus();});
+  }
+  if(q.type==="match") q_("[data-mt]").forEach(s=>s.onchange=()=>{st.sel[+s.dataset.mt]=s.value; refreshBtn();});
+  if(q.type==="cloze") q_("[data-cz]").forEach(s=>s.onchange=()=>{st.sel[+s.dataset.cz]=s.value; refreshBtn();});
+  if(q.type==="input"){ const i=app.querySelector(".inputq input"); i.oninput=()=>{st.val=i.value; refreshBtn();}; i.onkeydown=e=>{ if(e.key==="Enter"){ e.preventDefault(); check(); } }; i.focus(); }
+}
+
+/* ============ Auswertung ============ */
+function analyse(p){
+  const cats={}, afb={1:{g:0,m:0},2:{g:0,m:0},3:{g:0,m:0}}, fmts={};
+  let first=0, failed=0, maxT=0;
+  p.log.forEach(l=>{
+    const q=byId[l.id];
+    (cats[q.cat] ||= {g:0,m:0,n:0,fail:0}); cats[q.cat].g+=l.pts; cats[q.cat].m+=l.max; cats[q.cat].n++; if(!l.solved) cats[q.cat].fail++;
+    afb[q.afb].g+=l.pts; afb[q.afb].m+=l.max;
+    (fmts[q.type] ||= {n:0,first:0,fail:0}); fmts[q.type].n++; if(l.solved&&l.tries===1) fmts[q.type].first++; if(!l.solved) fmts[q.type].fail++;
+    if(l.solved&&l.tries===1) first++; if(!l.solved) failed++; maxT+=l.max;
+  });
+  return {cats,afb,fmts,first,failed,maxT};
+}
+const pct=(g,m)=> m? Math.round(g/m*100) : 0;
+const lvl=v=> v<50?"lo":(v<75?"mid":"hi");
+function diagnosis(p, A){
+  const items=[];
+  const list = Object.entries(A.cats).map(([c,v])=>({c,...v,p:pct(v.g,v.m)})).sort((a,b)=>a.p-b.p);
+  const weak = list.filter(x=>x.p<65);
+  if(weak.length){
+    weak.slice(0,3).forEach((w,i)=>{
+      items.push(`<div class="item${w.p>=50?" warn":""}"><b>${i===0?"Hauptschwierigkeit":"Weitere Schwierigkeit"}: ${CATS[w.c].name}</b> · ${w.p} % der Punkte${w.fail?`, ${w.fail} ${w.fail===1?"Frage":"Fragen"} nicht gelöst`:""}<div class="tip">Tipp: ${CATS[w.c].tip}</div></div>`);
+    });
+  } else {
+    const lo=list[0];
+    items.push(`<div class="item ok"><b>Keine ausgeprägte Schwachstelle.</b> In allen Themenbereichen wurden mindestens 65 % der Punkte erreicht.${lo&&lo.p<100?` Am meisten Luft nach oben: ${CATS[lo.c].name} (${lo.p} %).`:""}</div>`);
+  }
+  const low = pct(A.afb[1].g,A.afb[1].m);
+  const high = pct(A.afb[2].g+A.afb[3].g, A.afb[2].m+A.afb[3].m);
+  const both = A.afb[1].m>0 && (A.afb[2].m+A.afb[3].m)>0;
+  if(!both){}
+  else if(low-high>=20) items.push(`<div class="item warn"><b>Wiedergeben gelingt deutlich besser als Schlussfolgern.</b> AFB I: ${low} %, AFB II/III: ${high} %.<div class="tip">Der Text wird verstanden, aber Deutungen und Begründungen fallen schwerer. Übung: zu jeder Aussage die Frage stellen „Was folgt daraus, und woran im Text sehe ich das?“</div></div>`);
+  else if(high-low>=20) items.push(`<div class="item warn"><b>Schlussfolgern gelingt besser als das genaue Wiedergeben.</b> AFB I: ${low} %, AFB II/III: ${high} %.<div class="tip">Die großen Linien sitzen, aber Details (Namen, Daten, Begriffe) gehen verloren. Übung: genauer lesen und Einzelheiten markieren.</div></div>`);
+  const fw = Object.entries(A.fmts).filter(([f,v])=>v.n>=2 && v.first/v.n<0.5).map(([f,v])=>`${FORMATS[f]} (${v.first} von ${v.n} im ersten Versuch)`);
+  if(fw.length) items.push(`<div class="item warn"><b>Auffällig bei den Aufgabenformaten:</b> ${fw.join(", ")}.<div class="tip">Bei Auswahlaufgaben jede Antwortoption einzeln am Text prüfen und Ablenker ausschließen; bei zusammengesetzten Aufgaben (Zuordnung, Richtig/Falsch, Lückentext) jede Teilaussage einzeln belegen, statt nach dem Gesamteindruck zu entscheiden.</div></div>`);
+  return items.join("");
+}
+function reviewList(p){
+  const rows = p.log.filter(l=>!(l.solved&&l.tries===1)).map(l=>{
+    const q=byId[l.id];
+    return `<div class="rv"><div class="row" style="gap:8px"><span class="tag ${l.solved?"late":"fail"}">${l.solved?"im "+l.tries+". Versuch":"nicht gelöst"}</span><span class="chip">${CATS[q.cat].name}</span></div><b>${esc(q.q)}</b><div>${solutionHTML(q)}</div><span class="muted">${esc(q.expl)}</span></div>`;
+  });
+  if(!rows.length) return `<p class="muted">Alle Fragen im ersten Versuch gelöst.</p>`;
+  return `<details class="review"><summary>Fragen zum Nacharbeiten (${rows.length})</summary>${rows.join("")}</details>`;
+}
+function playerCard(p,i,duo){
+  const A=analyse(p);
+  const cls = duo?"p"+(i+1):"p0";
+  const catOrder = Object.keys(CATS).filter(c=>A.cats[c]);
+  return `<section class="panel stack res ${cls}">
+    <div class="row" style="justify-content:space-between;align-items:flex-end"><div><span class="eyebrow">${duo?"Spieler:in "+(i+1):"Ergebnis"}</span><h2>${esc(p.name)}</h2></div><div class="big">${p.score}<span class="muted" style="font-size:.45em"> / ${A.maxT}</span></div></div>
+    <div class="stats"><span><b>${pct(p.score,A.maxT)} %</b> der Punkte</span><span><b>${A.first}</b> im 1. Versuch</span><span><b>${A.failed}</b> nicht gelöst</span></div>
+    <h3>Nach Themenbereich</h3>
+    <div class="bars">${catOrder.map(c=>{const v=A.cats[c]; const pc=pct(v.g,v.m); return `<div class="bar"><div class="lab"><span>${CATS[c].name}</span><span>${v.g}/${v.m} P · ${pc} %</span></div><div class="track"><div class="fill ${lvl(pc)}" style="width:${pc}%"></div></div></div>`;}).join("")}</div>
+    <h3>Nach Anforderungsbereich</h3>
+    <div class="bars">${[1,2,3].filter(l=>A.afb[l].m).map(l=>{const v=A.afb[l]; const pc=pct(v.g,v.m); return `<div class="bar"><div class="lab"><span>${AFB[l].name} · ${AFB[l].long}</span><span>${v.g}/${v.m} P · ${pc} %</span></div><div class="track"><div class="fill ${lvl(pc)}" style="width:${pc}%"></div></div></div>`;}).join("")}</div>
+    <h3>Wo liegen die Schwierigkeiten?</h3>
+    <div class="diag">${diagnosis(p,A)}</div>
+    ${reviewList(p)}
+  </section>`;
+}
+function renderResult(){
+  const duo=S.players.length===2;
+  let head="";
+  if(duo){
+    const [a,b]=S.players;
+    const w = a.score===b.score? null : (a.score>b.score? a : b);
+    head = `<section class="panel winner"><span class="eyebrow">Endstand</span>
+      <div class="big"><span style="color:var(--p1)">${a.score}</span> : <span style="color:var(--p2)">${b.score}</span></div>
+      <h2>${w? esc(w.name)+" gewinnt das Duell!" : "Unentschieden!"}</h2>
+      <p class="muted">Beide hatten unterschiedliche Fragen mit gleicher Schwierigkeitsmischung (je ${analyse(a).maxT} Punkte möglich).</p></section>`;
+  }
+  app.innerHTML = masthead() + head + `<div class="cols">${S.players.map((p,i)=>playerCard(p,i,duo)).join("")}</div>
+   <div class="row"><button class="btn" id="again">Neues Spiel, gleiche Einstellungen</button><button class="btn ghost" id="menu">Zum Startbildschirm</button></div>`;
+  $("#again").onclick=newGame;
+  $("#menu").onclick=()=>{S.screen="setup"; render();};
+}
+render();
+</script>
+</body>
+</html>
