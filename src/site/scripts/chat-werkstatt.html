@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Chat-Werkstatt</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EEF1F4; --panel:#FFFFFF; --ink:#1E2A36; --muted:#5B6B7A; --line:#C9D2DB;
+  --accent:#2F5D8A; --accent-ink:#FFFFFF; --me:#2F5D8A; --me-ink:#FFFFFF;
+  --other:#FFFFFF; --other-ink:#1E2A36; --screen:#DCE3EA; --frame:#1E2A36; --danger:#9B2F2F;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#141A20; --panel:#1C242C; --ink:#E6EBF0; --muted:#9AA8B5; --line:#33404C;
+    --accent:#6F9FD0; --accent-ink:#0E1620; --me:#3A6C9E; --me-ink:#FFFFFF;
+    --other:#26313B; --other-ink:#E6EBF0; --screen:#10161C; --frame:#000000; --danger:#E07A7A;
+    color-scheme:dark;
+  }
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.45}
+.top{max-width:1100px;margin:0 auto;padding:28px 20px 8px}
+.top h1{margin:0;font-size:1.9rem;letter-spacing:-.01em}
+.top p{margin:4px 0 0;color:var(--muted)}
+.grid{max-width:1100px;margin:0 auto;padding:16px 20px 40px;display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:28px;align-items:start}
+@media (max-width:880px){.grid{grid-template-columns:minmax(0,1fr)}}
+.editor{min-width:0;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px}
+.names{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:14px}
+.names label{display:flex;flex-direction:column;font-size:.85rem;color:var(--muted);flex:1 1 140px;min-width:0}
+.names input{width:100%;min-width:0;max-width:100%;display:block}
+input[type="time"]{-webkit-appearance:none;appearance:none;min-height:40px;text-align:left}
+input[type="time"]::-webkit-date-and-time-value{text-align:left}
+input,select,textarea{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:7px 9px}
+textarea{width:100%;resize:vertical;min-height:52px}
+input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+#list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.row{border:1px solid var(--line);border-left:5px solid var(--line);border-radius:10px;padding:10px;background:var(--panel)}
+.row.me{border-left-color:var(--me)}
+.row-head{display:flex;align-items:center;gap:8px;margin-bottom:8px;min-width:0}
+.row-head select{flex:1 1 auto;min-width:0;max-width:100%;text-overflow:ellipsis}
+.row-tools{flex:0 0 auto}
+.num{font-weight:700;color:var(--muted);min-width:1.4em}
+.row-tools{margin-left:auto;display:flex;gap:4px}
+.row-tools button{border:1px solid var(--line);background:transparent;color:var(--muted);border-radius:6px;width:30px;height:30px;cursor:pointer}
+.row-tools button:hover{color:var(--ink)}
+.row-opts select{max-width:100%}
+.row-opts{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px;align-items:center;font-size:.9rem;color:var(--muted)}
+.row-opts input{width:64px}
+.empty{color:var(--muted);padding:12px 0}
+.adds,.files,.controls{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+button.btn{font:inherit;border-radius:9px;padding:8px 14px;cursor:pointer;border:1px solid var(--line);background:var(--bg);color:var(--ink)}
+button.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:700}
+button.quiet{background:transparent;color:var(--muted)}
+button.warn{color:var(--danger)}
+.files{border-top:1px solid var(--line);padding-top:14px}
+/* Handy */
+.stage{position:sticky;top:16px;display:flex;flex-direction:column;align-items:center}
+.phone{height:min(660px,78vh);height:min(660px,78svh);width:auto;aspect-ratio:9/17;max-width:100%;display:flex;flex-direction:column;background:var(--frame);border-radius:38px;padding:12px;box-shadow:0 18px 40px -18px rgba(20,30,40,.55)}
+.inner{flex:1 1 auto;min-height:0;border-radius:28px;overflow:hidden;display:flex;flex-direction:column;background:var(--screen)}
+.ph-head{display:flex;align-items:center;gap:10px;padding:12px 14px;background:var(--panel);border-bottom:1px solid var(--line)}
+.avatar{width:38px;height:38px;border-radius:50%;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;font-weight:700}
+.ph-name{font-weight:700;line-height:1.1}
+.ph-status{font-size:.8rem;color:var(--muted)}
+.ph-status.typing{color:var(--accent);font-style:italic}
+#screen{flex:1 1 auto;min-height:0;overscroll-behavior:contain;overflow-y:auto;padding:14px 10px;display:flex;flex-direction:column;gap:6px;scroll-behavior:smooth}
+.hint{margin:auto;color:var(--muted);text-align:center;font-size:.9rem;padding:0 20px}
+.bubble{max-width:78%;padding:7px 10px 5px;border-radius:16px;animation:pop .18s ease-out;word-wrap:break-word;white-space:pre-wrap}
+.bubble.me{align-self:flex-end;background:var(--me);color:var(--me-ink);border-bottom-right-radius:5px}
+.bubble.other{align-self:flex-start;background:var(--other);color:var(--other-ink);border-bottom-left-radius:5px}
+.bubble .time{display:block;text-align:right;font-size:.68rem;opacity:.7;margin-top:2px}
+.bubble.deleted .txt{font-style:italic;opacity:.75}
+.dots{align-self:flex-start;background:var(--other);border-radius:16px;padding:10px 12px;display:flex;gap:4px}
+.dots span{width:7px;height:7px;border-radius:50%;background:var(--muted);animation:blink 1.2s infinite}
+.dots span:nth-child(2){animation-delay:.2s}.dots span:nth-child(3){animation-delay:.4s}
+.ph-foot{padding:10px;background:var(--panel);border-top:1px solid var(--line)}
+#typing{min-height:38px;border:1px solid var(--line);border-radius:19px;padding:8px 14px;background:var(--bg);white-space:pre-wrap;word-wrap:break-word}
+#typing:empty::before{content:"Nachricht";color:var(--muted)}
+@keyframes pop{from{transform:scale(.92);opacity:0}to{transform:none;opacity:1}}
+@keyframes blink{0%,80%,100%{opacity:.25}40%{opacity:1}}
+@media (prefers-reduced-motion:reduce){.bubble,.dots span{animation:none}#screen{scroll-behavior:auto}}
+.controls{justify-content:center;margin-top:16px}
+.controls label{display:flex;align-items:center;gap:6px;color:var(--muted);font-size:.9rem}
+.stage:fullscreen{background:var(--bg);justify-content:center}
+.tip{margin:12px 0 0;font-size:.88rem;color:var(--muted)}
+/* Vollbild bzw. Fokus-Ansicht */
+.fs-btn{display:none;position:absolute;z-index:60;width:44px;height:44px;border-radius:50%;border:1px solid var(--line);
+  background:var(--panel);color:var(--ink);font:inherit;font-size:1.2rem;cursor:pointer;place-items:center;padding:0}
+#fsClose{top:calc(env(safe-area-inset-top,0px) + 10px);right:12px}
+#fsPlay{top:calc(env(safe-area-inset-top,0px) + 10px);right:66px}
+body.focus{overflow:hidden;position:fixed;inset:0;width:100%}
+body.focus .stage,.stage:fullscreen{position:fixed;inset:0;z-index:50;height:100vh;height:100dvh;margin:0;
+  background:var(--bg);display:flex;align-items:center;justify-content:center;
+  padding:calc(env(safe-area-inset-top,0px) + 64px) 12px calc(env(safe-area-inset-bottom,0px) + 16px)}
+body.focus .phone,.stage:fullscreen .phone{height:100%;width:auto;aspect-ratio:9/17;max-width:100%;max-height:none}
+body.focus .controls,.stage:fullscreen .controls{display:none}
+body.focus .fs-btn,.stage:fullscreen .fs-btn{display:grid}
+.stage:fullscreen .phone{max-width:min(440px,52vh)}
+</style>
+</head>
+<body>
+<header class="top">
+  <h1>Chat-Werkstatt</h1>
+</header>
+
+<main class="grid">
+  <section class="editor" aria-label="Chat schreiben">
+    <div class="names">
+      <label>Wessen Handy?<input id="meName" value="Ich (Handybesitzer)"></label>
+      <label>Chatpartner<input id="otherName" value="Chatpartner"></label>
+      <label>Uhrzeit der ersten Nachricht<input id="startTime" type="time" value="21:47"></label>
+    </div>
+    <ol id="list"></ol>
+    <p class="empty" id="emptyList">Noch keine Nachrichten. Lege unten die erste an.</p>
+    <div class="adds">
+      <button class="btn" id="addMe">+ Eigene Nachricht</button>
+      <button class="btn" id="addOther">+ Nachricht von <span class="lblOther">Chatpartner</span></button>
+    </div>
+    <div class="files">
+      <button class="btn quiet" id="save">Chat speichern</button>
+      <button class="btn quiet" id="loadBtn">Chat laden</button>
+      <input type="file" id="loadFile" accept=".json,application/json" hidden>
+      <button class="btn quiet" id="example">Beispiel ansehen</button>
+      <button class="btn quiet warn" id="clear">Alles löschen</button>
+    </div>
+    <p class="tip" id="msg" role="status" style="color:var(--danger)"></p>
+    <p class="tip">Als Video abgeben: Chat im Vollbild abspielen und dabei eine Bildschirmaufnahme machen.</p>
+  </section>
+
+  <section class="stage" id="stage" aria-label="Vorschau">
+    <button class="fs-btn" id="fsPlay" aria-label="Abspielen">▶</button>
+    <button class="fs-btn" id="fsClose" aria-label="Vollbild schließen">✕</button>
+    <div class="phone">
+      <div class="inner">
+        <div class="ph-head">
+          <div class="avatar" id="avatar">C</div>
+          <div><div class="ph-name" id="phName">Chatpartner</div><div class="ph-status" id="phStatus">online</div></div>
+        </div>
+        <div id="screen" aria-live="polite"></div>
+        <div class="ph-foot"><div id="typing"></div></div>
+      </div>
+    </div>
+    <div class="controls">
+      <button class="btn primary" id="play">Abspielen</button>
+      <button class="btn" id="stop">Stopp</button>
+      <label>Tempo
+        <select id="speed"><option value="0.6">langsam</option><option value="1" selected>normal</option><option value="1.6">schnell</option></select>
+      </label>
+      <button class="btn" id="full">Vollbild</button>
+    </div>
+  </section>
+</main>
+
+<script>
+(function(){
+  var KEY = "chatwerkstatt-v2";
+  var state = {me:"Ich (Handybesitzer)", other:"Chatpartner", start:"21:47", msgs:[]};
+  var $ = function(id){ return document.getElementById(id); };
+  var list = $("list"), screen = $("screen"), typing = $("typing"), statusEl = $("phStatus");
+  var run = 0;
+
+  function uid(){ return Math.random().toString(36).slice(2,9); }
+  function newMsg(from){ return {id:uid(), from:from, text:"", typing:2, mode:"send", pause:1}; }
+
+  function save(){ try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} }
+  function load(){
+    try{ var raw = localStorage.getItem(KEY); if(raw){ var s = JSON.parse(raw); if(valid(s)) state = s; } }catch(e){}
+  }
+  function valid(s){ return s && Array.isArray(s.msgs) && typeof s.me === "string" && typeof s.other === "string"; }
+
+  function syncNames(){
+    $("meName").value = state.me; $("otherName").value = state.other; $("startTime").value = state.start || "21:47";
+    document.querySelectorAll(".lblMe").forEach(function(e){ e.textContent = state.me || "Ich"; });
+    document.querySelectorAll(".lblOther").forEach(function(e){ e.textContent = state.other || "Chatpartner"; });
+    $("phName").textContent = state.other || "Chatpartner";
+    $("avatar").textContent = (state.other || "?").trim().charAt(0).toUpperCase() || "?";
+  }
+
+  function renderList(){
+    list.innerHTML = "";
+    $("emptyList").hidden = state.msgs.length > 0;
+    state.msgs.forEach(function(m, i){
+      var li = document.createElement("li");
+      li.className = "row " + m.from; li.dataset.id = m.id;
+      li.innerHTML =
+        '<div class="row-head"><span class="num">'+(i+1)+'</span>'+
+        '<select data-k="from" aria-label="Absender"><option value="me"></option><option value="other"></option></select>'+
+        '<div class="row-tools"><button data-act="up" aria-label="Nach oben">▲</button>'+
+        '<button data-act="down" aria-label="Nach unten">▼</button>'+
+        '<button data-act="del" aria-label="Nachricht entfernen">✕</button></div></div>'+
+        '<textarea data-k="text" rows="2" placeholder="Nachricht schreiben"></textarea>'+
+        '<div class="row-opts">'+
+        '<label>Tippen <input type="number" data-k="typing" min="0" max="30" step="0.5"> Sek.</label>'+
+        '<label>Pause danach <input type="number" data-k="pause" min="0" max="30" step="0.5"> Sek.</label>'+
+        '<select data-k="mode" aria-label="Was passiert mit der Nachricht?">'+
+        '<option value="send">wird gesendet</option>'+
+        '<option value="delete">wird gesendet und dann gelöscht</option>'+
+        '<option value="abort">wird getippt, aber nicht gesendet</option></select></div>';
+      var sel = li.querySelector('[data-k="from"]');
+      sel.options[0].textContent = state.me || "Ich"; sel.options[1].textContent = state.other || "Chatpartner";
+      sel.value = m.from;
+      li.querySelector('[data-k="text"]').value = m.text;
+      li.querySelector('[data-k="typing"]').value = m.typing;
+      li.querySelector('[data-k="pause"]').value = m.pause;
+      li.querySelector('[data-k="mode"]').value = m.mode;
+      list.appendChild(li);
+    });
+    if(!state.msgs.length) showHint();
+  }
+
+  function find(li){ var id = li.dataset.id; return state.msgs.find(function(m){ return m.id === id; }); }
+
+  function onEdit(e){
+    var li = e.target.closest("li"); if(!li) return;
+    var k = e.target.dataset.k; if(!k) return;
+    var m = find(li); if(!m) return;
+    if(k === "typing" || k === "pause"){ var v = parseFloat(e.target.value); m[k] = isNaN(v) ? 0 : Math.max(0, v); }
+    else m[k] = e.target.value;
+    if(k === "from") li.className = "row " + m.from;
+    save();
+  }
+  list.addEventListener("input", onEdit);
+  list.addEventListener("change", onEdit);
+  list.addEventListener("click", function(e){
+    var b = e.target.closest("button[data-act]"); if(!b) return;
+    var li = b.closest("li"); var i = state.msgs.findIndex(function(m){ return m.id === li.dataset.id; });
+    var act = b.dataset.act;
+    if(act === "del") state.msgs.splice(i,1);
+    if(act === "up" && i > 0){ var t = state.msgs[i-1]; state.msgs[i-1] = state.msgs[i]; state.msgs[i] = t; }
+    if(act === "down" && i < state.msgs.length-1){ var t2 = state.msgs[i+1]; state.msgs[i+1] = state.msgs[i]; state.msgs[i] = t2; }
+    save(); renderList();
+  });
+
+  function addMsg(from){
+    var m = newMsg(from); state.msgs.push(m); save(); renderList();
+    var ta = list.querySelector('li[data-id="'+m.id+'"] textarea'); if(ta) ta.focus();
+  }
+  $("addMe").onclick = function(){ addMsg("me"); };
+  $("addOther").onclick = function(){ addMsg("other"); };
+
+  ["meName","otherName","startTime"].forEach(function(id){
+    $(id).addEventListener("input", function(){
+      state.me = $("meName").value; state.other = $("otherName").value; state.start = $("startTime").value;
+      syncNames(); save(); renderList();
+    });
+  });
+
+  /* Abspielen */
+  function speed(){ return parseFloat($("speed").value) || 1; }
+  function wait(ms, my){
+    return new Promise(function(res, rej){ setTimeout(function(){ my === run ? res() : rej("stop"); }, ms / speed()); });
+  }
+  function fmt(min){ min = ((min % 1440) + 1440) % 1440; var h = Math.floor(min/60), m = min%60; return (h<10?"0":"")+h+":"+(m<10?"0":"")+m; }
+  function startMin(){ var p = (state.start || "21:47").split(":"); return (parseInt(p[0],10)||0)*60 + (parseInt(p[1],10)||0); }
+  function scrollDown(){ screen.scrollTop = screen.scrollHeight; }
+  function showHint(){ screen.innerHTML = '<p class="hint">Noch keine Nachrichten. Lege links die erste an und drücke „Abspielen“.</p>'; }
+
+  function bubble(m, time){
+    var b = document.createElement("div"); b.className = "bubble " + m.from;
+    var t = document.createElement("span"); t.className = "txt"; t.textContent = m.text;
+    var s = document.createElement("span"); s.className = "time"; s.textContent = time;
+    b.appendChild(t); b.appendChild(s); screen.appendChild(b); scrollDown(); return b;
+  }
+  function markDeleted(b, label){ b.classList.add("deleted"); b.querySelector(".txt").textContent = "🚫 " + label; }
+  function setStatus(txt, isTyping){ statusEl.textContent = txt; statusEl.classList.toggle("typing", !!isTyping); }
+
+  async function typeInto(text, dur, my){
+    var chars = Array.from(text);
+    if(!chars.length){ await wait(dur, my); return; }
+    var step = Math.max(25, dur / chars.length);
+    for(var i = 0; i < chars.length; i++){ typing.textContent = chars.slice(0, i+1).join(""); await wait(step, my); }
+  }
+  async function backspace(my){
+    var chars = Array.from(typing.textContent);
+    while(chars.length){ chars.pop(); typing.textContent = chars.join(""); await wait(30, my); }
+  }
+
+  async function play(){
+    var my = ++run;
+    screen.innerHTML = ""; typing.textContent = ""; setStatus("online");
+    if(!state.msgs.length){ showHint(); return; }
+    var clock = startMin();
+    try{
+      for(var i = 0; i < state.msgs.length; i++){
+        var m = state.msgs[i];
+        var time = fmt(clock);
+        if(m.from === "other"){
+          setStatus("schreibt …", true);
+          var d = document.createElement("div"); d.className = "dots"; d.innerHTML = "<span></span><span></span><span></span>";
+          screen.appendChild(d); scrollDown();
+          await wait(m.typing * 1000, my);
+          d.remove(); setStatus("online");
+          if(m.mode !== "abort"){
+            var b = bubble(m, time);
+            if(m.mode === "delete"){ await wait(1600, my); markDeleted(b, "Diese Nachricht wurde gelöscht"); }
+          }
+        } else {
+          await typeInto(m.text, m.typing * 1000, my);
+          if(m.mode === "abort"){ await wait(800, my); await backspace(my); }
+          else {
+            typing.textContent = "";
+            var b2 = bubble(m, time);
+            if(m.mode === "delete"){ await wait(1600, my); markDeleted(b2, "Du hast diese Nachricht gelöscht"); }
+          }
+        }
+        clock += 1;
+        await wait(Math.max(0.3, m.pause) * 1000, my);
+      }
+    }catch(e){ if(e !== "stop") throw e; }
+  }
+  $("play").onclick = play;
+  $("stop").onclick = function(){ run++; typing.textContent = ""; setStatus("online"); };
+  /* Vollbild: echtes Vollbild, wo der Browser es erlaubt, sonst Fokus-Ansicht (z. B. iPhone) */
+  function setFocus(on){ document.body.classList.toggle("focus", on); $("full").textContent = on ? "Vollbild beenden" : "Vollbild"; }
+  $("full").onclick = function(){
+    var st = $("stage");
+    if(document.fullscreenElement){ document.exitFullscreen(); return; }
+    if(document.body.classList.contains("focus")){ setFocus(false); return; }
+    if(st.requestFullscreen){
+      st.requestFullscreen().then(function(){ $("full").textContent = "Vollbild beenden"; }).catch(function(){ setFocus(true); });
+    } else { setFocus(true); }
+  };
+  document.addEventListener("fullscreenchange", function(){ if(!document.fullscreenElement) $("full").textContent = "Vollbild"; });
+  $("fsPlay").onclick = play;
+  $("fsClose").onclick = function(){
+    if(document.fullscreenElement){ document.exitFullscreen(); }
+    setFocus(false);
+  };
+  document.addEventListener("keydown", function(e){ if(e.key === "Escape" && document.body.classList.contains("focus")) setFocus(false); });
+
+  /* Speichern und Laden */
+  $("save").onclick = function(){
+    var blob = new Blob([JSON.stringify(state, null, 2)], {type:"application/json"});
+    var a = document.createElement("a"); a.href = URL.createObjectURL(blob);
+    a.download = "chat-" + (state.me || "chat").toLowerCase().replace(/[^a-z0-9äöüß]+/g,"-") + ".json";
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function(){ URL.revokeObjectURL(a.href); }, 1000);
+  };
+  $("loadBtn").onclick = function(){ $("loadFile").click(); };
+  $("loadFile").onchange = function(e){
+    var f = e.target.files[0]; if(!f) return;
+    var r = new FileReader();
+    r.onload = function(){
+      $("msg").textContent = "";
+      try{ var s = JSON.parse(r.result); if(!valid(s)) throw 0; state = s; syncNames(); renderList(); save(); run++; showHintOrClear(); }
+      catch(err){ $("msg").textContent = "Die Datei konnte nicht gelesen werden. Wähle eine Datei, die mit „Chat speichern“ erstellt wurde."; }
+    };
+    r.readAsText(f); e.target.value = "";
+  };
+  function showHintOrClear(){ if(state.msgs.length){ screen.innerHTML = ""; } else showHint(); }
+
+  /* Sicherheitsabfrage ohne confirm(): zweiter Klick innerhalb von 4 Sekunden bestätigt */
+  function armed(btn, label, ask){
+    if(btn.dataset.armed === "1"){ btn.dataset.armed = ""; btn.textContent = label; clearTimeout(btn._t); return true; }
+    btn.dataset.armed = "1"; btn.textContent = ask;
+    btn._t = setTimeout(function(){ btn.dataset.armed = ""; btn.textContent = label; }, 4000);
+    return false;
+  }
+  $("clear").onclick = function(){
+    if(state.msgs.length && !armed(this, "Alles löschen", "Wirklich alles löschen? Nochmal tippen")) return;
+    state.msgs = []; run++; typing.textContent = ""; setStatus("online"); save(); renderList();
+  };
+  $("example").onclick = function(){
+    if(state.msgs.length && !armed(this, "Beispiel ansehen", "Ersetzt deinen Chat. Nochmal tippen")) return;
+    state.msgs = [
+      {id:uid(), from:"other", text:"So sieht eine Nachricht deines Chatpartners aus. Vorher siehst du, dass er tippt.", typing:2, mode:"send", pause:1},
+      {id:uid(), from:"me", text:"Diese Nachricht wird getippt, aber nie abgeschickt …", typing:3, mode:"abort", pause:1},
+      {id:uid(), from:"me", text:"Diese Nachricht wird gesendet.", typing:1.5, mode:"send", pause:1},
+      {id:uid(), from:"me", text:"Und diese wird gesendet und kurz danach wieder gelöscht.", typing:2, mode:"delete", pause:2}
+    ];
+    save(); renderList(); play();
+  };
+
+  load(); syncNames(); renderList();
+})();
+</script>
+</body>
+</html>
