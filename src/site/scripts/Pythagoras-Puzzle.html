@@ -1,0 +1,196 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Pythagoras-Puzzle</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<style>
+/* Layout: links das Quadrat mit den vier Dreiecken (Umlege-Animation), rechts Regler und Flächenbilanz */
+:root{
+  --bg:#f3f5f7; --surface:#ffffff; --ink:#18324a; --muted:#5a6b7c; --line:#d5dde5;
+  --accent:#1f6fb2; --tri:#9fb3c6; --triEdge:#18324a;
+  --sqA:#f0a35e; --sqB:#4fb3a2; --sqC:#8a7be0; --ok:#2c8a4b; --bad:#c0442a;
+  --display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
+  --body:"Atkinson Hyperlegible","Segoe UI",system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#111a22; --surface:#18242f; --ink:#e6eef5; --muted:#9db0c2; --line:#2c3c4b;
+  --accent:#6cb4f0; --tri:#4a6176; --triEdge:#e6eef5;
+  --sqA:#d98a45; --sqB:#3c9d8d; --sqC:#7d70d0; --ok:#5fcf86; --bad:#f07a5f; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#111a22; --surface:#18242f; --ink:#e6eef5; --muted:#9db0c2; --line:#2c3c4b;
+  --accent:#6cb4f0; --tri:#4a6176; --triEdge:#e6eef5;
+  --sqA:#d98a45; --sqB:#3c9d8d; --sqC:#7d70d0; --ok:#5fcf86; --bad:#f07a5f; color-scheme:dark}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.5}
+.wrap{max-width:1080px;margin:0 auto;padding-block:24px 40px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:20px}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(1.6rem,4vw,2.4rem);margin:0;text-wrap:balance;letter-spacing:-.01em}
+.lead{margin:0;color:var(--muted);max-width:62ch}
+.main{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:20px;align-items:start}
+@media (max-width:760px){.main{grid-template-columns:1fr}}
+.stage{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px;display:grid;gap:12px}
+canvas{width:100%;max-width:100%;aspect-ratio:1/1;display:block}
+.seg{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+button{font:inherit;font-weight:700;border:1px solid var(--line);background:var(--bg);color:var(--ink);padding:8px 14px;border-radius:10px;cursor:pointer}
+button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--surface)}
+button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.side{display:grid;gap:18px}
+.ctrl{display:grid;gap:4px}
+.ctrl label{display:flex;justify-content:space-between;font-weight:700}
+.ctrl output{font-variant-numeric:tabular-nums;color:var(--accent)}
+input[type=range]{width:100%;accent-color:var(--accent)}
+.bal{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 16px;display:grid;gap:6px;font-variant-numeric:tabular-nums}
+.row{display:flex;justify-content:space-between;gap:12px}
+.row span:first-child{color:var(--muted)}
+.chip{display:inline-block;width:.8em;height:.8em;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.verdict{font-family:var(--display);font-weight:800;font-size:1.35rem;margin-top:6px}
+.verdict.ok{color:var(--ok)} .verdict.bad{color:var(--bad)}
+.note{margin:0;font-size:.95rem;color:var(--muted)}
+.warn{color:var(--bad);font-weight:700}
+</style>
+
+<div class="wrap">
+  <header style="display:grid;gap:6px">
+    <h1>Pythagoras-Puzzle</h1>
+    <p class="lead">Vier gleiche Dreiecke, ein Rahmen mit der Seitenlänge a + b. Lege die Dreiecke um und vergleiche die freie Fläche.</p>
+  </header>
+
+  <div class="main">
+    <section class="stage" aria-label="Legefigur">
+      <canvas id="cv" width="800" height="800" aria-label="Quadratrahmen mit vier Dreiecken"></canvas>
+      <div class="seg">
+        <button id="f1" type="button" aria-pressed="true">Figur 1</button>
+        <button id="f2" type="button" aria-pressed="false">Figur 2</button>
+        <button id="play" type="button">▶ Umlegen</button>
+      </div>
+      <div class="ctrl">
+        <label for="t">Umlegen <output id="tv">0 %</output></label>
+        <input id="t" type="range" min="0" max="1" step="0.01" value="0">
+      </div>
+    </section>
+
+    <aside class="side">
+      <div class="ctrl">
+        <label for="a">Kathete a <output id="av">3</output></label>
+        <input id="a" type="range" min="1" max="6" step="0.5" value="3">
+      </div>
+      <div class="ctrl">
+        <label for="b">Kathete b <output id="bv">4</output></label>
+        <input id="b" type="range" min="1" max="6" step="0.5" value="4">
+      </div>
+      <div class="ctrl">
+        <label for="g">Winkel γ zwischen a und b <output id="gv">90°</output></label>
+        <input id="g" type="range" min="60" max="120" step="1" value="90">
+      </div>
+
+      <div class="bal" aria-live="polite">
+        <div class="row"><span><i class="chip" style="background:var(--sqA)"></i>a²</span><span id="A2"></span></div>
+        <div class="row"><span><i class="chip" style="background:var(--sqB)"></i>b²</span><span id="B2"></span></div>
+        <div class="row"><span>a² + b²</span><strong id="S"></strong></div>
+        <div class="row"><span><i class="chip" style="background:var(--sqC)"></i>c²</span><strong id="C2"></strong></div>
+        <div class="verdict" id="verdict"></div>
+      </div>
+      <p class="note" id="note"></p>
+    </aside>
+  </div>
+</div>
+
+<script>
+(function(){
+  const $=id=>document.getElementById(id);
+  const cv=$('cv'), ctx=cv.getContext('2d'), W=cv.width, M=40;
+  const css=v=>getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+  const fmt=x=>(Math.round(x*100)/100).toString().replace('.',',');
+  let t=0, anim=null;
+
+  function state(){ return {a:+$('a').value, b:+$('b').value, g:+$('g').value*Math.PI/180}; }
+  const ease=x=>x<.5?2*x*x:1-Math.pow(-2*x+2,2)/2;
+
+  // Dreieck: rechter (bzw. γ-)Winkel im Ursprung, a entlang +x, b unter dem Winkel γ
+  function tri(a,b,g){ return [[0,0],[a,0],[b*Math.cos(g),b*Math.sin(g)]]; }
+  function rot(p,k){ const c=[1,0,-1,0][k], s=[0,1,0,-1][k]; return [p[0]*c-p[1]*s, p[0]*s+p[1]*c]; }
+
+  function draw(){
+    const {a,b,g}=state(), s=a+b, k=(W-2*M)/12, off=(W-2*M - s*k)/2 + M;
+    const X=x=>off+x*k, Y=y=>W-(off+y*k);
+    const right=Math.abs(g-Math.PI/2)<1e-6, e=ease(t);
+    ctx.clearRect(0,0,W,W);
+
+    // Anker (rechter Winkel) für Figur 1 und Figur 2, Drehung in 90°-Schritten
+    const A1=[[0,0],[s,0],[s,s],[0,s]], A2=[[0,a],[s,0],[a,s],[a,a]];
+
+    // freie Flächen (nur bei rechtem Winkel eindeutig)
+    function poly(pts,fill,alpha){ ctx.globalAlpha=alpha; ctx.fillStyle=fill; ctx.beginPath(); pts.forEach((p,i)=>i?ctx.lineTo(X(p[0]),Y(p[1])):ctx.moveTo(X(p[0]),Y(p[1]))); ctx.closePath(); ctx.fill(); ctx.globalAlpha=1; }
+    if(right){
+      poly([[a,0],[s,a],[b,s],[0,b]], css('--sqC'), 1-e);
+      poly([[0,0],[a,0],[a,a],[0,a]], css('--sqA'), e);
+      poly([[a,a],[s,a],[s,s],[a,s]], css('--sqB'), e);
+    }
+
+    // Dreiecke
+    const base=tri(a,b,g);
+    ctx.lineJoin='round';
+    for(let i=0;i<4;i++){
+      const ax=A1[i][0]+(A2[i][0]-A1[i][0])*e, ay=A1[i][1]+(A2[i][1]-A1[i][1])*e;
+      const P=base.map(p=>{const r=rot(p,i);return [r[0]+ax,r[1]+ay];});
+      ctx.globalAlpha=right?1:.72; ctx.fillStyle=css('--tri');
+      ctx.beginPath(); P.forEach((p,j)=>j?ctx.lineTo(X(p[0]),Y(p[1])):ctx.moveTo(X(p[0]),Y(p[1]))); ctx.closePath(); ctx.fill();
+      ctx.globalAlpha=1; ctx.strokeStyle=css('--triEdge'); ctx.lineWidth=2.5; ctx.stroke();
+      // Seitenbeschriftung
+      ctx.fillStyle=css('--ink'); ctx.font='700 22px "Atkinson Hyperlegible",system-ui,sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
+      const cx=(P[0][0]+P[1][0]+P[2][0])/3, cy=(P[0][1]+P[1][1]+P[2][1])/3;
+      const lab=(p,q,txt)=>{const mx=(p[0]+q[0])/2,my=(p[1]+q[1])/2; const dx=cx-mx,dy=cy-my,l=Math.hypot(dx,dy)||1; const d=Math.min(.45,l*.6); ctx.fillText(txt,X(mx+dx/l*d),Y(my+dy/l*d));};
+      lab(P[0],P[1],'a'); lab(P[0],P[2],'b'); lab(P[1],P[2],'c');
+      // Winkelmarke
+      if(right){ const u=rot([1,0],i), v=rot([0,1],i), q=.35; const c0=[ax,ay];
+        ctx.lineWidth=1.8; ctx.beginPath(); ctx.moveTo(X(c0[0]+u[0]*q),Y(c0[1]+u[1]*q)); ctx.lineTo(X(c0[0]+u[0]*q+v[0]*q),Y(c0[1]+u[1]*q+v[1]*q)); ctx.lineTo(X(c0[0]+v[0]*q),Y(c0[1]+v[1]*q)); ctx.stroke(); }
+    }
+
+    // Beschriftung der freien Flächen
+    if(right){
+      ctx.font='800 34px "Bricolage Grotesque",system-ui,sans-serif'; ctx.fillStyle=css('--ink');
+      if(e<.5){ ctx.globalAlpha=1-2*e; ctx.fillText('c²',X(s/2),Y(s/2)); }
+      if(e>.5){ ctx.globalAlpha=2*e-1; ctx.fillText('a²',X(a/2),Y(a/2)); ctx.fillText('b²',X(a+b/2),Y(a+b/2)); }
+      ctx.globalAlpha=1;
+    }
+
+    // Rahmen
+    ctx.strokeStyle=css('--ink'); ctx.lineWidth=4; ctx.strokeRect(X(0),Y(s),s*k,s*k);
+    ctx.font='700 20px "Atkinson Hyperlegible",system-ui,sans-serif'; ctx.fillStyle=css('--muted');
+    ctx.fillText('a + b = '+fmt(s), X(s/2), Y(0)+22);
+
+    // Bilanz
+    const c2=a*a+b*b-2*a*b*Math.cos(g), sum=a*a+b*b;
+    $('A2').textContent=fmt(a*a); $('B2').textContent=fmt(b*b); $('S').textContent=fmt(sum); $('C2').textContent=fmt(c2);
+    const v=$('verdict');
+    if(right){ v.className='verdict ok'; v.textContent='a² + b² = c²'; }
+    else { v.className='verdict bad'; v.textContent= c2>sum ? 'a² + b² < c²' : 'a² + b² > c²'; }
+    $('note').innerHTML = right
+      ? 'Beide Figuren: gleicher Rahmen, dieselben vier Dreiecke. Also ist die freie Fläche gleich groß – egal, wie lang a und b sind.'
+      : '<span class="warn">Die Dreiecke passen nicht mehr lückenlos in den Rahmen.</span> Es entstehen Lücken oder Überlappungen, deshalb lassen sich die freien Flächen nicht mehr vergleichen.';
+    $('av').textContent=fmt(a); $('bv').textContent=fmt(b); $('gv').textContent=$('g').value+'°';
+    $('tv').textContent=Math.round(t*100)+' %';
+    $('f1').setAttribute('aria-pressed', t===0); $('f2').setAttribute('aria-pressed', t===1);
+  }
+
+  function animateTo(target){
+    cancelAnimationFrame(anim);
+    const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(reduce){ t=target; $('t').value=t; draw(); return; }
+    const start=t, t0=performance.now(), dur=1400*Math.abs(target-start)+1;
+    const step=now=>{ const p=Math.min(1,(now-t0)/dur); t=start+(target-start)*p; $('t').value=t; draw(); if(p<1) anim=requestAnimationFrame(step); };
+    anim=requestAnimationFrame(step);
+  }
+
+  ['a','b'].forEach(id=>$(id).addEventListener('input',draw));
+  $('g').addEventListener('input',()=>{ const v=+$('g').value; if(Math.abs(v-90)<=1) $('g').value=90; draw(); });
+  $('t').addEventListener('input',()=>{ cancelAnimationFrame(anim); t=+$('t').value; draw(); });
+  $('f1').onclick=()=>animateTo(0);
+  $('f2').onclick=()=>animateTo(1);
+  $('play').onclick=()=>animateTo(t<.5?1:0);
+  matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change',draw);
+  new MutationObserver(draw).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+  if(document.fonts&&document.fonts.ready) document.fonts.ready.then(draw);
+  draw();
+})();
+</script>
+
+</body></html>
