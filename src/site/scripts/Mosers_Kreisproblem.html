@@ -1,0 +1,201 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Kreisteilung</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<style>
+/* Layout: Erklärband über die volle Breite, darunter links die Kreisfigur, rechts die Zähltabelle */
+:root{
+  --bg:#f3f5f7; --surface:#ffffff; --band:#18324a; --bandInk:#f3f5f7; --ink:#18324a; --muted:#5a6b7c; --line:#d5dde5;
+  --accent:#1f6fb2; --chord:#18324a; --warn:#b4471b;
+  --display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
+  --body:"Atkinson Hyperlegible","Segoe UI",system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#111a22; --surface:#18242f; --band:#22374b; --bandInk:#e6eef5; --ink:#e6eef5; --muted:#9db0c2; --line:#2c3c4b;
+  --accent:#6cb4f0; --chord:#e6eef5; --warn:#f0925f; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#111a22; --surface:#18242f; --band:#22374b; --bandInk:#e6eef5; --ink:#e6eef5; --muted:#9db0c2; --line:#2c3c4b;
+  --accent:#6cb4f0; --chord:#e6eef5; --warn:#f0925f; color-scheme:dark}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.5}
+.band{background:var(--band);color:var(--bandInk)}
+.band .in{padding-block:22px 24px;padding-left:max(24px,env(safe-area-inset-left,0px));padding-right:max(24px,env(safe-area-inset-right,0px));display:grid;gap:6px}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(1.7rem,4vw,2.6rem);margin:0;text-wrap:balance;letter-spacing:-.01em}
+.lead{margin:0;font-size:clamp(1.05rem,2vw,1.3rem);opacity:.9}
+.wrap{max-width:1180px;margin:0 auto;padding-block:20px 40px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.main{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:20px;align-items:start}
+@media (max-width:760px){.main{grid-template-columns:1fr}}
+.stage{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px;display:grid;gap:12px}
+canvas{width:100%;max-width:100%;aspect-ratio:1/1;display:block;touch-action:none;cursor:crosshair}
+.controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+button{font:inherit;font-weight:700;border:1px solid var(--line);background:var(--bg);color:var(--ink);padding:8px 14px;border-radius:10px;cursor:pointer}
+button.primary{background:var(--accent);border-color:var(--accent);color:var(--surface)}
+button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+button:disabled{opacity:.45;cursor:default}
+label.tog{display:flex;gap:6px;align-items:center;font-weight:700}
+.side{display:grid;gap:16px}
+.count{font-family:var(--display);font-weight:800;font-size:clamp(2.6rem,7vw,4rem);line-height:1;margin:0;font-variant-numeric:tabular-nums}
+.count small{font-family:var(--body);font-weight:400;font-size:1rem;color:var(--muted);display:block;margin-top:6px}
+table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}
+th,td{border-bottom:1px solid var(--line);padding:8px 10px;text-align:center}
+th{font-size:.8rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:700}
+td{font-size:1.25rem;font-weight:700}
+tr.cur td{color:var(--accent)}
+td.hidden{color:var(--muted)}
+.hint{font-size:.95rem;color:var(--muted);margin:0}
+.surprise{color:var(--warn);font-weight:700}
+</style>
+
+<header class="band">
+  <div class="in">
+    <h1>In wie viele Flächen zerfällt der Kreis?</h1>
+    <p class="lead">Setze Punkte auf die Kreislinie (anklicken). Jeder Punkt wird mit jedem anderen verbunden. Wie viele Flächen entstehen?</p>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="main">
+    <section class="stage" aria-label="Kreisfigur">
+      <canvas id="cv" width="800" height="800" aria-label="Kreis: zum Setzen eines Punktes auf die Kreislinie klicken, Punkte lassen sich verschieben"></canvas>
+      <div class="controls">
+        <button id="minus" type="button">− Letzten Punkt entfernen</button>
+        <button id="plus" class="primary" type="button">+ Punkt</button>
+        <button id="reset" type="button">Neu</button>
+      </div>
+      <div class="controls">
+        <label class="tog"><input type="checkbox" id="fill"> Flächen färben und zählen</label>
+        <label class="tog"><input type="checkbox" id="nums"> Flächen nummerieren</label>
+      </div>
+    </section>
+
+    <aside class="side">
+      <p class="count" id="count">?<small id="countlabel"></small></p>
+      <table aria-label="Anzahl der Flächen">
+        <thead><tr><th>Punkte</th><th>Flächen</th></tr></thead>
+        <tbody id="tb"></tbody>
+      </table>
+      <p class="hint" id="hint"></p>
+    </aside>
+  </div>
+</div>
+
+<script>
+(function(){
+  const $=id=>document.getElementById(id);
+  // Vorschlagswinkel für "+ Punkt": unregelmäßig, damit sich nie drei Sehnen in einem Punkt schneiden
+  const ANG=[90,148,211,262,333,22,120,300];
+  const MAXN=8, ROWS=6;
+  const cv=$('cv'), ctx=cv.getContext('2d'), W=cv.width, R=W*0.44, C=W/2;
+  const css=v=>getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+  let angles=[90];          // gesetzte Punkte (Grad)
+  const rec={};             // zuletzt gezählte Flächen je Punktanzahl
+  let drag=-1;
+
+  const P=()=>angles.map(a=>{const r=a*Math.PI/180;return [C+R*Math.cos(r), C-R*Math.sin(r)];});
+
+  // Exakte Zählung: Flächen = 1 + Anzahl Sehnen + Σ (k−1) über alle inneren Schnittpunkte,
+  // k = Anzahl der Sehnen durch den Schnittpunkt. Gilt auch, wenn sich mehrere Sehnen in einem Punkt treffen.
+  function exactRegions(pts){
+    const n=pts.length; if(n<2) return 1;
+    const S=[]; for(let i=0;i<n;i++)for(let j=i+1;j<n;j++)S.push([pts[i],pts[j]]);
+    const X=[];
+    for(let i=0;i<S.length;i++)for(let j=i+1;j<S.length;j++){
+      const [p,q]=S[i],[r,s]=S[j];
+      const d=(q[0]-p[0])*(s[1]-r[1])-(q[1]-p[1])*(s[0]-r[0]); if(Math.abs(d)<1e-9) continue;
+      const t=((r[0]-p[0])*(s[1]-r[1])-(r[1]-p[1])*(s[0]-r[0]))/d, u=((r[0]-p[0])*(q[1]-p[1])-(r[1]-p[1])*(q[0]-p[0]))/d;
+      if(t>1e-6&&t<1-1e-6&&u>1e-6&&u<1-1e-6) X.push({x:p[0]+t*(q[0]-p[0]), y:p[1]+t*(q[1]-p[1]), s:new Set([i,j])});
+    }
+    const G=[]; // Schnittpunkte zusammenfassen, die (fast) aufeinander liegen
+    X.forEach(x=>{const g=G.find(g=>Math.hypot(g.x-x.x,g.y-x.y)<1.5); if(g){x.s.forEach(v=>g.s.add(v));} else G.push(x);});
+    return 1+S.length+G.reduce((a,g)=>a+g.s.size-1,0);
+  }
+
+  // Färben/Nummerieren über Flood-Fill auf eigenem Raster
+  function fillRegions(pts){
+    const S=W, wall=new Uint8Array(S*S), lab=new Int32Array(S*S).fill(-1);
+    for(let y=0;y<S;y++)for(let x=0;x<S;x++){const dx=x-C,dy=y-C;if(dx*dx+dy*dy>R*R)wall[y*S+x]=1;}
+    const line=(x0,y0,x1,y1)=>{const st=Math.ceil(Math.hypot(x1-x0,y1-y0)*2);for(let i=0;i<=st;i++){const t=i/st,x=Math.round(x0+(x1-x0)*t),y=Math.round(y0+(y1-y0)*t);for(let oy=-1;oy<=1;oy++)for(let ox=-1;ox<=1;ox++){const xx=x+ox,yy=y+oy;if(xx>=0&&yy>=0&&xx<S&&yy<S)wall[yy*S+xx]=1;}}};
+    for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++)line(pts[i][0],pts[i][1],pts[j][0],pts[j][1]);
+    const reg=[], st=new Int32Array(S*S);
+    for(let p=0;p<S*S;p++){ if(wall[p]||lab[p]!==-1)continue;
+      const id=reg.length; let sp=0,sx=0,sy=0,c=0; st[sp++]=p; lab[p]=id;
+      while(sp){const q=st[--sp],x=q%S,y=(q/S)|0;sx+=x;sy+=y;c++;
+        if(x>0&&!wall[q-1]&&lab[q-1]===-1){lab[q-1]=id;st[sp++]=q-1;}
+        if(x<S-1&&!wall[q+1]&&lab[q+1]===-1){lab[q+1]=id;st[sp++]=q+1;}
+        if(y>0&&!wall[q-S]&&lab[q-S]===-1){lab[q-S]=id;st[sp++]=q-S;}
+        if(y<S-1&&!wall[q+S]&&lab[q+S]===-1){lab[q+S]=id;st[sp++]=q+S;}}
+      reg.push({cx:sx/c,cy:sy/c,size:c,tiny:c<100});
+    }
+    return {lab,reg};
+  }
+
+  const PAL_L=["#f6c9a8","#bfe0c9","#c9d5f2","#f2e3a6","#e6c4e8","#a9dde0","#f4b7b7","#d8e9a4"];
+  const PAL_D=["#7a4d32","#3d6b4c","#3f5182","#7a6a2c","#6a4470","#2f6a6e","#7a3a3a","#5a6e2a"];
+  const isDark=()=>{const t=document.documentElement.getAttribute('data-theme');if(t)return t==='dark';return matchMedia('(prefers-color-scheme: dark)').matches;};
+  const hex=h=>[parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)];
+
+  function draw(){
+    const pts=P(), n=pts.length, show=$('fill').checked, doNum=$('nums').checked&&show;
+    ctx.clearRect(0,0,W,W);
+    if(show){
+      const info=fillRegions(pts), pal=(isDark()?PAL_D:PAL_L).map(hex), img=ctx.createImageData(W,W), d=img.data;
+      for(let p=0;p<W*W;p++){const l=info.lab[p]; if(l<0||info.reg[l].tiny)continue; const c=pal[l%pal.length]; d[p*4]=c[0];d[p*4+1]=c[1];d[p*4+2]=c[2];d[p*4+3]=255;}
+      ctx.putImageData(img,0,0);
+      if(doNum){
+        ctx.fillStyle=css('--ink'); ctx.textAlign='center'; ctx.textBaseline='middle';
+        info.reg.filter(r=>!r.tiny).sort((a,b)=>(a.cy-b.cy)||(a.cx-b.cx)).forEach((r,i)=>{
+          const fs=r.size>4000?30:(r.size>900?22:15);
+          ctx.font=`700 ${fs}px "Atkinson Hyperlegible",system-ui,sans-serif`; ctx.fillText(String(i+1),r.cx,r.cy);});
+      }
+    }
+    ctx.lineWidth=4; ctx.strokeStyle=css('--chord'); ctx.beginPath(); ctx.arc(C,C,R,0,Math.PI*2); ctx.stroke();
+    ctx.lineWidth=3;
+    for(let i=0;i<n;i++)for(let j=i+1;j<n;j++){ctx.beginPath();ctx.moveTo(pts[i][0],pts[i][1]);ctx.lineTo(pts[j][0],pts[j][1]);ctx.stroke();}
+    ctx.fillStyle=css('--accent'); pts.forEach(p=>{ctx.beginPath();ctx.arc(p[0],p[1],12,0,Math.PI*2);ctx.fill();});
+
+    const k=exactRegions(pts); rec[n]=k;
+    $('count').firstChild.nodeValue = show ? String(k) : '?';
+    $('countlabel').textContent = (show&&k===1?'Fläche':'Flächen')+' bei '+n+(n===1?' Punkt':' Punkten');
+    const tb=$('tb'); tb.innerHTML='';
+    for(let i=1;i<=Math.max(ROWS,n);i++){
+      const known = show && i<=n && rec[i]!==undefined;
+      const tr=document.createElement('tr'); if(i===n) tr.className='cur';
+      const extra = (known && i===6 && rec[6]!==32) ? ' <span class="surprise">(nicht 32!)</span>' : '';
+      tr.innerHTML=`<td>${i}</td><td class="${known?'':'hidden'}">${known?rec[i]:'?'}${extra}</td>`;
+      tb.appendChild(tr);
+    }
+    $('minus').disabled=n<=1; $('plus').disabled=n>=MAXN;
+    $('hint').textContent = !show
+      ? 'Zahlen erscheinen erst, wenn „Flächen färben und zählen“ angehakt ist. So können erst Vermutungen gesammelt werden.'
+      : (n>=6 && k<31)
+        ? 'Hier schneiden sich drei oder mehr Linien in einem Punkt. Dadurch gehen Flächen verloren. Verschiebe einen Punkt ein wenig.'
+        : 'Punkte lassen sich auf der Kreislinie verschieben. Die Anzahl gilt für beliebige Punkte, solange sich nie drei Linien in einem Punkt schneiden.';
+  }
+
+  // Interaktion: auf die Kreislinie klicken = Punkt setzen, Punkt ziehen = verschieben
+  function pos(e){const r=cv.getBoundingClientRect();return [(e.clientX-r.left)*W/r.width,(e.clientY-r.top)*W/r.height];}
+  const angOf=(x,y)=>((Math.atan2(C-y,x-C)*180/Math.PI)+360)%360;
+  const near=a=>angles.findIndex(b=>{const d=Math.abs(((a-b+540)%360)-180);return d<2;});
+  cv.addEventListener('pointerdown',e=>{
+    const [x,y]=pos(e), pts=P();
+    const hit=pts.findIndex(p=>Math.hypot(p[0]-x,p[1]-y)<26);
+    if(hit>=0){drag=hit;cv.setPointerCapture(e.pointerId);return;}
+    const d=Math.hypot(x-C,y-C);
+    if(Math.abs(d-R)<45 && angles.length<MAXN){const a=angOf(x,y); if(near(a)<0){angles.push(a);draw();}}
+  });
+  cv.addEventListener('pointermove',e=>{ if(drag<0)return; const [x,y]=pos(e); const a=angOf(x,y);
+    const other=angles.some((b,i)=>i!==drag&&Math.abs(((a-b+540)%360)-180)<2); if(!other){angles[drag]=a;draw();} });
+  const end=()=>{drag=-1;}; cv.addEventListener('pointerup',end); cv.addEventListener('pointercancel',end);
+
+  $('plus').onclick=()=>{ if(angles.length>=MAXN)return; const a=ANG.find(a=>near(a)<0); if(a!==undefined){angles.push(a);} else {let t=0;while(near(t)>=0)t+=7;angles.push(t);} draw(); };
+  $('minus').onclick=()=>{ if(angles.length>1){angles.pop();draw();} };
+  $('reset').onclick=()=>{ angles=[90]; for(const k in rec) delete rec[k]; draw(); };
+  $('fill').onchange=draw; $('nums').onchange=draw;
+  matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change',draw);
+  new MutationObserver(draw).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+  if(document.fonts&&document.fonts.ready) document.fonts.ready.then(draw);
+  draw();
+})();
+</script>
+
+</body></html>
