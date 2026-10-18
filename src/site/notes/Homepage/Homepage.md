@@ -40,8 +40,13 @@ Schülervertretung ([Link](https://unterricht-mit-haj.netlify.app/scripts/schuel
 Zahlenstrahl-Vergnügen ([Link](https://unterricht-mit-haj.netlify.app/scripts/zahlenstrahl_vergnuegen))
 Punktefeld und Malkreuz ([Link](https://unterricht-mit-haj.netlify.app/scripts/punktefeld-malkreuz))
 
-Zeilometer ([Link](https://unterricht-mit-haj.netlify.app/scripts/zeilometer))
+Zeilometer ([Link](https://unterricht-mit-haj.netlify.app/scripts/zeilometer)) 
 
+Animierter Chat ([Link](https://unterricht-mit-haj.netlify.app/scripts/chat-werkstatt))
 
+Quiz - Wie sagt man denn nun? ([Link](https://unterricht-mit-haj.netlify.app/scripts/quiz_wie_sagt_man_denn_nun))
+
+Moders Kreisproblem ([Link](https://unterricht-mit-haj.netlify.app/scripts/Mosers_Kreisproblem))
+Pyhtagoras-Beiweispuzzle ([Link](https://unterricht-mit-haj.netlify.app/scripts/Pythagoras-Puzzle))
 
 
