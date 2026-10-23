@@ -4,6 +4,7 @@
 
 <br>
 # Tipp Sprachliche Mittel untersuchen
+
 <br>
 <details>
     <summary><b>Tipp 1: Wie finde ich sprachliche Mittel?</b></summary>
