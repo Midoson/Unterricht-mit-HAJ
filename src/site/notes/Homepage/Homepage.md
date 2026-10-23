@@ -49,4 +49,8 @@ Quiz - Wie sagt man denn nun? ([Link](https://unterricht-mit-haj.netlify.app/scr
 Moders Kreisproblem ([Link](https://unterricht-mit-haj.netlify.app/scripts/Mosers_Kreisproblem))
 Pyhtagoras-Beiweispuzzle ([Link](https://unterricht-mit-haj.netlify.app/scripts/Pythagoras-Puzzle))
 
+Stilmittel-Training ([Link](https://unterricht-mit-haj.netlify.app/scripts/Stilmittel-Training))
+
+[[Homepage/Tipp - Sprachliche Mittel untersuchen\|Tipp - Sprachliche Mittel untersuchen]]
+
 
