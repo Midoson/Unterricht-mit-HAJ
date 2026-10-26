@@ -52,5 +52,6 @@ Pyhtagoras-Beiweispuzzle ([Link](https://unterricht-mit-haj.netlify.app/scripts/
 Stilmittel-Training ([Link](https://unterricht-mit-haj.netlify.app/scripts/Stilmittel-Training))
 
 [[Homepage/Tipp - Sprachliche Mittel untersuchen\|Tipp - Sprachliche Mittel untersuchen]] ([Link](https://unterricht-mit-haj.netlify.app/homepage/tipp-sprachliche-mittel-untersuchen/))
+[[Homepage/Prompt zur Überarbeitung der Erörterung eines pragmatischen Textes\|Prompt zur Überarbeitung der Erörterung eines pragmatischen Textes]] ([Link]())
 
 
