@@ -54,4 +54,6 @@ Stilmittel-Training ([Link](https://unterricht-mit-haj.netlify.app/scripts/Stilm
 [[Homepage/Tipp - Sprachliche Mittel untersuchen\|Tipp - Sprachliche Mittel untersuchen]] ([Link](https://unterricht-mit-haj.netlify.app/homepage/tipp-sprachliche-mittel-untersuchen/))
 [[Homepage/Prompt zur Überarbeitung der Erörterung eines pragmatischen Textes\|Prompt zur Überarbeitung der Erörterung eines pragmatischen Textes]] ([Link](https://unterricht-mit-haj.netlify.app/homepage/prompt-zur-ueberarbeitung-der-eroerterung-eines-pragmatischen-textes/))
 
+Potenz-Trainer ([Link](https://unterricht-mit-haj.netlify.app/scripts/potenz-trainer))
+
 
