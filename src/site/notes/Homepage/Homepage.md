@@ -21,7 +21,7 @@
 [[Homepage/Serviceseite für Sprachwissenschaftler\|Serviceseite für Sprachwissenschaftler]] ([Link](https://unterricht-mit-haj.netlify.app/homepage/serviceseite-fuer-sprachwissenschaftler/))
 
 [[Homepage/Lösungen - Arbeitsplan Proportional. Antiproportional.\|Lösungen - Arbeitsplan Proportional. Antiproportional.]] ([Link](https://unterricht-mit-haj.netlify.app/loesungen-proportional-antiproportional/))
-[[Lösungen - Arbeitsplan Potenzen\|Lösungen - Arbeitsplan Potenzen]] ([Link]())
+[[Lösungen - Arbeitsplan Potenzen\|Lösungen - Arbeitsplan Potenzen]] ([Link](https://unterricht-mit-haj.netlify.app/loesungen-arbeitsplan-potenzen/))
 
 [[Homepage/Zen-Garden\|Zen-Garden]] ([Link](https://unterricht-mit-haj.netlify.app/homepage/zen-garden/))
 Symmetrieeigenschaften mit Überprüfung ([Link](https://unterricht-mit-haj.netlify.app/scripts/Symmetrieeigenschaften-von-Graphen-mit-Ueberpruefung.html))

@@ -42,6 +42,9 @@
 >>[!leistung_gr]- Freiwillige Übungen vor dem Test - S. 26 Nr. 1 - 8
 >>Lösungen im Buch auf S. 205
 
+
+%%
+
 >[!leistung_g]- 💪🏼 Lösungen gelber Arbeitsplan
 >>[!leistung_g]- Zuordnung - S. 151/152 Nr. 3o - 5o
 >>![Schnittpunkt 7 Proportional Antiproportional S. 151 Nr. 3o.webp\|480](/img/user/Homepage/Anh%C3%A4nge/Schnittpunkt%207%20Proportional%20Antiproportional%20S.%20151%20Nr.%203o.webp)
